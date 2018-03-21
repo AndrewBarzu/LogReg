@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name"></string>
+    <string name="title_activity_main_">Main_Activity</string>
+    <string name="Gallery">Gallery</string>
+    <string name="Slideshow">Slideshow</string>
+    <string name="Tools">Tools</string>
+</resources>

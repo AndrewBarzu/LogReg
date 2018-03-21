@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.xghos.loginregister.Login"
+    android:background="@drawable/bg" >
+
+    <EditText
+        android:id="@+id/ETEmail"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="70dp"
+        android:drawableLeft="@drawable/ic_email_black_24dp"
+        android:ems="10"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/ETPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <EditText
+        android:id="@+id/ETPassword"
+        android:layout_width="273dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"
+        android:drawableLeft="@drawable/ic_lock_black_24dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/BLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ETEmail" />
+
+    <Button
+        android:id="@+id/BLogin"
+        android:layout_width="167dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="50dp"
+        android:text="Login"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/CRemember"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ETPassword" />
+
+    <TextView
+        android:id="@+id/TVRegHere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="102dp"
+        android:layout_marginTop="44dp"
+        android:linksClickable="true"
+        android:text="Don't have an accout? Register Here."
+        android:textColor="#000060"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CRemember" />
+
+    <CheckBox
+        android:id="@+id/CRemember"
+        android:layout_width="193dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="44dp"
+        android:layout_marginTop="30dp"
+        android:text="Remember me"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:buttonTint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/TVRegHere"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BLogin" />
+
+
+</android.support.constraint.ConstraintLayout>
