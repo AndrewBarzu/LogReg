@@ -1,7 +1,9 @@
 package com.example.xghos.loginregister;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,6 +11,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,11 +20,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity{
 
     private DrawerLayout mDrawerLayout;
+    private ArrayList<User> list;
+    private String raspuns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +81,7 @@ public class MainActivity extends AppCompatActivity{
         Toast.makeText(this, getIntent().getStringExtra("accType"), Toast.LENGTH_SHORT).show();
 
         Welcome.setText(WelcomeMessage);
-
+        new getUsersAsync().execute();
 
 
     }
@@ -83,5 +94,43 @@ public class MainActivity extends AppCompatActivity{
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class getUsersAsync extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... objects) {
+            HashMap<String, String> getParams = new HashMap<>();
+
+            getParams.put("request","request");
+            getParams.put("tablename","user");
+            getParams.put("test", "test");
+            try {
+                String response = new HttpRequest(getParams,"http://students.doubleuchat.com/list.php").connect();
+//                JSONObject responseObject = new JSONArray(response);
+//                raspuns = responseObject.getString("mesaj");
+                list = new ArrayList<>();
+                JSONArray jsonArray =  new JSONArray(response);
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject contactObj = jsonArray.getJSONObject(i);
+                    User user = new User();
+                    user.setUserName(contactObj.getString("user"));
+                    Log.d("+++", user.getUserName());
+                    user.setEmail(contactObj.getString("email"));
+                    Log.d("+++", user.getEmail());
+                    list.add(user);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "ok";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(MainActivity.this, raspuns, Toast.LENGTH_SHORT).show();
+            super.onPostExecute(s);
+        }
     }
 }
