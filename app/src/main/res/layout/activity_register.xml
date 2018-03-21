@@ -7,33 +7,22 @@
     android:background="@drawable/bg">
 
     <EditText
-        android:id="@+id/ETName"
+        android:id="@+id/ETEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        android:textAlignment="center"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textColor="#ffffff"
+        android:backgroundTint="@android:color/white"
+        android:textColorHint="#f1eded"
+        android:drawableLeft="@drawable/ic_email_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.094" />
-
-    <EditText
-        android:id="@+id/ETEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Email Adress"
-        android:inputType="textEmailAddress"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETName" />
 
     <EditText
         android:id="@+id/ETPassword"
@@ -43,11 +32,31 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:backgroundTint="@android:color/white"
+        android:textColorHint="#f1eded"
+        android:drawableLeft="@drawable/ic_lock_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ETEmail" />
+
+    <EditText
+        android:id="@+id/ETName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:textColor="#ffffff"
+        android:backgroundTint="@android:color/white"
+        android:textColorHint="#f1eded"
+        android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ETPassword" />
 
     <EditText
         android:id="@+id/ETConPassword"
@@ -57,11 +66,14 @@
         android:ems="10"
         android:hint="Confirm Password"
         android:inputType="textPassword"
-        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:backgroundTint="@android:color/white"
+        android:textColorHint="#f1eded"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/ETName
+" />
 
     <Button
         android:id="@+id/BRegister"
@@ -70,6 +82,8 @@
         android:layout_marginTop="120dp"
         android:text="Register"
         android:background="@android:color/transparent"
+        android:textColor="#ffffff"
+        android:backgroundTint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,6 +98,7 @@
         android:layout_marginStart="150dp"
         android:layout_marginTop="34dp"
         android:text="Switch"
+        android:textColor="#ffffff"
         android:buttonTint="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/BRegister"
         app:layout_constraintEnd_toEndOf="parent"
