@@ -1,8 +1,11 @@
 package com.example.xghos.loginregister;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.EditText;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 public class Register extends AppCompatActivity {
 
     DBHelper db;
+    ConstraintLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,17 @@ public class Register extends AppCompatActivity {
 
         final Button BRegister = findViewById(R.id.BRegister);
 
+        layout = findViewById(R.id.RegisterPanel);
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
+                }
+            }
+        });
 
         db = new DBHelper(this);
 
@@ -55,7 +70,7 @@ public class Register extends AppCompatActivity {
                 } else {
 
                     db.addUser(new User(null, name, mail, pass, accType));
-
+                    finish();
                     Toast.makeText(Register.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
                 }
             }

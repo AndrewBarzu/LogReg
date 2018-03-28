@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity{
 
     private DrawerLayout mDrawerLayout;
     private ArrayList<User> list;
-    private String raspuns;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,12 +104,16 @@ public class MainActivity extends AppCompatActivity{
             getParams.put("request","request");
             getParams.put("tablename","user");
             getParams.put("test", "test");
+            MCrypt cript = MCrypt.getInstance();
+            String ceva = cript.encryptHex("gigel pumn de fier");
+            Log.d("+++", ceva);
+            Log.d("+++", cript.decryptHex(ceva));
+
             try {
                 String response = new HttpRequest(getParams,"http://students.doubleuchat.com/list.php").connect();
-//                JSONObject responseObject = new JSONArray(response);
-//                raspuns = responseObject.getString("mesaj");
+                JSONObject responseObject = new JSONObject(response);
                 list = new ArrayList<>();
-                JSONArray jsonArray =  new JSONArray(response);
+                JSONArray jsonArray = responseObject.getJSONArray("array");
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject contactObj = jsonArray.getJSONObject(i);
@@ -129,7 +132,6 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(MainActivity.this, raspuns, Toast.LENGTH_SHORT).show();
             super.onPostExecute(s);
         }
     }

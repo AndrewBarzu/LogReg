@@ -1,13 +1,16 @@
 package com.example.xghos.loginregister;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,6 +23,7 @@ public class Login extends AppCompatActivity {
     DBHelper db;
     private SharedPreferences sharedPrefs;
     CheckBox CRemember;
+    ConstraintLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,18 @@ public class Login extends AppCompatActivity {
         final EditText ETPassword = findViewById(R.id.ETPassword);
         final Button BLogin = findViewById(R.id.BLogin);
         final TextView registerLink = findViewById(R.id.TVRegHere);
+
+        layout = findViewById(R.id.LoginPanel);
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
+                }
+            }
+        });
 
         CRemember = findViewById(R.id.CRemember);
 
