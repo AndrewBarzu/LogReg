@@ -12,34 +12,34 @@
         android:id="@+id/ETEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/white"
+        android:drawableLeft="@drawable/ic_email_black_24dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:textColor="#ffffff"
-        android:backgroundTint="@android:color/white"
         android:textColorHint="#f1eded"
-        android:drawableLeft="@drawable/ic_email_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.094" />
+        app:layout_constraintVertical_bias="0.057" />
 
     <EditText
         android:id="@+id/ETPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:backgroundTint="@android:color/white"
+        android:drawableLeft="@drawable/ic_lock_black_24dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textColor="#ffffff"
-        android:backgroundTint="@android:color/white"
         android:textColorHint="#f1eded"
-        android:drawableLeft="@drawable/ic_lock_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ETEmail" />
 
@@ -48,17 +48,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:backgroundTint="@android:color/white"
+        android:drawableLeft="@drawable/ic_person_outline_black_24dp"
         android:ems="10"
         android:hint="Name"
         android:inputType="textPersonName"
         android:textColor="#ffffff"
-        android:backgroundTint="@android:color/white"
         android:textColorHint="#f1eded"
-        android:drawableLeft="@drawable/ic_person_outline_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/ETSurName" />
 
     <EditText
         android:id="@+id/ETConPassword"
@@ -74,37 +74,69 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETName
-" />
+        app:layout_constraintTop_toBottomOf="@+id/ETPassword" />
 
     <Button
         android:id="@+id/BRegister"
         android:layout_width="165dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:text="Register"
+        android:layout_marginBottom="52dp"
         android:background="@android:color/transparent"
-        android:textColor="#ffffff"
         android:backgroundTint="@android:color/white"
+        android:text="Register"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETConPassword" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Switch
         android:id="@+id/switch1"
         android:layout_width="146dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="59dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="152dp"
         android:layout_marginStart="150dp"
-        android:layout_marginTop="34dp"
+        android:buttonTint="@android:color/white"
         android:text="Switch"
         android:textColor="#ffffff"
-        android:buttonTint="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/BRegister"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/ETSurName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@android:color/white"
+        android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+        android:ems="10"
+        android:hint="Surname"
+        android:inputType="textPersonName"
+        android:textColor="#ffffff"
+        android:textColorHint="#f1eded"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ETConPassword" />
+
+    <EditText
+        android:id="@+id/ETPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="84dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:text="Name"
+        android:textColor="#ffffff"
+        android:backgroundTint="@android:color/white"
+        android:textColorHint="#f1eded"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ETName" />
 
 </android.support.constraint.ConstraintLayout>

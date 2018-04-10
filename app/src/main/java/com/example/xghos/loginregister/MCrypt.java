@@ -17,8 +17,7 @@ import android.util.Log;
 class MCrypt {
 
 	static char[] HEX_CHARS = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
-	private  String SECRET_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMkxXz9YW0aaRUTSaqdeTf76SGsmbzxJchc3hOlKk5HdFWNrOLcYaCaI34teGUcyqTLyqz/0ig11wLqJQ92knLL3ut9lemqgcRhEStKgW+6PgwJmVlUBmiCs2mFcX3zuxdkWqLeYQfXrTiduVEKzk25eXe4C39nPQZXoKtIuQ1ZBAgMBAAECgYEAh/EeRHT1J51xlHEAs5oa5WBDsnLD0l5mAp325pMHZxWVMBnwtnZ9WRw+v7KTLfJjNROW9p3K8hFQajn5azeg0HG1owdycRI3cFUViLSOhr6n7w8rTcc0qABFxNLJeWZShxRUQVbvt3+ypfGKcNSvdypOqUWBo2rTJQGJTnB9N2kCQQDjMR0+ooo+CiiXQLY/owbmm2tKOFH/FqaxuLvCICD1BHmRQIbdFDhGGfWfeUV2IpHKBlzCLQ0Zq+yXqM8FDTs3AkEA4rRNofAqcstf2Zbzs4YphezFlXAcIbS/dAca6+vsyFO+RNXrCd2E8ogL0DexekGzNgSlMlgrV/8WSOvUjgBmRwJAEzR/qF/NF9l7/O03esGpP607sJZ6N/oONU/Mb2iP4KZ0MFcoD2A6MZLYNJbnzEi30kAfbzqntNfXtCpM9bxcmQJASQ7R9d3v0A66VOTQpIoX15D2G7KFXldhW4LuqhjdtbFHH+fQVt2MepxdMjzAdSW3GzFkC1Veon0SMW3OkfSPAQJAdX5B1yYpkEgGKMU3wZa1qYbzBFm9POTPgw6gORo6xuXh1AO8jnu64w8PwALGo7fSg4bs/Whxbtd3uqcJQQ0juQ==";
-
+	public  String SECRET_KEY = "L1%ore@45Fer0#maPel!9sa$mI-36^123gGlo_Oskq*7-8pfeT";
 	private IvParameterSpec ivspec;
 	private SecretKeySpec keyspec;
 	private Cipher cipher;
@@ -48,7 +47,9 @@ class MCrypt {
 
 
 		final String KEY =  getSkInMD5(SECRET_KEY);
+		Log.d("+++", "KEY: "+KEY);
 		final String iv = KEY.substring(4, 20);
+		Log.d("+++", "iv: "+iv);
 
 		ivspec = new IvParameterSpec(iv.getBytes());
 		keyspec = new SecretKeySpec(KEY.getBytes(), "AES");

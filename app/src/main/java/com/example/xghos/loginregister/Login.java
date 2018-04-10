@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +19,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 public class Login extends AppCompatActivity {
 
+
+    EditText ETMail;
+    EditText ETPassword;
+    Button BLogin;
     DBHelper db;
     private SharedPreferences sharedPrefs;
     CheckBox CRemember;
@@ -30,9 +39,9 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final EditText ETMail = findViewById(R.id.ETEmail);
-        final EditText ETPassword = findViewById(R.id.ETPassword);
-        final Button BLogin = findViewById(R.id.BLogin);
+        ETMail = findViewById(R.id.ETEmail);
+        ETPassword = findViewById(R.id.ETPassword);
+        Button BLogin = findViewById(R.id.BLogin);
         final TextView registerLink = findViewById(R.id.TVRegHere);
 
         layout = findViewById(R.id.LoginPanel);
@@ -40,7 +49,7 @@ public class Login extends AppCompatActivity {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
                 }
@@ -57,10 +66,6 @@ public class Login extends AppCompatActivity {
             CRemember.setChecked(true);
         }
 
-        final SharedPreferences.Editor editor = sharedPrefs.edit();
-
-        db = new DBHelper(this);
-
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,45 +74,101 @@ public class Login extends AppCompatActivity {
             }
         });
 
+
         BLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String email = ETMail.getText().toString();
-                String pass = ETPassword.getText().toString();
-
-                User currentUser = db.Authenticate(new User(null, null, email, pass, null));
-
-                DBHelper dbh = new DBHelper(getApplicationContext());
-
-                SQLiteDatabase db = dbh.getReadableDatabase();
-
-                String query = "SELECT * FROM MY_TABLE;";
-
-                Cursor cursor = db.rawQuery(query, null);
-
-                while (cursor.moveToNext())
-                {
-                    Log.d("APPLOG", cursor.getString(cursor.getColumnIndex("USERNAME")) + " " + cursor.getString(cursor.getColumnIndex("PASSWORD")) + " " + cursor.getString(cursor.getColumnIndex("TYPE")));
-                }
-                Log.d("APPLOG", "");
-
-
-                if (currentUser != null) {
-                    if (CRemember.isChecked()) {
-                        editor.putString("Email", email);
-                        editor.putString("Pass", pass);
-                    }
-                    else
-                        editor.clear();
-                    editor.commit();
-                    Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, MainActivity.class);
-                    intent.putExtra("userName", currentUser.userName);
-                    intent.putExtra("accType", currentUser.accType);
-                    startActivity(intent);
-                } else
-                    Toast.makeText(Login.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                new LoginAsyncTask().execute();
             }
         });
+
+
+
+
+
+//        BLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String email = ETMail.getText().toString();
+//                String pass = ETPassword.getText().toString();
+//
+//                User currentUser = db.Authenticate(new User(null, null, email, pass, null));
+//
+//                DBHelper dbh = new DBHelper(getApplicationContext());
+//
+//                SQLiteDatabase db = dbh.getReadableDatabase();
+//
+//                String query = "SELECT * FROM MY_TABLE;";
+//
+//                Cursor cursor = db.rawQuery(query, null);
+//
+//                while (cursor.moveToNext())
+//                {
+//                    Log.d("APPLOG", cursor.getString(cursor.getColumnIndex("USERNAME")) + " " + cursor.getString(cursor.getColumnIndex("PASSWORD")) + " " + cursor.getString(cursor.getColumnIndex("TYPE")));
+//                }
+//                Log.d("APPLOG", "");
+//
+//
+//                if (currentUser != null) {
+//                    if (CRemember.isChecked()) {
+//                        editor.putString("Email", email);
+//                        editor.putString("Pass", pass);
+//                    }
+//                    else
+//                        editor.clear();
+//                    editor.commit();
+//                    Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(Login.this, MainActivity.class);
+//                    intent.putExtra("userName", currentUser.userName);
+//                    intent.putExtra("accType", currentUser.accType);
+//                    startActivity(intent);
+//                } else
+//                    Toast.makeText(Login.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+    }
+    private class LoginAsyncTask extends AsyncTask<String, Void, String>{
+
+        @Override
+        protected String doInBackground(String... objects) {
+            HashMap<String, String> getParams = new HashMap<>();
+
+            String mail = ETMail.getText().toString();
+            String password = ETPassword.getText().toString();
+            getParams.put("mail", mail);
+            getParams.put("parola", password);
+            getParams.put("request", "login");
+
+            final SharedPreferences.Editor editor = sharedPrefs.edit();
+
+            try {
+                String response = new HttpRequest(getParams, "http://students.doubleuchat.com/login.php").connect();
+                JSONObject responseObject = new JSONObject(response);
+                String message = responseObject.getString("response");
+                Log.d("+++", message);
+                if (message.equals("Logare cu succes."))
+                {
+                    if (CRemember.isChecked()) {
+                        editor.putString("Email", mail);
+                        editor.putString("Pass", password);
+                    }
+                    else
+                    {
+                        editor.putString("Email", "");
+                        editor.putString("Pass", "");
+                    }
+
+                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    startActivity(intent);
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
+            }
+            return "ok";
+        }
     }
 }

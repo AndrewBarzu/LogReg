@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity{
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
 
-        final TextView Welcome = findViewById(R.id.welcomeMessage);
 
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -76,10 +75,7 @@ public class MainActivity extends AppCompatActivity{
                     }
                 });
 
-        String WelcomeMessage = "Welcome " + getIntent().getStringExtra("userName") + "!";
-        Toast.makeText(this, getIntent().getStringExtra("accType"), Toast.LENGTH_SHORT).show();
 
-        Welcome.setText(WelcomeMessage);
         new getUsersAsync().execute();
 
 
@@ -101,29 +97,28 @@ public class MainActivity extends AppCompatActivity{
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
-            getParams.put("request","request");
-            getParams.put("tablename","user");
-            getParams.put("test", "test");
-            MCrypt cript = MCrypt.getInstance();
-            String ceva = cript.encryptHex("gigel pumn de fier");
-            Log.d("+++", ceva);
-            Log.d("+++", cript.decryptHex(ceva));
+            getParams.put(MCrypt.getInstance().encryptHex("sk"), MCrypt.getInstance().SECRET_KEY);
+            Log.d("+++", "sk: "+MCrypt.getInstance().encryptHex("sk"));
+            getParams.put(MCrypt.getInstance().encryptHex("msg"), MCrypt.getInstance().encryptHex("asinfapweklsndioawe"));
+
 
             try {
-                String response = new HttpRequest(getParams,"http://students.doubleuchat.com/list.php").connect();
+                String response = new HttpRequest(getParams,"http://students.doubleuchat.com/mcrypt_test.php").connect();
                 JSONObject responseObject = new JSONObject(response);
+                String message = responseObject.getString("response");
+                Log.d("+++", MCrypt.getInstance().decryptHex(message));
                 list = new ArrayList<>();
-                JSONArray jsonArray = responseObject.getJSONArray("array");
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject contactObj = jsonArray.getJSONObject(i);
-                    User user = new User();
-                    user.setUserName(contactObj.getString("user"));
-                    Log.d("+++", user.getUserName());
-                    user.setEmail(contactObj.getString("email"));
-                    Log.d("+++", user.getEmail());
-                    list.add(user);
-                }
+//                JSONArray jsonArray = responseObject.getJSONArray("array");
+//
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    JSONObject contactObj = jsonArray.getJSONObject(i);
+//                    User user = new User();
+//                    user.setUserName(contactObj.getString("user"));
+//                    Log.d("+++", user.getUserName());
+//                    user.setEmail(contactObj.getString("email"));
+//                    Log.d("+++", user.getEmail());
+//                    list.add(user);
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
