@@ -47,7 +47,7 @@ public class Register extends AppCompatActivity {
         ETPassword = findViewById(R.id.ETPassword);
         ETConPassword = findViewById(R.id.ETConPassword);
         ETPhone = findViewById(R.id.ETPhone);
-        Switch SType = findViewById(R.id.switch1);
+        SType = findViewById(R.id.switch1);
 
         final Button BRegister = findViewById(R.id.BRegister);
 
@@ -114,7 +114,7 @@ public class Register extends AppCompatActivity {
             String password = ETPassword.getText().toString();
             String phone = ETPhone.getText().toString();
             String accType = "2";
-            if(SType.isChecked())
+            if(SType.isChecked()==true)
                 accType = "1";
             getParams.put("nume", name);
             getParams.put("prenume", surname);
@@ -126,7 +126,7 @@ public class Register extends AppCompatActivity {
 
 
             try {
-                String response = new HttpRequest(getParams, "http://students.doubleuchat.com/login.php").connect();
+                String response = new HttpRequest(getParams, "http://students.doubleuchat.com/register.php").connect();
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("response");
                 Log.d("+++", message);

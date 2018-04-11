@@ -151,11 +151,13 @@ public class Login extends AppCompatActivity {
                     if (CRemember.isChecked()) {
                         editor.putString("Email", mail);
                         editor.putString("Pass", password);
+                        editor.commit();
                     }
                     else
                     {
                         editor.putString("Email", "");
                         editor.putString("Pass", "");
+                        editor.commit();
                     }
 
                     Intent intent = new Intent(Login.this, MainActivity.class);
@@ -166,7 +168,7 @@ public class Login extends AppCompatActivity {
             }
             catch (Exception e)
             {
-                Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                return "nuok";
             }
             return "ok";
         }
