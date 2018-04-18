@@ -159,7 +159,7 @@ public class Login extends AppCompatActivity {
                         editor.commit();
                     }
 
-                    Intent intent = new Intent(Login.this, MainActivity.class);
+                    Intent intent = new Intent(Login.this, CalendarScrollActivity.class);
                     startActivity(intent);
 
                 }
