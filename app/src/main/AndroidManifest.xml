@@ -19,7 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".CalendarScrollActivity"
+            android:label="@string/title_activity_calendar_scroll"></activity>
     </application>
 
 </manifest>

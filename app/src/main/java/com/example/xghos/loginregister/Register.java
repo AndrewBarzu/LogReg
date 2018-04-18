@@ -24,7 +24,6 @@ import java.util.jar.Attributes;
 
 public class Register extends AppCompatActivity {
 
-    DBHelper db;
     ConstraintLayout layout;
 
     EditText ETName;

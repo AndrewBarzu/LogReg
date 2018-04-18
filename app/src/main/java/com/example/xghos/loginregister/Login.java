@@ -29,7 +29,6 @@ public class Login extends AppCompatActivity {
     EditText ETMail;
     EditText ETPassword;
     Button BLogin;
-    DBHelper db;
     private SharedPreferences sharedPrefs;
     CheckBox CRemember;
     ConstraintLayout layout;
