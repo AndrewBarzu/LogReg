@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -29,6 +30,12 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> {
             super(view);
             date = view.findViewById(R.id.day);
             name = view.findViewById(R.id.dayName);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    name.setText("vreau acasa");
+                }
+            });
         }
     }
 
@@ -43,6 +50,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> {
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
+
         holder.date.setText(mDates.get(position).getDay());
         holder.name.setText(mDates.get(position).getDayName());
     }
