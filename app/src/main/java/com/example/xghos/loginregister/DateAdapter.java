@@ -3,6 +3,7 @@ package com.example.xghos.loginregister;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,32 +12,43 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class DateAdapter extends ArrayAdapter {
+public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> {
 
     private Context mContext;
     private List<MyDate> mDates;
 
-    public DateAdapter(@NonNull Context context, int resource, List<MyDate> dates) {
-        super(context, resource, dates);
+    public DateAdapter( Context context, List<MyDate> dates) {
         mContext = context;
         mDates = dates;
     }
 
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public static class MyHolder extends RecyclerView.ViewHolder {
+        public TextView date, name;
 
-        View rootView = convertView;
-
-        if (rootView == null) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            rootView = inflater.inflate(R.layout.date_item, null);
+        public MyHolder(View view) {
+            super(view);
+            date = view.findViewById(R.id.day);
+            name = view.findViewById(R.id.dayName);
         }
+    }
 
-        final MyDate date = this.mDates.get(position);
-        TextView Date = rootView.findViewById(R.id.day);
-        TextView Name = rootView.findViewById(R.id.dayName);
 
-        return rootView;
+    @Override
+    public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.date_item, parent, false);
+
+        return new MyHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(MyHolder holder, int position) {
+        holder.date.setText(mDates.get(position).getDay());
+        holder.name.setText(mDates.get(position).getDayName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return mDates.size();
     }
 }

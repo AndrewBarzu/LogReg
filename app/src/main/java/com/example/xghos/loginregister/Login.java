@@ -143,9 +143,10 @@ public class Login extends AppCompatActivity {
             try {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/login.php").connect();
                 JSONObject responseObject = new JSONObject(response);
-                String message = responseObject.getString("response");
+                String message = responseObject.getString("msg");
+                String user = responseObject.getString("response");
                 Log.d("+++", message);
-                if (message.equals("Logare cu succes."))
+                if (message.equals("success"))
                 {
                     if (CRemember.isChecked()) {
                         editor.putString("Email", mail);
@@ -160,8 +161,8 @@ public class Login extends AppCompatActivity {
                     }
 
                     Intent intent = new Intent(Login.this, CalendarScrollActivity.class);
+                    intent.putExtra("ID", user);
                     startActivity(intent);
-
                 }
 
             }
