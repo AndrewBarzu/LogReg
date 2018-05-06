@@ -1,30 +1,22 @@
 package com.example.xghos.loginregister;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
+
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 
 public class CalendarScrollActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
-
-    public ArrayList<MyDate> dayList;
-    public DateAdapter dateAdapter;
-    public RecyclerView mRecyclerView;
-    public LinearLayoutManager mLayoutManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -32,52 +24,51 @@ public class CalendarScrollActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.Tab1:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.home:
+                    switchToFragment1();
                     return true;
-                case R.id.Tab2:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case R.id.history:
+                    switchToFragment1();
                     return true;
-                case R.id.Tab3:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.profile:
+                    switchToFragment1();
                     return true;
             }
             return false;
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_scroll);
 
-        mRecyclerView = findViewById(R.id.recyclerView);
-        dayList = new ArrayList<>();
+//        Calendar startDate = Calendar.getInstance();
+//
+//        Calendar endDate = Calendar.getInstance();
+//        endDate.add(Calendar.MONTH, 1);
+//
+//        mHorizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
+//                .range(startDate, endDate)
+//                .datesNumberOnScreen(5)
+//                .build();
+//
+//        mHorizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+//            @Override
+//            public void onDateSelected(Calendar date, int position) {
+//
+//            }
+//        });
 
-        Calendar date = Calendar.getInstance();
-
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        for(int i = 1; i<=30; i++) {
-            MyDate day = new MyDate();
-            day.setDay(String.valueOf(date.get(Calendar.DAY_OF_MONTH)));
-            day.setDayName(date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
-            date.add(Calendar.DAY_OF_YEAR, 1);
-            Log.d("+++", day.getDay()+" "+day.getDayName());
-            dayList.add(day);
-        }
-
-        dateAdapter = new DateAdapter(this, dayList);
-        mRecyclerView.setAdapter(dateAdapter);
-        
-
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    public void switchToFragment1() {
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+    }
 
 }
 
