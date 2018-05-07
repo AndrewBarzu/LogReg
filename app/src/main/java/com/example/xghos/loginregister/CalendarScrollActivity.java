@@ -1,49 +1,82 @@
 package com.example.xghos.loginregister;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
-
-import java.util.Calendar;
-
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 
 public class CalendarScrollActivity extends AppCompatActivity {
 
+    private ViewPager viewPager;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    HomeFragment mHomeFragment;
+    ProfileFragment mProfileFragment;
+    MenuItem mPrevMenuItem;
+    Bundle mBundle;
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.home:
-                    switchToFragment1();
-                    return true;
-                case R.id.history:
-                    switchToFragment1();
-                    return true;
-                case R.id.profile:
-                    switchToFragment1();
-                    return true;
-            }
-            return false;
-        }
-    };
-
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_scroll);
 
+        viewPager = findViewById(R.id.content);
+
+        bottomNavigationView = findViewById(R.id.navigation);
+
+        mBundle = getIntent().getExtras();
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.home:
+                                viewPager.setCurrentItem(0);
+                                break;
+                            case R.id.history:
+                                viewPager.setCurrentItem(1);
+                                break;
+                            case R.id.profile:
+                                viewPager.setCurrentItem(2);
+                                break;
+                        }
+                        return false;
+                    }
+                });
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mPrevMenuItem != null) {
+                    mPrevMenuItem.setChecked(false);
+                }
+                else
+                {
+                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                }
+                Log.d("page", "onPageSelected: "+position);
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+                mPrevMenuItem = bottomNavigationView.getMenu().getItem(position);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 //        Calendar startDate = Calendar.getInstance();
 //
 //        Calendar endDate = Calendar.getInstance();
@@ -61,13 +94,18 @@ public class CalendarScrollActivity extends AppCompatActivity {
 //            }
 //        });
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        setupViewPager(viewPager);
     }
 
-    public void switchToFragment1() {
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mHomeFragment = new HomeFragment();
+        mProfileFragment = new ProfileFragment();
+        mProfileFragment.setArguments(mBundle);
+
+        adapter.addFragment(mHomeFragment);
+        adapter.addFragment(mProfileFragment);
+        viewPager.setAdapter(adapter);
     }
 
 }

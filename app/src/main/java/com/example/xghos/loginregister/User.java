@@ -1,6 +1,7 @@
 package com.example.xghos.loginregister;
 
 
+import android.media.Image;
 
 class User {
     String id;

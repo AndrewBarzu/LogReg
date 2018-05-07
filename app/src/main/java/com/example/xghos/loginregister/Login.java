@@ -3,8 +3,6 @@ package com.example.xghos.loginregister;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -15,12 +13,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
@@ -38,7 +36,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ETMail = findViewById(R.id.ETEmail);
+        ETMail = findViewById(R.id.email);
         ETPassword = findViewById(R.id.ETPassword);
         Button BLogin = findViewById(R.id.BLogin);
         final TextView registerLink = findViewById(R.id.TVRegHere);
@@ -80,9 +78,6 @@ public class Login extends AppCompatActivity {
                 new LoginAsyncTask().execute();
             }
         });
-
-
-
 
 
 //        BLogin.setOnClickListener(new View.OnClickListener() {
@@ -144,8 +139,12 @@ public class Login extends AppCompatActivity {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/login.php").connect();
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("msg");
-                String user = responseObject.getString("response");
-                Log.d("+++", message);
+                JSONObject Object = responseObject.getJSONObject("response");
+
+                String name = Object.getString("nume") + " " + Object.getString("prenume");
+                String email = Object.getString("email");
+                String phone = Object.getString("nr_telefon");
+
                 if (message.equals("success"))
                 {
                     if (CRemember.isChecked()) {
@@ -160,8 +159,13 @@ public class Login extends AppCompatActivity {
                         editor.commit();
                     }
 
+
                     Intent intent = new Intent(Login.this, CalendarScrollActivity.class);
-                    intent.putExtra("ID", user);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", name);
+                    bundle.putString("email", email);
+                    bundle.putString("phone", phone);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
 

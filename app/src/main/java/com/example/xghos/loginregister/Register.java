@@ -1,8 +1,6 @@
 package com.example.xghos.loginregister;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -11,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -19,7 +16,6 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.jar.Attributes;
 
 
 public class Register extends AppCompatActivity {
@@ -40,9 +36,9 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
 
-        ETName = findViewById(R.id.ETName);
+        ETName = findViewById(R.id.Name);
         ETSurName = findViewById(R.id.ETSurName);
-        ETMail = findViewById(R.id.ETEmail);
+        ETMail = findViewById(R.id.email);
         ETPassword = findViewById(R.id.ETPassword);
         ETConPassword = findViewById(R.id.ETConPassword);
         ETPhone = findViewById(R.id.ETPhone);
@@ -131,6 +127,7 @@ public class Register extends AppCompatActivity {
                 Log.d("+++", message);
                 if (message.equals("Succes."))
                 {
+                    Toast.makeText(Register.this, "Register Successful!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
 
