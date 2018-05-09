@@ -61,7 +61,11 @@ public class Register extends AppCompatActivity {
         BRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new RegisterAsyncTask().execute();
+                if(Helper.getINSTANCE().registerValidation(ETMail.getText().toString(), ETPassword.getText().toString(), ETName.getText().toString(),
+                        ETSurName.getText().toString(), ETPhone.getText().toString(), ETConPassword.getText().toString()))
+                    new RegisterAsyncTask().execute();
+                else
+                    Toast.makeText(Register.this, "Register Failed", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -127,7 +131,6 @@ public class Register extends AppCompatActivity {
                 Log.d("+++", message);
                 if (message.equals("Succes."))
                 {
-                    Toast.makeText(Register.this, "Register Successful!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
 

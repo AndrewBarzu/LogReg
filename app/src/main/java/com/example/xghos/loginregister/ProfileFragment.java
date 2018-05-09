@@ -1,54 +1,50 @@
 package com.example.xghos.loginregister;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import static android.support.v4.graphics.TypefaceCompatUtil.getTempFile;
+
+
 public class ProfileFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_NAME = "name";
     private static final String ARG_EMAIL = "email";
     private static final String ARG_PHONE = "phone";
 
-    // TODO: Rename and change types of parameters
     private String mName;
     private String mEmail;
     private String mPhone;
     private TextView TVName;
     private TextView TVEmail;
     private TextView TVPhone;
-
-    private OnFragmentInteractionListener mListener;
+    private ImageView IVProfilePic;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ProfileFragment newInstance(String name, String email, String phone) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -83,32 +79,45 @@ public class ProfileFragment extends Fragment {
         TVName = getView().findViewById(R.id.name);
         TVEmail = getView().findViewById(R.id.email);
         TVPhone = getView().findViewById(R.id.phone);
+        IVProfilePic = getView().findViewById(R.id.profilePic);
+        IVProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startImageChooserActivity(ProfileFragment.this);
+            }
+        });
         TVName.setText(mName);
         TVEmail.setText(mEmail);
         TVPhone.setText(mPhone);
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    public void startImageChooserActivity(Fragment fragment) {
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+            fragment.startActivityForResult(Intent.createChooser(intent, "Choose photo"), 2);
+        } else {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0) {
+            if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startImageChooserActivity(ProfileFragment.this);
+            }
         }
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
+            Bitmap croppedImageFile = Helper.getINSTANCE().getImageFromResult(getContext(),data);
+            IVProfilePic.setImageBitmap(croppedImageFile);
+        }
     }
 }

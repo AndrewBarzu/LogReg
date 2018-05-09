@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -75,7 +76,10 @@ public class Login extends AppCompatActivity {
         BLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LoginAsyncTask().execute();
+                if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString()))
+                    new LoginAsyncTask().execute();
+                else
+                    Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
             }
         });
 
