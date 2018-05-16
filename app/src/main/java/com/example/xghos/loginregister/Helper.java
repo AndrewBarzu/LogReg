@@ -6,10 +6,12 @@ import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -97,5 +99,12 @@ public class Helper {
                 fileDescriptor.getFileDescriptor(), null, options);
 
         return actuallyUsableBitmap;
+    }
+
+    public String getStringFromBitmap(Bitmap profileImageBitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        profileImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] arr = stream.toByteArray();
+        return Base64.encodeToString(arr, Base64.DEFAULT);
     }
 }

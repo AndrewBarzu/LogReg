@@ -5,16 +5,22 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +28,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 
 import static android.support.v4.graphics.TypefaceCompatUtil.getTempFile;
 
@@ -33,7 +43,7 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_NAME = "name";
     private static final String ARG_EMAIL = "email";
     private static final String ARG_PHONE = "phone";
-    final int PIC_CROP = 1;
+    final int PIC_CROP = 999;
 
     private String mName;
     private String mEmail;
@@ -42,6 +52,8 @@ public class ProfileFragment extends Fragment {
     private TextView TVEmail;
     private TextView TVPhone;
     private ImageView IVProfilePic;
+
+    private Bitmap croppedImageFile;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -121,9 +133,10 @@ public class ProfileFragment extends Fragment {
             cropIntent.putExtra("crop", true);
             cropIntent.putExtra("aspectX", 1);
             cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 128);
-            cropIntent.putExtra("outputY", 128);
+            cropIntent.putExtra("outputX", 500);
+            cropIntent.putExtra("outputY", 500);
             cropIntent.putExtra("return-data", true);
+            cropIntent.putExtra("scaleUpIfNeeded", true);
             startActivityForResult(cropIntent, PIC_CROP);
         }
         catch (ActivityNotFoundException anfe) {
@@ -140,8 +153,50 @@ public class ProfileFragment extends Fragment {
         if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
             Uri selectedImage = data.getData();
             performCrop(selectedImage);
-            Bitmap croppedImageFile = Helper.getINSTANCE().getImageResized(getContext(),selectedImage);
+        }
+        if(requestCode == PIC_CROP && resultCode == Activity.RESULT_OK){
+            Bundle extras = data.getExtras();
+            croppedImageFile = extras.getParcelable("data");
             IVProfilePic.setImageBitmap(croppedImageFile);
+            new ChangeProfilePic().execute();
+        }
+    }
+
+    private class ChangeProfilePic extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... objects) {
+            HashMap<String, String> getParams = new HashMap<>();
+
+            String encoded = Helper.getINSTANCE().getStringFromBitmap(croppedImageFile);
+            Log.d("++++", encoded);
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+//            byte[] byteArray = byteArrayOutputStream .toByteArray();
+//            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+            getParams.put("avatar", encoded);
+            getParams.put("id", String.valueOf(11));
+            getParams.put("request", "avatarchange");
+
+            try {
+                String response = new HttpRequest(getParams, "http://students.doubleuchat.com/avatarchange.php").connect();
+                JSONObject responseObject = new JSONObject(response);
+                String message = responseObject.getString("msg");
+                String Object = responseObject.getString("response");
+
+                if (message.equals("error"))
+                {
+                    Log.d("+++", Object);
+                }
+
+            }
+            catch (Exception e)
+            {
+                return "nuok";
+            }
+            return "ok";
         }
     }
 }
+

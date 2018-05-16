@@ -163,7 +163,6 @@ public class Login extends AppCompatActivity {
                         editor.commit();
                     }
 
-
                     Intent intent = new Intent(Login.this, CalendarScrollActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("name", name);
