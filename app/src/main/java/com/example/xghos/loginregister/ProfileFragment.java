@@ -2,6 +2,7 @@ package com.example.xghos.loginregister;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,6 +33,7 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_NAME = "name";
     private static final String ARG_EMAIL = "email";
     private static final String ARG_PHONE = "phone";
+    final int PIC_CROP = 1;
 
     private String mName;
     private String mEmail;
@@ -111,12 +114,33 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private void performCrop(Uri picUri) {
+        try {
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            cropIntent.setDataAndType(picUri, "image/*");
+            cropIntent.putExtra("crop", true);
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            cropIntent.putExtra("outputX", 128);
+            cropIntent.putExtra("outputY", 128);
+            cropIntent.putExtra("return-data", true);
+            startActivityForResult(cropIntent, PIC_CROP);
+        }
+        catch (ActivityNotFoundException anfe) {
+            String errorMessage = "Whoops - your device doesn't support the crop action!";
+            Toast toast = Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
-            Bitmap croppedImageFile = Helper.getINSTANCE().getImageFromResult(getContext(),data);
+            Uri selectedImage = data.getData();
+            performCrop(selectedImage);
+            Bitmap croppedImageFile = Helper.getINSTANCE().getImageResized(getContext(),selectedImage);
             IVProfilePic.setImageBitmap(croppedImageFile);
         }
     }
