@@ -1,37 +1,41 @@
 package com.example.xghos.loginregister;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class TouchListener extends RecyclerView.ItemDecoration {
+import java.util.Currency;
+
+public class HeaderItemDecoration extends RecyclerView.ItemDecoration {
     private StickyHeaderInterface mListener;
     private int mStickyHeaderHeight;
 
-    public TouchListener(RecyclerView recyclerView, StickyHeaderInterface listener) {
+    public HeaderItemDecoration(RecyclerView recyclerView, @NonNull StickyHeaderInterface listener) {
         mListener = listener;
 
         // On Sticky Header Click
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                if (motionEvent.getY() <= mStickyHeaderHeight) {
-                    // Handle the clicks on the header here ...
-                    return true;
-                }
-                return false;
-            }
-
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-
-            }
-
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
+//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+//            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+//                if (motionEvent.getX() <= mStickyHeaderHeight) {
+//                    // Handle the clicks on the header here ...
+//                    return true;
+//                }
+//                return false;
+//            }
+//
+//            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+//
+//            }
+//
+//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+//
+//            }
+//        });
     }
 
     @Override
@@ -39,7 +43,7 @@ public class TouchListener extends RecyclerView.ItemDecoration {
         super.onDrawOver(c, parent, state);
 
         View topChild = parent.getChildAt(0);
-        if (topChild==null) {
+        if (topChild == null) {
             return;
         }
 
@@ -50,9 +54,9 @@ public class TouchListener extends RecyclerView.ItemDecoration {
 
         View currentHeader = getHeaderViewForItem(topChildPosition, parent);
         fixLayoutSize(parent, currentHeader);
-        int contactPoint = currentHeader.getBottom();
+        int contactPoint = currentHeader.getRight();
         View childInContact = getChildInContact(parent, contactPoint);
-        if (childInContact==null) {
+        if (childInContact == null) {
             return;
         }
 
@@ -81,7 +85,7 @@ public class TouchListener extends RecyclerView.ItemDecoration {
 
     private void moveHeader(Canvas c, View currentHeader, View nextHeader) {
         c.save();
-        c.translate(0, nextHeader.getTop() - currentHeader.getHeight());
+        c.translate(nextHeader.getLeft()- currentHeader.getWidth(), 0);
         currentHeader.draw(c);
         c.restore();
     }
@@ -90,9 +94,8 @@ public class TouchListener extends RecyclerView.ItemDecoration {
         View childInContact = null;
         for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
-            if (child.getBottom() > contactPoint) {
+            if (child.getRight() > contactPoint) {
                 if (child.getTop() <= contactPoint) {
-                    // This child overlaps the contactPoint
                     childInContact = child;
                     break;
                 }
@@ -100,7 +103,6 @@ public class TouchListener extends RecyclerView.ItemDecoration {
         }
         return childInContact;
     }
-
 
     private void fixLayoutSize(ViewGroup parent, View view) {
 
@@ -119,16 +121,13 @@ public class TouchListener extends RecyclerView.ItemDecoration {
 
     public interface StickyHeaderInterface {
 
-
         int getHeaderPositionForItem(int itemPosition);
-
 
         int getHeaderLayout(int headerPosition);
 
-
         void bindHeaderData(View header, int headerPosition);
-
 
         boolean isHeader(int itemPosition);
     }
 }
+

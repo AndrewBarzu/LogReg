@@ -1,29 +1,42 @@
 package com.example.xghos.loginregister;
 
-import android.accessibilityservice.GestureDescription;
-import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.text.method.Touch;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
+import java.util.zip.Inflater;
 
-public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> implements TouchListener.StickyHeaderInterface {
-
+public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> implements HeaderItemDecoration.StickyHeaderInterface{
     private ArrayList<MyDate> mDates;
     private View prevSelectedItem;
 
-    public DateAdapter(ArrayList<MyDate> dates) {
-        mDates = dates;
+    public DateAdapter(Calendar mStartDate, Calendar mEndDate) {
+        mDates = new ArrayList<>();
+        MyDate FIRST_ITEM = new MyDate();
+        FIRST_ITEM.setDay("0");
+        FIRST_ITEM.setMonth(mStartDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+        mDates.add(FIRST_ITEM);
+        for (int i = 0; mStartDate.compareTo(mEndDate)<=0; mStartDate.add(Calendar.DAY_OF_YEAR, 1), i++){
+            MyDate date = new MyDate();
+            date.setDay(String.valueOf(mStartDate.get(Calendar.DAY_OF_MONTH)));
+            date.setDayName(mStartDate.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
+            if(Integer.valueOf(date.getDay()) == 1){
+                MyDate HEADER = new MyDate();
+                HEADER.setDay("0");
+                HEADER.setMonth(mStartDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+                mDates.add(HEADER);
+            }
+            mDates.add(date);
+        }
     }
 
 
@@ -34,36 +47,54 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
 
     @Override
     public int getItemViewType(int position) {
+        if(Integer.valueOf(mDates.get(position).getDay())== 0)
+            return 0;
         return position;
     }
 
 
     @Override
     public int getHeaderPositionForItem(int itemPosition) {
-        return 0;
+        int headerPosition = 0;
+        do {
+            if (this.isHeader(itemPosition)) {
+                headerPosition = itemPosition;
+                break;
+            }
+            itemPosition -= 1;
+        } while (itemPosition >= 0);
+        return headerPosition;
     }
 
     @Override
     public int getHeaderLayout(int headerPosition) {
-        return 0;
+        return R.layout.header_item;
     }
 
     @Override
     public void bindHeaderData(View header, int headerPosition) {
-
+        String month = mDates.get(headerPosition).getMonth();
+        month = month.substring(0, 3);
+        header.setBackgroundColor(Color.RED);
+        TextView TVMonth = header.findViewById(R.id.month);
+        TVMonth.setText(month);
     }
 
     @Override
     public boolean isHeader(int itemPosition) {
+        if (getItemViewType(itemPosition)==0){
+            return true;
+        }
         return false;
     }
 
     public class MyHolder extends RecyclerView.ViewHolder {
-        public TextView date, name;
-        public MyHolder(final View view) {
+        public TextView date, name, month;
+        public MyHolder(View view) {
             super(view);
             date = view.findViewById(R.id.day);
             name = view.findViewById(R.id.dayName);
+            month = view.findViewById(R.id.month);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,7 +116,6 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                         name.setTextColor(Color.BLACK);
                         prevSelectedItem = v;
                     }
-
                 }
             });
         }
@@ -94,17 +124,30 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+        View itemView;
+        if (viewType==0) {
+            itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.header_item, parent, false);
+        }
+        else {
+            itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.date_item, parent, false);
+        }
         return new MyHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-
-        holder.date.setText(String.valueOf(mDates.get(position).getDay()));
-        holder.name.setText(mDates.get(position).getDayName());
-        Log.d("pokeman", String.valueOf(mDates.get(position).getDay()));
+        if(getItemViewType(position)==0){
+            holder.month.setText(mDates.get(position).getMonth().substring(0, 3));
+            holder.itemView.setBackgroundColor(Color.RED);
+            holder.itemView.setClickable(false);
+        }
+        else {
+            holder.date.setText(String.valueOf(mDates.get(position).getDay()));
+            holder.name.setText(mDates.get(position).getDayName());
+            Log.d("pokeman", String.valueOf(mDates.get(position).getDay()));
+        }
     }
 
     @Override

@@ -9,15 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
 
 public class HomeFragment extends Fragment {
@@ -27,6 +25,7 @@ public class HomeFragment extends Fragment {
     Calendar mStartDate;
     Calendar mEndDate;
     ArrayList<MyDate> myDates;
+    HeaderItemDecoration itemDecoration;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -40,15 +39,24 @@ public class HomeFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false);
         mEndDate = Calendar.getInstance();
         mEndDate.add(Calendar.MONTH, 1);
-        myDates = new ArrayList<>();
-        for (int i = 0; mStartDate.compareTo(mEndDate)<=0; mStartDate.add(Calendar.DAY_OF_YEAR, 1), i++){
-            MyDate date = new MyDate();
-            date.setDay(String.valueOf(mStartDate.get(Calendar.DAY_OF_MONTH)));
-            date.setDayName(mStartDate.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
-            myDates.add(date);
-            Log.d("papagal", String.valueOf(myDates.get(i).getDay()));
-        }
-        dateAdapter = new DateAdapter(myDates);
+//        myDates = new ArrayList<>();
+//        MyDate FIRST_ITEM = new MyDate();
+//        FIRST_ITEM.setDay("0");
+//        FIRST_ITEM.setMonth(mStartDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+//        myDates.add(FIRST_ITEM);
+//        for (int i = 0; mStartDate.compareTo(mEndDate)<=0; mStartDate.add(Calendar.DAY_OF_YEAR, 1), i++){
+//            MyDate date = new MyDate();
+//            date.setDay(String.valueOf(mStartDate.get(Calendar.DAY_OF_MONTH)));
+//            date.setDayName(mStartDate.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
+//            if(Integer.valueOf(date.getDay()) == 1){
+//                MyDate HEADER = new MyDate();
+//                HEADER.setDay("0");
+//                HEADER.setMonth(mStartDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+//                myDates.add(HEADER);
+//            }
+//            myDates.add(date);
+//        }
+        dateAdapter = new DateAdapter(mStartDate, mEndDate);
     }
 
     @Override
@@ -64,6 +72,8 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.calendar);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(dateAdapter);
+        itemDecoration = new HeaderItemDecoration(recyclerView, dateAdapter);
+        recyclerView.addItemDecoration(itemDecoration);
     }
 
 //    @Override
