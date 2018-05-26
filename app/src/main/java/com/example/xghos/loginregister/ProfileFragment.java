@@ -104,7 +104,11 @@ public class ProfileFragment extends Fragment {
         TVName.setText(mName);
         TVEmail.setText(mEmail);
         TVPhone.setText(mPhone);
-
+        Log.d("+++", currentUser.getAvatar());
+        Log.d("+++", currentUser.getEmail());
+        if(currentUser.getAvatar().length() > 10){
+            IVProfilePic.setImageBitmap(Helper.getINSTANCE().getBitmapFromString(currentUser.getAvatar()));
+        }
     }
 
     public void startImageChooserActivity(Fragment fragment) {
@@ -169,14 +173,9 @@ public class ProfileFragment extends Fragment {
             HashMap<String, String> getParams = new HashMap<>();
 
             String encoded = Helper.getINSTANCE().getStringFromBitmap(croppedImageFile);
-            Log.d("++++", encoded);
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-//            byte[] byteArray = byteArrayOutputStream .toByteArray();
-//            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
+            //Log.d("++++", encoded);
             getParams.put("avatar", encoded);
-            getParams.put("id", String.valueOf(11));
+            getParams.put("id", String.valueOf(currentUser.getId()));
             getParams.put("request", "avatarchange");
 
             try {

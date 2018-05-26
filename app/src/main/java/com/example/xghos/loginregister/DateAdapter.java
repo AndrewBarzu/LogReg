@@ -23,16 +23,18 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
         mDates = new ArrayList<>();
         MyDate FIRST_ITEM = new MyDate();
         FIRST_ITEM.setDay("0");
-        FIRST_ITEM.setMonth(mStartDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+        FIRST_ITEM.setMonth(mStartDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()).toUpperCase());
         mDates.add(FIRST_ITEM);
         for (int i = 0; mStartDate.compareTo(mEndDate)<=0; mStartDate.add(Calendar.DAY_OF_YEAR, 1), i++){
             MyDate date = new MyDate();
             date.setDay(String.valueOf(mStartDate.get(Calendar.DAY_OF_MONTH)));
             date.setDayName(mStartDate.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()));
+            date.setMonth(String.valueOf(mStartDate.get(Calendar.MONTH)));
+            date.setYear(String.valueOf(mStartDate.get(Calendar.YEAR)));
             if(Integer.valueOf(date.getDay()) == 1){
                 MyDate HEADER = new MyDate();
                 HEADER.setDay("0");
-                HEADER.setMonth(mStartDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+                HEADER.setMonth(mStartDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()).toUpperCase());
                 mDates.add(HEADER);
             }
             mDates.add(date);

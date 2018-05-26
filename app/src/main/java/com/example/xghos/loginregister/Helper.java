@@ -101,6 +101,12 @@ public class Helper {
         return actuallyUsableBitmap;
     }
 
+    public Bitmap getBitmapFromString (String profileImageString){
+        byte[] arr = Base64.decode(profileImageString, Base64.DEFAULT);
+        Bitmap decodedImage = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+        return decodedImage;
+    }
+
     public String getStringFromBitmap(Bitmap profileImageBitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         profileImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);

@@ -149,6 +149,15 @@ public class Login extends AppCompatActivity {
                 String email = Object.getString("email");
                 String phone = Object.getString("nr_telefon");
 
+                currentUser.setUserName(name);
+                currentUser.setEmail(email);
+                currentUser.setPhoneNumber(phone);
+                currentUser.setId(Object.getString("id_user"));
+                currentUser.setAccType(Object.getString("tip_user"));
+                currentUser.setAvatar(Object.getString("avatar"));
+
+                Log.d("+++", String.valueOf(Object));
+
                 if (message.equals("success"))
                 {
                     if (CRemember.isChecked()) {

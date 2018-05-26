@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
         mStartDate = Calendar.getInstance();
         layoutManager = new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false);
         mEndDate = Calendar.getInstance();
-        mEndDate.add(Calendar.MONTH, 1);
+        mEndDate.add(Calendar.YEAR, 10);
 //        myDates = new ArrayList<>();
 //        MyDate FIRST_ITEM = new MyDate();
 //        FIRST_ITEM.setDay("0");

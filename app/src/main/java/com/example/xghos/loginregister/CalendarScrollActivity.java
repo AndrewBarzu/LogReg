@@ -22,7 +22,9 @@ public class CalendarScrollActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_calendar_scroll);
 
         viewPager = findViewById(R.id.content);
@@ -93,7 +95,6 @@ public class CalendarScrollActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
         setupViewPager(viewPager);
     }
 
