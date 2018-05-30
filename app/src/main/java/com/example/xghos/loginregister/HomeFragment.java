@@ -5,26 +5,26 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
+    ListView listView;
     LinearLayoutManager layoutManager;
     DateAdapter dateAdapter;
+    OfferAdapter offerAdapter;
     Calendar mStartDate;
     Calendar mEndDate;
-    ArrayList<MyDate> myDates;
+    ArrayList<Integer> offers;
     HeaderItemDecoration itemDecoration;
 
     public HomeFragment() {
@@ -34,11 +34,15 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        offers = new ArrayList<>();
 
         mStartDate = Calendar.getInstance();
         layoutManager = new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false);
         mEndDate = Calendar.getInstance();
         mEndDate.add(Calendar.YEAR, 10);
+
+        for(int i = 1; i<=30; i++)
+            offers.add(i);
 //        myDates = new ArrayList<>();
 //        MyDate FIRST_ITEM = new MyDate();
 //        FIRST_ITEM.setDay("0");
@@ -74,6 +78,11 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(dateAdapter);
         itemDecoration = new HeaderItemDecoration(recyclerView, dateAdapter);
         recyclerView.addItemDecoration(itemDecoration);
+
+        listView = view.findViewById(R.id.offers);
+        offerAdapter = new OfferAdapter(getContext(), R.layout.offer_item, offers);
+        listView.setAdapter(offerAdapter);
+
     }
 
 //    @Override

@@ -144,8 +144,8 @@ public class Register extends AppCompatActivity {
             cropIntent.putExtra("crop", true);
             cropIntent.putExtra("aspectX", 1);
             cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 500);
-            cropIntent.putExtra("outputY", 500);
+            cropIntent.putExtra("outputX", 150);
+            cropIntent.putExtra("outputY", 150);
             cropIntent.putExtra("return-data", true);
             cropIntent.putExtra("scaleUpIfNeeded", true);
             startActivityForResult(cropIntent, PIC_CROP);
@@ -182,15 +182,16 @@ public class Register extends AppCompatActivity {
             String mail = ETMail.getText().toString();
             String password = ETPassword.getText().toString();
             String phone = ETPhone.getText().toString();
-            String image = Helper.getINSTANCE().getStringFromBitmap(croppedImageFile);
+            String image = "0";
+            if(croppedImageFile != null)
+                image = Helper.getINSTANCE().getStringFromBitmap(croppedImageFile);
             getParams.put("nume", name);
             getParams.put("prenume", " ");
             getParams.put("mail", mail);
             getParams.put("parola", password);
             getParams.put("telefon", phone);
             getParams.put("tip", String.valueOf(1));
-            if(image.length() > 10)
-                getParams.put("avatar", image);
+            getParams.put("avatar", image);
             Log.d("+++", image);
             getParams.put("request", "register");
 
