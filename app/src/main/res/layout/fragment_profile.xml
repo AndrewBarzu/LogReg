@@ -58,7 +58,7 @@
         android:layout_marginTop="120dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@android:drawable/btn_star_big_off"
-        app:civ_border_color="@android:color/white"
+        app:civ_border_color="@android:color/holo_blue_dark"
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toTopOf="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"

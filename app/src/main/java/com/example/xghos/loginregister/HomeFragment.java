@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
 //            }
 //            myDates.add(date);
 //        }
-        dateAdapter = new DateAdapter(mStartDate, mEndDate);
+        dateAdapter = new DateAdapter(getContext(), mStartDate, mEndDate);
     }
 
     @Override

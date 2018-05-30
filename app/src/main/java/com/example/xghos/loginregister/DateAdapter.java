@@ -1,5 +1,7 @@
 package com.example.xghos.loginregister;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,7 +21,12 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     private ArrayList<MyDate> mDates;
     private View prevSelectedItem;
 
-    public DateAdapter(Calendar mStartDate, Calendar mEndDate) {
+    public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate) {
+        Locale locale = new Locale("en_US");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        context.getApplicationContext().getResources().updateConfiguration(config, null);
         mDates = new ArrayList<>();
         MyDate FIRST_ITEM = new MyDate();
         FIRST_ITEM.setDay("0");

@@ -40,12 +40,10 @@ public class Helper {
         return true;
     }
 
-    public boolean registerValidation(String email, String password, String name, String surname, String phone, String conPassword){
-        if(email.isEmpty() || password.isEmpty() || name.isEmpty() || surname.isEmpty() || phone.isEmpty() || conPassword.isEmpty())
+    public boolean registerValidation(String email, String password, String name, String phone){
+        if(email.isEmpty() || password.isEmpty() || name.isEmpty() || phone.isEmpty())
             return false;
         if(password.length()<6)
-            return false;
-        if (!password.equals(conPassword))
             return false;
         if(!Patterns.PHONE.matcher(phone).matches())
             return false;

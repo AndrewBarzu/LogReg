@@ -60,24 +60,17 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    public static ProfileFragment newInstance(String name, String email, String phone) {
+    public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_NAME, name);
-        args.putString(ARG_EMAIL, email);
-        args.putString(ARG_PHONE, phone);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mName = getArguments().getString(ARG_NAME);
-            mEmail = getArguments().getString(ARG_EMAIL);
-            mPhone = getArguments().getString(ARG_PHONE);
-        }
+        mName = currentUser.getUserName();
+        mEmail = currentUser.getEmail();
+        mPhone = currentUser.getPhoneNumber();
     }
 
     @Override
@@ -101,7 +94,7 @@ public class ProfileFragment extends Fragment {
                 startImageChooserActivity(ProfileFragment.this);
             }
         });
-        TVName.setText(mName);
+        TVName.setText(getString(R.string.hello, mName));
         TVEmail.setText(mEmail);
         TVPhone.setText(mPhone);
         Log.d("+++", currentUser.getAvatar());

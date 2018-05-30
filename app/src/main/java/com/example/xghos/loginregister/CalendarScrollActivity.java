@@ -1,5 +1,6 @@
 package com.example.xghos.loginregister;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,6 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+
+import java.util.Locale;
 
 
 public class CalendarScrollActivity extends AppCompatActivity {
@@ -16,7 +19,6 @@ public class CalendarScrollActivity extends AppCompatActivity {
     HomeFragment mHomeFragment;
     ProfileFragment mProfileFragment;
     MenuItem mPrevMenuItem;
-    Bundle mBundle;
 
     BottomNavigationView bottomNavigationView;
 
@@ -30,8 +32,6 @@ public class CalendarScrollActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.content);
 
         bottomNavigationView = findViewById(R.id.navigation);
-
-        mBundle = getIntent().getExtras();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -51,7 +51,6 @@ public class CalendarScrollActivity extends AppCompatActivity {
                         return false;
                     }
                 });
-
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -102,7 +101,6 @@ public class CalendarScrollActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         mHomeFragment = new HomeFragment();
         mProfileFragment = new ProfileFragment();
-        mProfileFragment.setArguments(mBundle);
 
         adapter.addFragment(mHomeFragment);
         adapter.addFragment(mProfileFragment);
