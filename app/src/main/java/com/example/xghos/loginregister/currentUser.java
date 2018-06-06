@@ -8,6 +8,7 @@ public class currentUser {
     public static String accType;
     public static String phoneNumber;
     public static String avatar;
+    public static String status;
 
     private static final currentUser ourInstance = new currentUser();
 
@@ -16,6 +17,14 @@ public class currentUser {
     }
 
     private currentUser() {
+    }
+
+    public static String getStatus() {
+        return status;
+    }
+
+    public static void setStatus(String status) {
+        currentUser.status = status;
     }
 
     public static String getId() {

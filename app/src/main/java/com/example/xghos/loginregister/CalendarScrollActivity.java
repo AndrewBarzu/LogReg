@@ -27,7 +27,13 @@ public class CalendarScrollActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_calendar_scroll);
+        //TODO Convert to fragment
+
+        if(currentUser.getStatus().equals("2")) {
+            //////////////////////////................
+        }
+        else
+            setContentView(R.layout.activity_calendar_scroll);
 
         viewPager = findViewById(R.id.content);
 

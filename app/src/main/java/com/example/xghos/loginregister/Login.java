@@ -155,6 +155,7 @@ public class Login extends AppCompatActivity {
                 currentUser.setId(Object.getString("id_user"));
                 currentUser.setAccType(Object.getString("tip_user"));
                 currentUser.setAvatar(Object.getString("avatar"));
+                currentUser.setStatus(Object.getString("status"));
 
                 Log.d("+++", String.valueOf(Object));
 

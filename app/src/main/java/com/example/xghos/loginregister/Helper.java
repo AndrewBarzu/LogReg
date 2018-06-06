@@ -1,5 +1,6 @@
 package com.example.xghos.loginregister;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -28,6 +29,18 @@ public class Helper {
             INSTANCE = new Helper();
         }
         return INSTANCE;
+    }
+
+    public boolean changePasswordValidation(String oldPass, String newPass, String conPass, Context context){
+        if(oldPass.isEmpty() || newPass.isEmpty() || conPass.isEmpty()) {
+            Toast.makeText(context, "One or more fields are empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (!newPass.equals(conPass)) {
+            Toast.makeText(context, "Passwords don't match", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     public boolean loginValidation(String email, String password){
