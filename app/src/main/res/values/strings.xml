@@ -21,6 +21,11 @@
     <string name="remember_me">Remember me</string>
     <string name="hello">Hello, %1$s!</string>
 
+    <string name="email_here">Email here</string>
+    <string name="send">send</string>
+    <string name="forgot_pass">Forgot your password?</string>
+    <string name="fpw_instructions">We\'ll send you instructions to reset your password and get you back on the track</string>
+
     <string name="old_password">Old password</string>
     <string name="new_password">New password</string>
     <string name="confirm_newp">Confirm password</string>

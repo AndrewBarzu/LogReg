@@ -2,17 +2,16 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LoginPanel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
-    tools:context="com.example.xghos.loginregister.Login">
+    android:id="@+id/RegisterPanel"
+    android:background="@drawable/bg">
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/ETEmail"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:backgroundTint="@android:color/white"
@@ -31,7 +30,7 @@
         android:id="@+id/ETPassword"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:backgroundTint="@android:color/white"
@@ -41,85 +40,88 @@
         android:inputType="textPassword"
         android:textColor="#ffffff"
         android:textColorHint="#f1eded"
-        app:layout_constraintBottom_toTopOf="@+id/CRemember"
+        app:layout_constraintBottom_toTopOf="@+id/ETName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/ETName"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
+        android:backgroundTint="@android:color/white"
+        android:drawableStart="@drawable/ic_person_outline_black_24dp"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        android:textColor="#ffffff"
+        android:textColorHint="#f1eded"
+        app:layout_constraintBottom_toTopOf="@+id/ETPhone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/BLogin"
+        android:id="@+id/BRegister"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:background="@drawable/rounded_corner_button_res"
-        android:text="@string/login"
+        android:text="@string/register"
         android:textColor="#ffffff"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/TVRegHere"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:layout_marginBottom="25dp"
-        android:linksClickable="true"
-        android:text="@string/register_here"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <CheckBox
-        android:id="@+id/CRemember"
+    <EditText
+        android:id="@+id/ETPhone"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginEnd="140dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
-        android:buttonTint="@android:color/white"
-        android:text="@string/remember_me"
-        android:textAlignment="center"
+        android:backgroundTint="@android:color/white"
+        android:drawableStart="@drawable/ic_phone_black_24dp"
+        android:ems="10"
+        android:hint="@string/phone"
+        android:inputType="phone"
         android:textColor="#ffffff"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/BLogin"
+        android:textColorHint="#f1eded"
+        app:layout_constraintBottom_toTopOf="@+id/BRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <View
-        android:id="@+id/view"
-        android:layout_width="0dp"
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="50dp"
         android:background="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/TVRegHere"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profilePic"
+        android:id="@+id/IVProfilePic"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginBottom="50dp"
         android:layout_marginEnd="176dp"
         android:layout_marginStart="176dp"
-        android:layout_marginTop="20dp"
-        android:clickable="false"
-        android:src="@drawable/ic_wrenchy_144dp"
+        android:layout_marginTop="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_person_outline_black_24dp"
         app:civ_border_color="@android:color/holo_blue_dark"
         app:civ_border_width="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.226" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
+
+

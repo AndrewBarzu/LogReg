@@ -122,7 +122,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                         TextView day = prevSelectedItem.findViewById(R.id.day);
                         TextView name = prevSelectedItem.findViewById(R.id.dayName);
                         day.setTextColor(Color.BLACK);
-                        name.setTextColor(Color.BLACK);
+                        name.setTextColor(Color.DKGRAY);
                         prevSelectedItem = v;
                     }
                 }

@@ -11,17 +11,18 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 
-public class Register extends AppCompatActivity {
+public class RegisterFragment extends Fragment {
 
     ConstraintLayout layout;
 
@@ -38,35 +39,32 @@ public class Register extends AppCompatActivity {
     EditText ETPassword;
     EditText ETPhone;
     ImageView IVProfilePic;
+    Button BRegister;
     Bitmap croppedImageFile;
     int PIC_CROP = 999;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_register, container, false);
+        ETName = view.findViewById(R.id.ETName);
+        ETMail = view.findViewById(R.id.ETEmail);
+        ETPassword = view.findViewById(R.id.ETPassword);
+        ETPhone = view.findViewById(R.id.ETPhone);
+        IVProfilePic = view.findViewById(R.id.IVProfilePic);
 
-        ETName = findViewById(R.id.Name);
-        ETMail = findViewById(R.id.email);
-        ETPassword = findViewById(R.id.ETPassword);
-        ETPhone = findViewById(R.id.ETPhone);
-        IVProfilePic = findViewById(R.id.profilePic);
-
-        final Button BRegister = findViewById(R.id.BRegister);
-
-        layout = findViewById(R.id.RegisterPanel);
-
-        layout.setOnClickListener(new View.OnClickListener() {
+        IVProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
-                }
+                startImageChooserActivity(getActivity());
             }
         });
-
+        BRegister = view.findViewById(R.id.BRegister);
         BRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,16 +72,66 @@ public class Register extends AppCompatActivity {
                         ETPhone.getText().toString()))
                     new RegisterAsyncTask().execute();
                 else
-                    Toast.makeText(Register.this, "Register Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Registration Failed", Toast.LENGTH_SHORT).show();
             }
         });
 
-        IVProfilePic.setOnClickListener(new View.OnClickListener() {
+        layout = view.findViewById(R.id.RegisterPanel);
+        layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startImageChooserActivity(Register.this);
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
+                }
             }
         });
+        return view;
+    }
+
+    //    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.fragment_register);
+//
+//
+//        ETName = findViewById(R.id.Name);
+//        ETMail = findViewById(R.id.email);
+//        ETPassword = findViewById(R.id.ETPassword);
+//        ETPhone = findViewById(R.id.ETPhone);
+//        IVProfilePic = findViewById(R.id.profilePic);
+//
+//        final Button BRegister = findViewById(R.id.BRegister);
+//
+//        layout = findViewById(R.id.RegisterPanel);
+//
+//        layout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//                if (imm != null) {
+//                    imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
+//                }
+//            }
+//        });
+//
+//        BRegister.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(Helper.getINSTANCE().registerValidation(ETMail.getText().toString(), ETPassword.getText().toString(), ETName.getText().toString(),
+//                        ETPhone.getText().toString()))
+//                    new RegisterAsyncTask().execute();
+//                else
+//                    Toast.makeText(RegisterFragment.this, "RegisterFragment Failed", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        IVProfilePic.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startImageChooserActivity(RegisterFragment.this);
+//            }
+//        });
 
 //        BRegister.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -99,27 +147,25 @@ public class Register extends AppCompatActivity {
 //                }
 //
 //                if (name.isEmpty() || mail.isEmpty() || pass.isEmpty() || conpass.isEmpty()) {
-//                    Toast.makeText(Register.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(RegisterFragment.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
 //                } else if (!(mail.contains("@") && mail.contains("."))) {
-//                    Toast.makeText(Register.this, "Your Email address is not valid!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(RegisterFragment.this, "Your Email address is not valid!", Toast.LENGTH_SHORT).show();
 //                } else if (pass.length() < 6) {
-//                    Toast.makeText(Register.this, "Your Password is too short!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(RegisterFragment.this, "Your Password is too short!", Toast.LENGTH_SHORT).show();
 //                } else if (!pass.equals(conpass)) {
-//                    Toast.makeText(Register.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(RegisterFragment.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
 //                } else {
 //
 //                    db.addUser(new User(null, name, mail, pass, accType));
 //                    finish();
-//                    Toast.makeText(Register.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(RegisterFragment.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
 //                }
 //            }
 //        });
-
-
-    }
+//    }
 
     public void startImageChooserActivity(Activity activity) {
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionCheck = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             activity.startActivityForResult(Intent.createChooser(intent, "Choose photo"), 2);
@@ -132,7 +178,7 @@ public class Register extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length > 0) {
             if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startImageChooserActivity(this);
+                startImageChooserActivity(getActivity());
             }
         }
     }
@@ -152,7 +198,7 @@ public class Register extends AppCompatActivity {
         }
         catch (ActivityNotFoundException anfe) {
             String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -199,16 +245,20 @@ public class Register extends AppCompatActivity {
             try {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/register.php").connect();
                 JSONObject responseObject = new JSONObject(response);
-                String message = responseObject.getString("response");
+                final String message = responseObject.getString("response");
                 Log.d("+++", message);
-                if (message.equals("Succes."))
-                {
-                    finish();
-                }
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (message.equals("Succes."))
+                        {
+                            Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
+                            getActivity().getSupportFragmentManager().popBackStack();
+                        }
 
-                else
-                    Toast.makeText(getApplicationContext(), "nu merge", Toast.LENGTH_SHORT).show();
-
+                        else
+                            Toast.makeText(getContext(), "nu merge", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             catch (Exception e)
             {

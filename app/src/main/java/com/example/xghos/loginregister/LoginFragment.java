@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,13 +20,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Login extends AppCompatActivity {
+public class LoginFragment extends Fragment {
 
 
     EditText ETMail;
@@ -33,57 +35,127 @@ public class Login extends AppCompatActivity {
     ConstraintLayout layout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    }
 
-        ETMail = findViewById(R.id.email);
-        ETPassword = findViewById(R.id.ETPassword);
-        Button BLogin = findViewById(R.id.BLogin);
-        final TextView registerLink = findViewById(R.id.TVRegHere);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        container.setAlpha(1F);
 
-        layout = findViewById(R.id.LoginPanel);
-
+        layout = view.findViewById(R.id.LoginPanel);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
                 }
             }
         });
 
-        CRemember = findViewById(R.id.CRemember);
-
-        sharedPrefs = this.getApplicationContext().getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-
-        if (sharedPrefs.contains("Email") && sharedPrefs.contains("Pass")) {
-            ETMail.setText(sharedPrefs.getString("Email", ""));
-            ETPassword.setText(sharedPrefs.getString("Pass", ""));
-            CRemember.setChecked(true);
-        }
-
+        final TextView registerLink = view.findViewById(R.id.TVRegHere);
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Login.this.startActivity(new Intent(Login.this, Register.class));
-
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.contentPanel, new RegisterFragment());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
 
+        ETMail = view.findViewById(R.id.ETEmail);
+        ETPassword = view.findViewById(R.id.ETPassword);
 
+        BLogin = view.findViewById(R.id.BLogin);
         BLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString()))
                     new LoginAsyncTask().execute();
                 else
-                    Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "LoginFragment Failed", Toast.LENGTH_SHORT).show();
             }
         });
 
+        CRemember = view.findViewById(R.id.CRemember);
+        sharedPrefs = getContext().getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
+        if (sharedPrefs.contains("Email") && sharedPrefs.contains("Pass")) {
+            ETMail.setText(sharedPrefs.getString("Email", ""));
+            ETPassword.setText(sharedPrefs.getString("Pass", ""));
+            CRemember.setChecked(true);
+        }
 
+        final TextView forgotPassword = view.findViewById(R.id.forgotPass);
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.contentPanel, new ForgotedPW());
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+        return view;
+    }
+
+    //    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.fragment_login);
+//
+//        ETMail = findViewById(R.id.email);
+//        ETPassword = findViewById(R.id.ETPassword);
+//        Button BLogin = findViewById(R.id.BLogin);
+//        final TextView registerLink = findViewById(R.id.TVRegHere);
+//
+//        layout = findViewById(R.id.LoginPanel);
+//
+//        layout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                if (imm != null) {
+//                    imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
+//                }
+//            }
+//        });
+//
+//        CRemember = findViewById(R.id.CRemember);
+//
+//        sharedPrefs = this.getApplicationContext().getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+//
+//        if (sharedPrefs.contains("Email") && sharedPrefs.contains("Pass")) {
+//            ETMail.setText(sharedPrefs.getString("Email", ""));
+//            ETPassword.setText(sharedPrefs.getString("Pass", ""));
+//            CRemember.setChecked(true);
+//        }
+//
+//        registerLink.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                LoginFragment.this.startActivity(new Intent(LoginFragment.this, RegisterFragment.class));
+//
+//            }
+//        });
+//
+//
+//        BLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString()))
+//                    new LoginAsyncTask().execute();
+//                else
+//                    Toast.makeText(LoginFragment.this, "LoginFragment Failed", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//
 //        BLogin.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -115,16 +187,16 @@ public class Login extends AppCompatActivity {
 //                    else
 //                        editor.clear();
 //                    editor.commit();
-//                    Toast.makeText(Login.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(Login.this, MainActivity.class);
+//                    Toast.makeText(LoginFragment.this, "LoginFragment Successful!", Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(LoginFragment.this, MainActivity.class);
 //                    intent.putExtra("userName", currentUser.userName);
 //                    intent.putExtra("accType", currentUser.accType);
 //                    startActivity(intent);
 //                } else
-//                    Toast.makeText(Login.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LoginFragment.this, "LoginFragment Failed!", Toast.LENGTH_SHORT).show();
 //            }
 //        });
-    }
+//  }
     private class LoginAsyncTask extends AsyncTask<String, Void, String>{
 
         @Override
@@ -173,12 +245,7 @@ public class Login extends AppCompatActivity {
                         editor.commit();
                     }
 
-                    Intent intent = new Intent(Login.this, CalendarScrollActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", name);
-                    bundle.putString("email", email);
-                    bundle.putString("phone", phone);
-                    intent.putExtras(bundle);
+                    Intent intent = new Intent(getContext(), CalendarScrollActivity.class);
                     startActivity(intent);
                 }
 
