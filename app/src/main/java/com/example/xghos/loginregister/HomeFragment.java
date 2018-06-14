@@ -17,14 +17,17 @@ import java.util.List;
 
 
 public class HomeFragment extends Fragment {
+
+    /*
+    Fragmentul principal, in care se pot vedea ofertele si calendarul din care alegem data
+     */
+
     RecyclerView recyclerView;
     ListView listView;
     LinearLayoutManager layoutManager;
     DateAdapter dateAdapter;
-    OfferAdapter offerAdapter;
     Calendar mStartDate;
     Calendar mEndDate;
-    ArrayList<Integer> offers;
     HeaderItemDecoration itemDecoration;
 
     public HomeFragment() {
@@ -34,15 +37,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        offers = new ArrayList<>();
 
         mStartDate = Calendar.getInstance();
         layoutManager = new LinearLayoutManager(getContext(), LinearLayout.HORIZONTAL, false);
         mEndDate = Calendar.getInstance();
         mEndDate.add(Calendar.YEAR, 10);
-
-        for(int i = 1; i<=30; i++)
-            offers.add(i);
 //        myDates = new ArrayList<>();
 //        MyDate FIRST_ITEM = new MyDate();
 //        FIRST_ITEM.setDay("0");
@@ -60,7 +59,6 @@ public class HomeFragment extends Fragment {
 //            }
 //            myDates.add(date);
 //        }
-        dateAdapter = new DateAdapter(getContext(), mStartDate, mEndDate);
     }
 
     @Override
@@ -73,15 +71,14 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        listView = view.findViewById(R.id.offers);
+
+        dateAdapter = new DateAdapter(getContext(), mStartDate, mEndDate, listView);  //date adapterul necesita si un listView, in care sunt afisate ofertele depinzand de ziua aleasa
         recyclerView = view.findViewById(R.id.calendar);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(dateAdapter);
         itemDecoration = new HeaderItemDecoration(recyclerView, dateAdapter);
         recyclerView.addItemDecoration(itemDecoration);
-
-        listView = view.findViewById(R.id.offers);
-        offerAdapter = new OfferAdapter(getContext(), R.layout.offer_item, offers);
-        listView.setAdapter(offerAdapter);
 
     }
 

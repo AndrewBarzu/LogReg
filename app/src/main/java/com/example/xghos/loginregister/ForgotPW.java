@@ -1,16 +1,14 @@
 package com.example.xghos.loginregister;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -20,18 +18,8 @@ import java.util.HashMap;
 
 public class ForgotPW extends Fragment {
 
-    private TextView mOldPass;
-    private TextView mNewPass;
-    private TextView mConPass;
-    private Button mChangePass;
-
-    public ForgotPW() {
-        // Required empty public constructor
-    }
-    public static ForgotPW newInstance() {
-        ForgotPW fragment = new ForgotPW();
-        return fragment;
-    }
+    EditText mEmail;
+    Button mSend;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,47 +27,52 @@ public class ForgotPW extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forgot_pw, container, false);
-        mOldPass = view.findViewById(R.id.ETOpass);
-        mNewPass = view.findViewById(R.id.ETNpass);
-        mConPass = view.findViewById(R.id.ETCpass);
+        mEmail = view.findViewById(R.id.email_here);
 
-        mChangePass = view.findViewById(R.id.BChangePass);
-        mChangePass.setOnClickListener(new View.OnClickListener() {
+        mSend = view.findViewById(R.id.BSend);
+        mSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Helper.getINSTANCE().changePasswordValidation(mOldPass.getText().toString(), mNewPass.getText().toString(),
-                        mConPass.getText().toString(), getContext())){
-                    new ChangePassword().execute();
+                if(Helper.getINSTANCE().isEmail(mEmail.getText().toString())){
+                    new ForgotPassAsyncTask().execute();
                 }
+                else
+                    Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
     }
-    private class ChangePassword extends AsyncTask<String, Void, String> {
+
+    private class ForgotPassAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
-            getParams.put("oldpw", mOldPass.getText().toString());
-            getParams.put("newpw", mNewPass.getText().toString());
-            getParams.put("id_user", String.valueOf(currentUser.getId()));
+            String email = mEmail.getText().toString();
+
+            getParams.put("mail", email);
             getParams.put("request", "forgotpw");
+
 
             try {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/forgotpw.php").connect();
                 JSONObject responseObject = new JSONObject(response);
-                String message = responseObject.getString("msg");
-                String Object = responseObject.getString("response");
-
-                if (message.equals("error"))
-                {
-                    return Object;
-                }
-
+                final String message = responseObject.getString("msg");
+                Log.d("+++", message);
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        if(message.equals("success")){
+                            Toast.makeText(getContext(), "Check your email for your new password", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(getContext(), "nu merge", Toast.LENGTH_SHORT).show();
+                        getActivity().getSupportFragmentManager().popBackStack();
+                    }
+                });
             }
             catch (Exception e)
             {
@@ -89,19 +82,8 @@ public class ForgotPW extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            if(s.equals("ok")){
-                Toast.makeText(getActivity(), "Password Changed", Toast.LENGTH_SHORT).show();
-                //TODO transaction for calendar fragment
-                Intent intent = new Intent(getActivity(), CalendarScrollActivity.class);
-                currentUser.setStatus("1");
-                getActivity().startActivity(intent);
-            }
-            else {
-                Log.d("+++", s);
-                Toast.makeText(getActivity(), "Ples tri agan", Toast.LENGTH_SHORT).show();
-            }
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
         }
     }
 }

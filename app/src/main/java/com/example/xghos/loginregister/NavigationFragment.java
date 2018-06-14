@@ -1,18 +1,21 @@
 package com.example.xghos.loginregister;
 
-import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
-import java.util.Locale;
 
+public class NavigationFragment extends Fragment {
 
-public class CalendarScrollActivity extends AppCompatActivity {
+    //Fragmentul in care se afiseaza Viewpagerul, cu cele 2 fragmente de profil si calendar(home)
 
     private ViewPager viewPager;
 
@@ -23,22 +26,18 @@ public class CalendarScrollActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        //TODO Convert to fragment
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        if(currentUser.getStatus().equals("2")) {
-            //////////////////////////................
-        }
-        else
-            setContentView(R.layout.activity_calendar_scroll);
 
-        viewPager = findViewById(R.id.content);
+        View view = inflater.inflate(R.layout.fragment_navigation, container, false);
 
-        bottomNavigationView = findViewById(R.id.navigation);
-
+        bottomNavigationView = view.findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -58,6 +57,7 @@ public class CalendarScrollActivity extends AppCompatActivity {
                     }
                 });
 
+        viewPager = view.findViewById(R.id.content);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -101,10 +101,14 @@ public class CalendarScrollActivity extends AppCompatActivity {
 //            }
 //        });
         setupViewPager(viewPager);
+
+        return view;
     }
 
+
+
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         mHomeFragment = new HomeFragment();
         mProfileFragment = new ProfileFragment();
 

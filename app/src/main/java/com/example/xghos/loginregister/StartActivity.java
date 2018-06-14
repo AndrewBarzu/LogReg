@@ -6,8 +6,12 @@ import android.view.ViewGroup;
 
 public class StartActivity extends FragmentActivity {
 
-    ViewGroup content;
+    /** Activitatea cu care incepe aplicatia. E definita doar variabila content, in care vor fi plasate
+     * celelalte fragmente din faza principala, respectiv cel de login, cu care se si deschide activitatea, cel de register
+     * si cel de forgot password.
+     */
 
+    ViewGroup content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -22,7 +22,7 @@
 
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".CalendarScrollActivity"
+            android:name=".NavigationFragment"
             android:label="@string/title_activity_calendar_scroll"></activity>
     </application>
 

@@ -9,6 +9,7 @@ public class currentUser {
     public static String phoneNumber;
     public static String avatar;
     public static String status;
+    public static String oldpw;
 
     private static final currentUser ourInstance = new currentUser();
 
@@ -75,7 +76,16 @@ public class currentUser {
         currentUser.avatar = avatar;
     }
 
+    public static String getOldpw() {
+        return oldpw;
+    }
+
+    public static void setOldpw(String oldpw) {
+        currentUser.oldpw = oldpw;
+    }
+
     public static currentUser getOurInstance() {
         return ourInstance;
     }
+
 }

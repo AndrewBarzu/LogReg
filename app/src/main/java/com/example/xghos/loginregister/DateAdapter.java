@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -18,10 +19,22 @@ import java.util.Locale;
 import java.util.zip.Inflater;
 
 public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> implements HeaderItemDecoration.StickyHeaderInterface{
+
+    /*
+    Date adapter, clasa in care e definita structura calendarului
+     */
+
     private ArrayList<MyDate> mDates;
     private View prevSelectedItem;
+    private OfferAdapter offerAdapter;
+    private ListView mListView;
 
-    public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate) {
+    public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate, ListView listView) {  //initializarea clasei si a listei cu date afisate
+        mListView = listView;
+
+
+        offerAdapter = new OfferAdapter(context, R.layout.offer_item); //TODO server, trimiterea zilei impreuna cu user_id si request, astfel incat raspunsul sa contina doar ofertele din ziua respectiva
+
         Locale locale = new Locale("en_US");
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -50,12 +63,12 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
 
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position) { //functie necesara pentru recyclerView adapter
         return position;
     }
 
     @Override
-    public int getItemViewType(int position) {
+    public int getItemViewType(int position) {  //functie necesara pentru decoratii (header)
         if(Integer.valueOf(mDates.get(position).getDay())== 0)
             return 0;
         return position;
@@ -63,7 +76,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
 
 
     @Override
-    public int getHeaderPositionForItem(int itemPosition) {
+    public int getHeaderPositionForItem(int itemPosition) {  //functie necesara pentru decoratii (header)
         int headerPosition = 0;
         do {
             if (this.isHeader(itemPosition)) {
@@ -76,12 +89,12 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     }
 
     @Override
-    public int getHeaderLayout(int headerPosition) {
+    public int getHeaderLayout(int headerPosition) { //functie necesara pentru decoratii (header)
         return R.layout.header_item;
     }
 
     @Override
-    public void bindHeaderData(View header, int headerPosition) {
+    public void bindHeaderData(View header, int headerPosition) {  //construirea obiectelor de tip header_item
         String month = mDates.get(headerPosition).getMonth();
         month = month.substring(0, 3);
         header.setBackgroundColor(Color.RED);
@@ -90,14 +103,14 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     }
 
     @Override
-    public boolean isHeader(int itemPosition) {
+    public boolean isHeader(int itemPosition) {  //functie necesara pentru decoratii (header)
         if (getItemViewType(itemPosition)==0){
             return true;
         }
         return false;
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder {
+    public class MyHolder extends RecyclerView.ViewHolder {  //construirea obiectelor de tip date_item
         public TextView date, name, month;
         public MyHolder(View view) {
             super(view);
@@ -105,7 +118,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
             name = view.findViewById(R.id.dayName);
             month = view.findViewById(R.id.month);
 
-            view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {  //onClick listener pentru datele din calendar
                 @Override
                 public void onClick(View v) {
                     if(prevSelectedItem == null){
@@ -125,6 +138,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                         name.setTextColor(Color.DKGRAY);
                         prevSelectedItem = v;
                     }
+                    mListView.setAdapter(offerAdapter);
                 }
             });
         }
@@ -147,12 +161,20 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        if(getItemViewType(position)==0){
+        if(getItemViewType(position)==0){   //header
             holder.month.setText(mDates.get(position).getMonth().substring(0, 3));
             holder.itemView.setBackgroundColor(Color.RED);
             holder.itemView.setClickable(false);
         }
-        else {
+        else if (position==1){   //primul item apare selectat de la inceput
+            prevSelectedItem = holder.itemView;
+            prevSelectedItem.setClickable(false);
+            holder.date.setTextColor(Color.LTGRAY);
+            holder.name.setTextColor(Color.LTGRAY);
+            holder.date.setText(String.valueOf(mDates.get(position).getDay()));
+            holder.name.setText(mDates.get(position).getDayName());
+        }
+        else {   //restul itemilor
             holder.date.setText(String.valueOf(mDates.get(position).getDay()));
             holder.name.setText(mDates.get(position).getDayName());
             Log.d("pokeman", String.valueOf(mDates.get(position).getDay()));
@@ -160,7 +182,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount() {  //functie getItemCount necesara
         return mDates.size();
     }
 }

@@ -26,27 +26,31 @@ import java.util.HashMap;
 
 public class LoginFragment extends Fragment {
 
+    /**
+     * Fragmentul de login
+     */
 
-    EditText ETMail;
-    EditText ETPassword;
-    Button BLogin;
-    private SharedPreferences sharedPrefs;
-    CheckBox CRemember;
-    ConstraintLayout layout;
+
+    private EditText ETMail;               //mailul userului, folosit in logare, trimis prin async task la server
+    private EditText ETPassword;           //parola userului, la fel ca mailul
+    private Button BLogin;                 //butonul care apare in ui
+    private SharedPreferences sharedPrefs; //in care sunt salvatele datele de logare ale utilizatorului, pentru completarea automata a acestora in viitor
+    private CheckBox CRemember;            //remember me
+    private ConstraintLayout layout;       //layoutul in sine, folosit pentru ascunderea tastaturii prin apasarea acestuia
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {        //functie onCreate, necesara fragmentului
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {    //functia onCreateView, in care se fac toate operatiunile UI
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         container.setAlpha(1F);
 
         layout = view.findViewById(R.id.LoginPanel);
-        layout.setOnClickListener(new View.OnClickListener() {
+        layout.setOnClickListener(new View.OnClickListener() {   //listener pentru click in layout, prin click pe layout se ascunde tastatura
             @Override
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -59,11 +63,11 @@ public class LoginFragment extends Fragment {
         final TextView registerLink = view.findViewById(R.id.TVRegHere);
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {       //trimitere la pagina de register
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out); //animatie de fade in/out
                 fragmentTransaction.replace(R.id.contentPanel, new RegisterFragment());
-                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.addToBackStack(null); //adaugare la back stack pentru o accesare mai usoara a fragmentului de login, fara reinitializarea acestuia
                 fragmentTransaction.commit();
             }
         });
@@ -74,7 +78,7 @@ public class LoginFragment extends Fragment {
         BLogin = view.findViewById(R.id.BLogin);
         BLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {   //incercarea de login
                 if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString()))
                     new LoginAsyncTask().execute();
                 else
@@ -84,7 +88,7 @@ public class LoginFragment extends Fragment {
 
         CRemember = view.findViewById(R.id.CRemember);
         sharedPrefs = getContext().getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
-        if (sharedPrefs.contains("Email") && sharedPrefs.contains("Pass")) {
+        if (sharedPrefs.contains("Email") && sharedPrefs.contains("Pass")) {   //completarea automata a campurilor email si parola
             ETMail.setText(sharedPrefs.getString("Email", ""));
             ETPassword.setText(sharedPrefs.getString("Pass", ""));
             CRemember.setChecked(true);
@@ -93,10 +97,10 @@ public class LoginFragment extends Fragment {
         final TextView forgotPassword = view.findViewById(R.id.forgotPass);
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {      //trimitere la pagina de forgot password
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.contentPanel, new ForgotedPW());
+                fragmentTransaction.replace(R.id.contentPanel, new ForgotPW());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -228,6 +232,9 @@ public class LoginFragment extends Fragment {
                 currentUser.setAccType(Object.getString("tip_user"));
                 currentUser.setAvatar(Object.getString("avatar"));
                 currentUser.setStatus(Object.getString("status"));
+                if(currentUser.getStatus().equals(2)){
+                    currentUser.setOldpw(password);
+                }
 
                 Log.d("+++", String.valueOf(Object));
 
@@ -245,7 +252,7 @@ public class LoginFragment extends Fragment {
                         editor.commit();
                     }
 
-                    Intent intent = new Intent(getContext(), CalendarScrollActivity.class);
+                    Intent intent = new Intent(getContext(), MainActivity.class);
                     startActivity(intent);
                 }
 
