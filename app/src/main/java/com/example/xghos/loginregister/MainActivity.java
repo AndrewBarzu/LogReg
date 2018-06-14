@@ -3,6 +3,7 @@ package com.example.xghos.loginregister;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
@@ -14,14 +15,12 @@ public class MainActivity extends FragmentActivity{
 
 //    private DrawerLayout mDrawerLayout;
 //    private ArrayList<User> list;
-    private View content;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        content = findViewById(R.id.main_content);
 
         if(currentUser.getStatus().equals("2")){ //daca statusul e 2, adica daca am schimbat parola prin Forgot Password, se va intra direct in fragmentul de Change Password
             getSupportFragmentManager().beginTransaction().add(R.id.main_content, new ChangePW()).commit();
@@ -30,6 +29,8 @@ public class MainActivity extends FragmentActivity{
         else{  //altfel se va intra in Navigation Fragment -> Home Fragment, adica cel cu calendarul si listView-ul
             getSupportFragmentManager().beginTransaction().add(R.id.main_content, new NavigationFragment()).commit();
         }
+
+        viewPager = findViewById(R.id.content);
 
 //        mDrawerLayout = findViewById(R.id.drawer_layout);
 //
@@ -87,12 +88,11 @@ public class MainActivity extends FragmentActivity{
 
 //    @Override
 //    public void onBackPressed() { //functia on backpressed, care asculta cand e apasat butonul "back" al telefonului
-//        if(getSupportFragmentManager().findFragmentById(R.id.content) instanceof HomeFragment ||
-//                getSupportFragmentManager().findFragmentById(R.id.main_content) instanceof ChangePW){ //daca fragmentul afisat este instanta a change PW, prin back se va intoarce la login
-//            super.onBackPressed();
+//        if(getSupportFragmentManager().findFragmentById(R.id.main_content) instanceof NavigationFragment && viewPager.getCurrentItem() != 0){
+//            viewPager.setCurrentItem(0);
 //        }
-//        else{ //altfel, se va face popBackStack
-//            getSupportFragmentManager().popBackStack();
+//        else{
+//            super.onBackPressed();
 //        }
 //    }
 
