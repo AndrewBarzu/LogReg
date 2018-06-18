@@ -1,4 +1,4 @@
-package com.example.xghos.loginregister;
+package com.example.xghos.Wrenchy;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -120,7 +120,7 @@ public class Helper {
 
     public String getStringFromBitmap(Bitmap profileImageBitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        profileImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        profileImageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
         byte[] arr = stream.toByteArray();
         return Base64.encodeToString(arr, Base64.DEFAULT);
     }

@@ -1,4 +1,4 @@
-package com.example.xghos.loginregister;
+package com.example.xghos.Wrenchy;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -29,6 +29,7 @@ public class NavigationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("status", currentUser.getStatus());
     }
 
     @Nullable
@@ -74,7 +75,6 @@ public class NavigationFragment extends Fragment {
                 {
                     bottomNavigationView.getMenu().getItem(0).setChecked(false);
                 }
-                Log.d("page", "onPageSelected: "+position);
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
                 mPrevMenuItem = bottomNavigationView.getMenu().getItem(position);
 

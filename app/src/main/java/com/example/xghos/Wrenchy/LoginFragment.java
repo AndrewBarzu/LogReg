@@ -1,4 +1,4 @@
-package com.example.xghos.loginregister;
+package com.example.xghos.Wrenchy;
 
 import android.content.Context;
 import android.content.Intent;
@@ -82,7 +82,7 @@ public class LoginFragment extends Fragment {
                 if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString()))
                     new LoginAsyncTask().execute();
                 else
-                    Toast.makeText(getContext(), "LoginFragment Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -219,7 +219,7 @@ public class LoginFragment extends Fragment {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/login.php").connect();
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("msg");
-                JSONObject Object = responseObject.getJSONObject("response");
+                JSONObject Object = responseObject.getJSONObject("result");
 
                 String name = Object.getString("nume") + " " + Object.getString("prenume");
                 String email = Object.getString("email");
@@ -232,11 +232,6 @@ public class LoginFragment extends Fragment {
                 currentUser.setAccType(Object.getString("tip_user"));
                 currentUser.setAvatar(Object.getString("avatar"));
                 currentUser.setStatus(Object.getString("status"));
-                if(currentUser.getStatus().equals(2)){
-                    currentUser.setOldpw(password);
-                }
-
-                Log.d("+++", String.valueOf(Object));
 
                 if (message.equals("success"))
                 {

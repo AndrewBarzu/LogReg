@@ -1,4 +1,4 @@
-package com.example.xghos.loginregister;
+package com.example.xghos.Wrenchy;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -68,7 +68,7 @@ public class OfferAdapter extends ArrayAdapter<Integer> {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/listoffers.php").connect();
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("msg");
-                JSONArray Object = responseObject.getJSONArray("response");
+                JSONArray Object = responseObject.getJSONArray("result");
                 for(int i = 0; i<Object.length(); i++){
                     mOffers.add(Object.getJSONObject(i).getString("titlu_oferta"));
                 }

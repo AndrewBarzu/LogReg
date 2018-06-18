@@ -1,4 +1,4 @@
-package com.example.xghos.loginregister;
+package com.example.xghos.Wrenchy;
 
 import android.Manifest;
 import android.app.Activity;
@@ -130,8 +130,8 @@ public class ProfileFragment extends Fragment {
             cropIntent.putExtra("crop", true);
             cropIntent.putExtra("aspectX", 1);
             cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 500);
-            cropIntent.putExtra("outputY", 500);
+            cropIntent.putExtra("outputX", 100);
+            cropIntent.putExtra("outputY", 100);
             cropIntent.putExtra("return-data", true);
             cropIntent.putExtra("scaleUpIfNeeded", true);
             startActivityForResult(cropIntent, PIC_CROP);
