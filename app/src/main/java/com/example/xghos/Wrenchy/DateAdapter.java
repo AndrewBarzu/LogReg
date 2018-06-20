@@ -11,12 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.zip.Inflater;
 
 public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> implements HeaderItemDecoration.StickyHeaderInterface{
 
@@ -31,7 +28,6 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
 
     public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate, ListView listView) {  //initializarea clasei si a listei cu date afisate
         mListView = listView;
-
 
         offerAdapter = new OfferAdapter(context, R.layout.offer_item); //TODO server, trimiterea zilei impreuna cu user_id si request, astfel incat raspunsul sa contina doar ofertele din ziua respectiva
 
@@ -124,18 +120,13 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                     if(prevSelectedItem == null){
                         prevSelectedItem = v;
                         prevSelectedItem.setClickable(false);
-                        date.setTextColor(Color.LTGRAY);
-                        name.setTextColor(Color.LTGRAY);
+                        prevSelectedItem.setBackgroundColor(Color.parseColor("#7776F3"));
                     }
                     else{
                         v.setClickable(false);
-                        date.setTextColor(Color.LTGRAY);
-                        name.setTextColor(Color.LTGRAY);
+                        v.setBackgroundColor(Color.parseColor("#7776F3"));
                         prevSelectedItem.setClickable(true);
-                        TextView day = prevSelectedItem.findViewById(R.id.day);
-                        TextView name = prevSelectedItem.findViewById(R.id.dayName);
-                        day.setTextColor(Color.BLACK);
-                        name.setTextColor(Color.DKGRAY);
+                        prevSelectedItem.setBackgroundColor(Color.parseColor("#C4DEF9"));
                         prevSelectedItem = v;
                     }
                     mListView.setAdapter(offerAdapter);
@@ -165,14 +156,6 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
             holder.month.setText(mDates.get(position).getMonth().substring(0, 3));
             holder.itemView.setBackgroundColor(Color.RED);
             holder.itemView.setClickable(false);
-        }
-        else if (position==1){   //primul item apare selectat de la inceput
-            prevSelectedItem = holder.itemView;
-            prevSelectedItem.setClickable(false);
-            holder.date.setTextColor(Color.LTGRAY);
-            holder.name.setTextColor(Color.LTGRAY);
-            holder.date.setText(String.valueOf(mDates.get(position).getDay()));
-            holder.name.setText(mDates.get(position).getDayName());
         }
         else {   //restul itemilor
             holder.date.setText(String.valueOf(mDates.get(position).getDay()));

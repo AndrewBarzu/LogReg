@@ -24,8 +24,7 @@ public class OfferAdapter extends ArrayAdapter<Integer> {
     Momentan apare doar titlul ofertei
      */
 
-    private Context mContext;
-    private ArrayList<String> mOffers;
+    private ArrayList<MyOffer> mOffers;
     private int mResource;
 
     /*TODO obiect de tip MyOffer in care sa se salveze titlul impreuna cu detaliile despre oferta, pretul acesteia, specializarea, id-ul userului care a postat oferta si locatia
@@ -34,7 +33,6 @@ public class OfferAdapter extends ArrayAdapter<Integer> {
 
     public OfferAdapter(Context context, int resource) {
         super(context, resource);
-        mContext = context;
         mResource = resource;
         mOffers = new ArrayList<>();
         new GetOffersAsync().execute();
@@ -46,8 +44,13 @@ public class OfferAdapter extends ArrayAdapter<Integer> {
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(mResource, null);
         }
-        TextView offerNumber = convertView.findViewById(R.id.offerNumber);
-        offerNumber.setText(mOffers.get(position));
+        TextView offerName = convertView.findViewById(R.id.offerName);
+        TextView offerPrice = convertView.findViewById(R.id.offerPrice);
+        TextView offerLocation = convertView.findViewById(R.id.offerLocation);
+
+        offerName.setText(mOffers.get(position).getName());
+        offerPrice.setText(mOffers.get(position).getPrice());
+        offerLocation.setText(mOffers.get(position).getLocation());
         return convertView;
     }
 
@@ -70,7 +73,11 @@ public class OfferAdapter extends ArrayAdapter<Integer> {
                 String message = responseObject.getString("msg");
                 JSONArray Object = responseObject.getJSONArray("result");
                 for(int i = 0; i<Object.length(); i++){
-                    mOffers.add(Object.getJSONObject(i).getString("titlu_oferta"));
+                    MyOffer offer = new MyOffer();
+                    offer.setName(Object.getJSONObject(i).getString("titlu_oferta"));
+                    offer.setPrice(Object.getJSONObject(i).getString("pret_oferta")+"€");
+                    offer.setLocation(Object.getJSONObject(i).getString("nume_locatie"));
+                    mOffers.add(offer);
                 }
                 Log.d("+++", message);
 

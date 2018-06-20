@@ -130,8 +130,8 @@ public class ProfileFragment extends Fragment {
             cropIntent.putExtra("crop", true);
             cropIntent.putExtra("aspectX", 1);
             cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 100);
-            cropIntent.putExtra("outputY", 100);
+            cropIntent.putExtra("outputX", 192);
+            cropIntent.putExtra("outputY", 192);
             cropIntent.putExtra("return-data", true);
             cropIntent.putExtra("scaleUpIfNeeded", true);
             startActivityForResult(cropIntent, PIC_CROP);

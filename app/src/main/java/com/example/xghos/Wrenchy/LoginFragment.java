@@ -219,6 +219,7 @@ public class LoginFragment extends Fragment {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/login.php").connect();
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("msg");
+                String responseMessage = responseObject.getString("response");
                 JSONObject Object = responseObject.getJSONObject("result");
 
                 String name = Object.getString("nume") + " " + Object.getString("prenume");
@@ -235,22 +236,37 @@ public class LoginFragment extends Fragment {
 
                 if (message.equals("success"))
                 {
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity().getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     if (CRemember.isChecked()) {
                         editor.putString("Email", mail);
                         editor.putString("Pass", password);
-                        editor.commit();
+                        editor.apply();
                     }
                     else
                     {
                         editor.putString("Email", "");
                         editor.putString("Pass", "");
-                        editor.commit();
+                        editor.apply();
                     }
 
                     Intent intent = new Intent(getContext(), MainActivity.class);
                     startActivity(intent);
                 }
 
+                if (responseMessage.equals("Parola incorecta.")){
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity().getApplicationContext(), "Email or password is incorrect!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
             catch (Exception e)
             {
