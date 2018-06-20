@@ -18,7 +18,7 @@ public class NavigationFragment extends Fragment {
 
     //Fragmentul in care se afiseaza Viewpagerul, cu cele 2 fragmente de profil si calendar(home)
 
-    private ViewPager viewPager;
+    public ViewPager viewPager;
 
     HomeFragment mHomeFragment;
     ProfileFragment mProfileFragment;

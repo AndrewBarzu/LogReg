@@ -3,6 +3,7 @@ package com.example.xghos.Wrenchy;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,9 +26,12 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     private View prevSelectedItem;
     private OfferAdapter offerAdapter;
     private ListView mListView;
+    private Context mContext;
 
     public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate, ListView listView) {  //initializarea clasei si a listei cu date afisate
         mListView = listView;
+
+        mContext = context;
 
         offerAdapter = new OfferAdapter(context, R.layout.offer_item); //TODO server, trimiterea zilei impreuna cu user_id si request, astfel incat raspunsul sa contina doar ofertele din ziua respectiva
 
@@ -93,7 +97,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     public void bindHeaderData(View header, int headerPosition) {  //construirea obiectelor de tip header_item
         String month = mDates.get(headerPosition).getMonth();
         month = month.substring(0, 3);
-        header.setBackgroundColor(Color.RED);
+        header.setBackgroundColor(Color.parseColor("#aabbff"));
         TextView TVMonth = header.findViewById(R.id.month);
         TVMonth.setText(month);
     }
@@ -120,11 +124,11 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                     if(prevSelectedItem == null){
                         prevSelectedItem = v;
                         prevSelectedItem.setClickable(false);
-                        prevSelectedItem.setBackgroundColor(Color.parseColor("#7776F3"));
+                        prevSelectedItem.setBackground(mContext.getDrawable(R.drawable.date_item_bg));
                     }
                     else{
                         v.setClickable(false);
-                        v.setBackgroundColor(Color.parseColor("#7776F3"));
+                        v.setBackground(mContext.getDrawable(R.drawable.date_item_bg));
                         prevSelectedItem.setClickable(true);
                         prevSelectedItem.setBackgroundColor(Color.parseColor("#C4DEF9"));
                         prevSelectedItem = v;
@@ -154,7 +158,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     public void onBindViewHolder(MyHolder holder, int position) {
         if(getItemViewType(position)==0){   //header
             holder.month.setText(mDates.get(position).getMonth().substring(0, 3));
-            holder.itemView.setBackgroundColor(Color.RED);
+            holder.itemView.setBackgroundColor(Color.parseColor("#aabbff"));
             holder.itemView.setClickable(false);
         }
         else {   //restul itemilor

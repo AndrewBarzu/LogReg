@@ -2,35 +2,31 @@ package com.example.xghos.Wrenchy;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class MainActivity extends FragmentActivity{
+public class MainActivity extends FragmentActivity {
 
 //    private DrawerLayout mDrawerLayout;
 //    private ArrayList<User> list;
-    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(currentUser.getStatus().equals("2")){ //daca statusul e 2, adica daca am schimbat parola prin Forgot Password, se va intra direct in fragmentul de Change Password
+        if (currentUser.getStatus().equals("2")) { //daca statusul e 2, adica daca am schimbat parola prin Forgot Password, se va intra direct in fragmentul de Change Password
             getSupportFragmentManager().beginTransaction().add(R.id.main_content, new ChangePW()).commit();
 
-        }
-        else{  //altfel se va intra in Navigation Fragment -> Home Fragment, adica cel cu calendarul si listView-ul
+        } else {  //altfel se va intra in Navigation Fragment -> Home Fragment, adica cel cu calendarul si listView-ul
             getSupportFragmentManager().beginTransaction().add(R.id.main_content, new NavigationFragment()).commit();
         }
 
-        viewPager = findViewById(R.id.content);
 
 //        mDrawerLayout = findViewById(R.id.drawer_layout);
 //
@@ -74,7 +70,7 @@ public class MainActivity extends FragmentActivity{
 //        new getUsersAsync().execute();
 
 
-    //}
+        //}
 
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
@@ -86,29 +82,34 @@ public class MainActivity extends FragmentActivity{
 //        return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onBackPressed() { //functia on backpressed, care asculta cand e apasat butonul "back" al telefonului
-//        if(getSupportFragmentManager().findFragmentById(R.id.main_content) instanceof NavigationFragment && viewPager.getCurrentItem() != 0){
-//            viewPager.setCurrentItem(0);
-//        }
-//        else{
-//            super.onBackPressed();
-//        }
-//    }
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_content);
+        if (fragment instanceof NavigationFragment) {
+            NavigationFragment navigationFragment = (NavigationFragment) fragment;
+            if (navigationFragment.viewPager.getCurrentItem() != 0) {
+                navigationFragment.viewPager.setCurrentItem(0);
+            } else {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-    private class getUsersAsync extends AsyncTask<String, Void, String>{  //asta nu mai stiu ce face, oricum nu e folosita
+    private class getUsersAsync extends AsyncTask<String, Void, String> {  //asta nu mai stiu ce face, oricum nu e folosita
 
         @Override
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
             getParams.put(MCrypt.getInstance().encryptHex("sk"), MCrypt.getInstance().SECRET_KEY);
-            Log.d("+++", "sk: "+MCrypt.getInstance().encryptHex("sk"));
+            Log.d("+++", "sk: " + MCrypt.getInstance().encryptHex("sk"));
             getParams.put(MCrypt.getInstance().encryptHex("msg"), MCrypt.getInstance().encryptHex("asinfapweklsndioawe"));
 
 
             try {
-                String response = new HttpRequest(getParams,"http://students.doubleuchat.com/mcrypt_test.php").connect();
+                String response = new HttpRequest(getParams, "http://students.doubleuchat.com/mcrypt_test.php").connect();
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("response");
                 Log.d("+++", MCrypt.getInstance().decryptHex(message));

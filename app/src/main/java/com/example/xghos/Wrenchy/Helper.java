@@ -120,7 +120,7 @@ public class Helper {
 
     public String getStringFromBitmap(Bitmap profileImageBitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        profileImageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        profileImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] arr = stream.toByteArray();
         return Base64.encodeToString(arr, Base64.DEFAULT);
     }
