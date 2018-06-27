@@ -8,8 +8,6 @@
     android:background="@drawable/bg"
     android:alpha="0.78">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleImageView"
         android:layout_width="130dp"

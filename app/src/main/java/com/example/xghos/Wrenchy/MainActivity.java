@@ -3,14 +3,14 @@ package com.example.xghos.Wrenchy;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
 //    private DrawerLayout mDrawerLayout;
 //    private ArrayList<User> list;
@@ -92,7 +92,8 @@ public class MainActivity extends FragmentActivity {
             } else {
                 super.onBackPressed();
             }
-        } else {
+        }
+        else {
             super.onBackPressed();
         }
     }

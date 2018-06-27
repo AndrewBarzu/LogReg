@@ -245,26 +245,29 @@ public class RegisterFragment extends Fragment {
             try {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/register.php").connect();
                 JSONObject responseObject = new JSONObject(response);
-                final String message = responseObject.getString("response");
-                Log.d("+++", message);
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        if (message.equals("Succes."))
-                        {
-                            Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
-                            getActivity().getSupportFragmentManager().popBackStack();
-                        }
-
-                        else
-                            Toast.makeText(getContext(), "nu merge", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                String message = responseObject.getString("msg");
+                return message;
             }
             catch (Exception e)
             {
-                return "nuok";
+                return "Unknown Error";
             }
-            return "ok";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            switch (s){
+                case "success":
+                    Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                    break;
+                case "error":
+                    Toast.makeText(getContext(), "nu merge", Toast.LENGTH_SHORT).show();
+                    break;
+                case "Unknown Error":
+                    Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

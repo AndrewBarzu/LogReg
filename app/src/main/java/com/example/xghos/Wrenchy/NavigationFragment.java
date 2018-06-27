@@ -85,6 +85,8 @@ public class NavigationFragment extends Fragment {
 
             }
         });
+
+
 //        Calendar startDate = Calendar.getInstance();
 //
 //        Calendar endDate = Calendar.getInstance();
@@ -107,9 +109,8 @@ public class NavigationFragment extends Fragment {
     }
 
 
-
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         mHomeFragment = new HomeFragment();
         mProfileFragment = new ProfileFragment();
 

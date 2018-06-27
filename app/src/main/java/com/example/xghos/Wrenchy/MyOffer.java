@@ -6,6 +6,7 @@ public class MyOffer {
     private String name;
     private String location;
     private String offerer;
+    private String offer_id;
 
     public String getPrice() {
         return price;
@@ -37,5 +38,13 @@ public class MyOffer {
 
     public void setOfferer(String offerer) {
         this.offerer = offerer;
+    }
+
+    public String getOffer_id() {
+        return offer_id;
+    }
+
+    public void setOffer_id(String offer_id) {
+        this.offer_id = offer_id;
     }
 }

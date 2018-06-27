@@ -6,8 +6,6 @@
     android:background="@drawable/homebg"
     tools:context="com.example.xghos.Wrenchy.ChangePW">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <EditText
         android:id="@+id/ETOldPass"
         android:layout_width="0dp"

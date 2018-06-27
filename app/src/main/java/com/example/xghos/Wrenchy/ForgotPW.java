@@ -61,24 +61,26 @@ public class ForgotPW extends Fragment {
             try {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/forgotpw.php").connect();
                 JSONObject responseObject = new JSONObject(response);
-                final String message = responseObject.getString("msg");
-                Log.d("+++", message);
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        if(message.equals("success")){
-                            Toast.makeText(getContext(), "Check your email for your new password", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                            Toast.makeText(getContext(), "nu merge", Toast.LENGTH_SHORT).show();
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    }
-                });
+                String message = responseObject.getString("msg");
+                return message;
             }
             catch (Exception e)
             {
-                return "nuok";
+                return "Unknown Error";
             }
-            return "ok";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            switch (s) {
+                case "success":
+                    Toast.makeText(getContext(), "Check your email for your new password", Toast.LENGTH_SHORT).show();
+                    break;
+                case "Unknown Error":
+                    Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
 
         @Override

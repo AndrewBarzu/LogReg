@@ -220,9 +220,11 @@ public class LoginFragment extends Fragment {
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("msg");
                 String responseMessage = responseObject.getString("response");
+                if(responseMessage.equals("Parola incorecta."))
+                    return responseMessage;
                 JSONObject Object = responseObject.getJSONObject("result");
 
-                String name = Object.getString("nume") + " " + Object.getString("prenume");
+                String name = Object.getString("nume");
                 String email = Object.getString("email");
                 String phone = Object.getString("nr_telefon");
 
@@ -236,13 +238,6 @@ public class LoginFragment extends Fragment {
 
                 if (message.equals("success"))
                 {
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
                     if (CRemember.isChecked()) {
                         editor.putString("Email", mail);
                         editor.putString("Pass", password);
@@ -258,21 +253,29 @@ public class LoginFragment extends Fragment {
                     Intent intent = new Intent(getContext(), MainActivity.class);
                     startActivity(intent);
                 }
-
-                if (responseMessage.equals("Parola incorecta.")){
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(), "Email or password is incorrect!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                return responseMessage;
             }
             catch (Exception e)
             {
-                return "nuok";
+                e.printStackTrace();
             }
-            return "ok";
+            return "Unknown Error";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            switch (s){
+                case "Parola incorecta.":
+                    Toast.makeText(getContext(), "Email or password is incorrect!", Toast.LENGTH_SHORT).show();
+                    break;
+                case "Logare cu succes.":
+                    Toast.makeText(getActivity().getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                    break;
+                case "Unknown Error":
+                    Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     }
 }

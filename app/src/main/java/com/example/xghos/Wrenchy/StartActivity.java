@@ -24,4 +24,6 @@ public class StartActivity extends FragmentActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.contentPanel, loginFragment).commit();
         }
     }
+
+    //TODO https://www.figma.com/file/TSOvrCc69f37bAr2y9lUPSpK/DMT?node-id=1%3A119
 }

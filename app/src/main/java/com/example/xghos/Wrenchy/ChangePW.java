@@ -104,13 +104,8 @@ public class ChangePW extends Fragment {
             super.onPostExecute(s);
             if(s.equals("ok")){
                 Toast.makeText(getActivity(), "Password Changed", Toast.LENGTH_SHORT).show();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new NavigationFragment()).commit();
-                    }
-                });
-            }
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new NavigationFragment()).commit();
+                }
             else {
                 Log.d("+++", s);
                 Toast.makeText(getActivity(), "Ples tri agan", Toast.LENGTH_SHORT).show();

@@ -3,17 +3,28 @@ package com.example.xghos.Wrenchy;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> implements HeaderItemDecoration.StickyHeaderInterface{
@@ -25,15 +36,17 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     private ArrayList<MyDate> mDates;
     private View prevSelectedItem;
     private OfferAdapter offerAdapter;
-    private ListView mListView;
+    private RecyclerView mOfferList;
     private Context mContext;
+    private ArrayList<MyOffer> mOffers;
 
-    public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate, ListView listView) {  //initializarea clasei si a listei cu date afisate
-        mListView = listView;
+    public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate, RecyclerView recyclerView) {  //initializarea clasei si a listei cu date afisate
+        mOfferList = recyclerView;
+        mOfferList.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         mContext = context;
 
-        offerAdapter = new OfferAdapter(context, R.layout.offer_item); //TODO server, trimiterea zilei impreuna cu user_id si request, astfel incat raspunsul sa contina doar ofertele din ziua respectiva
+        mOffers = new ArrayList<>();
 
         Locale locale = new Locale("en_US");
         Locale.setDefault(locale);
@@ -125,6 +138,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                         prevSelectedItem = v;
                         prevSelectedItem.setClickable(false);
                         prevSelectedItem.setBackground(mContext.getDrawable(R.drawable.date_item_bg));
+                        new GetOffersAsync().execute();
                     }
                     else{
                         v.setClickable(false);
@@ -132,8 +146,9 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                         prevSelectedItem.setClickable(true);
                         prevSelectedItem.setBackgroundColor(Color.parseColor("#C4DEF9"));
                         prevSelectedItem = v;
+                        mOffers.clear();
+                        new GetOffersAsync().execute();
                     }
-                    mListView.setAdapter(offerAdapter);
                 }
             });
         }
@@ -171,5 +186,45 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     @Override
     public int getItemCount() {  //functie getItemCount necesara
         return mDates.size();
+    }
+
+    private class GetOffersAsync extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... objects) {
+            HashMap<String, String> getParams = new HashMap<>();
+
+            getParams.put("id_user", currentUser.getId());
+            getParams.put("request", "getUsers");
+
+            try {
+                String response = new HttpRequest(getParams, "http://students.doubleuchat.com/listoffers.php").connect();
+                JSONObject responseObject = new JSONObject(response);
+                String message = responseObject.getString("msg");
+                JSONArray Object = responseObject.getJSONArray("result");
+                for(int i = 0; i<Object.length(); i++){
+                    MyOffer offer = new MyOffer();
+                    offer.setName(Object.getJSONObject(i).getString("titlu_oferta"));
+                    offer.setPrice(Object.getJSONObject(i).getString("pret_oferta")+"€");
+                    offer.setLocation(Object.getJSONObject(i).getString("nume_locatie"));
+                    offer.setOffer_id(Object.getJSONObject(i).getString("id_oferta"));
+                    offer.setOfferer(Object.getJSONObject(i).getString("nume_angajator"));
+                    mOffers.add(offer);
+                }
+                Log.d("+++", mOffers.size()+"");
+            }
+            catch (Exception e)
+            {
+                return "nuok";
+            }
+            return "ok";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            offerAdapter = new OfferAdapter(mContext, R.layout.offer_item, mOffers);
+            mOfferList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+            mOfferList.setAdapter(offerAdapter);
+        }
     }
 }

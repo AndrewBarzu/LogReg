@@ -14,7 +14,6 @@ public class OfferFragment extends Fragment {
 
     private String mOfferId;
 
-    // TODO: Rename and change types and number of parameters
     public static OfferFragment newInstance(String offer_id) {
         OfferFragment fragment = new OfferFragment();
         fragment.mOfferId = offer_id;
