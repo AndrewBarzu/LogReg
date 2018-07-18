@@ -3,7 +3,9 @@ package com.example.xghos.Wrenchy;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -14,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    private DrawerLayout mDrawerLayout;
 //    private ArrayList<User> list;
+    public Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,20 +24,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (currentUser.getStatus().equals("2")) { //daca statusul e 2, adica daca am schimbat parola prin Forgot Password, se va intra direct in fragmentul de Change Password
-            getSupportFragmentManager().beginTransaction().add(R.id.main_content, new ChangePW()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.content_frame, new ChangePW()).commit();
 
         } else {  //altfel se va intra in Navigation Fragment -> Home Fragment, adica cel cu calendarul si listView-ul
-            getSupportFragmentManager().beginTransaction().add(R.id.main_content, new NavigationFragment()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.content_frame, new NavigationFragment()).commit();
         }
 
-
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        actionbar.setTitle("");
 //        mDrawerLayout = findViewById(R.id.drawer_layout);
 //
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        ActionBar actionbar = getSupportActionBar();
-//        actionbar.setDisplayHomeAsUpEnabled(true);
-//        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+
 //
 //
 //

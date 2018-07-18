@@ -7,11 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 
 
 public class NavigationFragment extends Fragment {
@@ -39,6 +42,10 @@ public class NavigationFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_navigation, container, false);
 
+        final Toolbar toolbar = ((MainActivity)getActivity()).toolbar.findViewById(R.id.toolbar);
+        final TextView toolbarTitle = ((MainActivity)getActivity()).toolbar.findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(R.string.title_home);
+
         bottomNavigationView = view.findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,9 +54,11 @@ public class NavigationFragment extends Fragment {
                         switch (item.getItemId()) {
                             case R.id.home:
                                 viewPager.setCurrentItem(0);
+                                toolbarTitle.setText(R.string.title_home);
                                 break;
                             case R.id.history:
                                 viewPager.setCurrentItem(1);
+                                toolbarTitle.setText(R.string.title_profile);
                                 break;
                             case R.id.profile:
                                 viewPager.setCurrentItem(2);
@@ -76,6 +85,13 @@ public class NavigationFragment extends Fragment {
                     bottomNavigationView.getMenu().getItem(0).setChecked(false);
                 }
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
+                switch (position){
+                    case(0):
+                        toolbarTitle.setText(R.string.title_home);
+                        break;
+                    case(1):
+                        toolbarTitle.setText(R.string.title_profile);
+                }
                 mPrevMenuItem = bottomNavigationView.getMenu().getItem(position);
 
             }
@@ -104,6 +120,7 @@ public class NavigationFragment extends Fragment {
 //            }
 //        });
         setupViewPager(viewPager);
+        ((MainActivity)getActivity()).toolbar.setVisibility(View.VISIBLE);
 
         return view;
     }

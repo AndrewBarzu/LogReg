@@ -64,6 +64,7 @@ public class ChangePW extends Fragment {
                 }
             }
         });
+        ((MainActivity)getActivity()).toolbar.setVisibility(View.GONE);
         return view;
     }
     private class ChangePassword extends AsyncTask<String, Void, String> {
