@@ -46,6 +46,7 @@ public class ChangePW extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_change_pw, container, false);
         mOldPass = view.findViewById(R.id.ETOldPass);
+        mOldPass.setText(currentUser.getOldpw());
         Log.d("+++", "" + currentUser.getOldpw());
 
         mOldPass.setText(currentUser.getOldpw());

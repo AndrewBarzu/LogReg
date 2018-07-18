@@ -12,15 +12,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="35dp"
-        android:textSize="25sp"
+        android:layout_marginTop="32dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/offerPrice"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/offerPrice"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_marginBottom="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -28,7 +28,7 @@
         android:clickable="false"
         android:text="25€"
         android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
         android:layout_marginTop="10dp"
         android:text="Instalator"
         android:textColor="#7F70DF"
-        android:textSize="15sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/offerPrice"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,9 +51,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="35dp"
         android:text="TextView"
         android:textColor="#7F70DF"
+        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/offerPrice"
         app:layout_constraintTop_toBottomOf="@+id/offerorName" />
 

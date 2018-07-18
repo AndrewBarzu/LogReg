@@ -235,6 +235,7 @@ public class LoginFragment extends Fragment {
                 currentUser.setAccType(Object.getString("tip_user"));
                 currentUser.setAvatar(Object.getString("avatar"));
                 currentUser.setStatus(Object.getString("status"));
+                currentUser.setOldpw(password);
 
                 if (message.equals("success"))
                 {

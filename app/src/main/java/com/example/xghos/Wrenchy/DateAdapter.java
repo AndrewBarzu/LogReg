@@ -3,6 +3,8 @@ package com.example.xghos.Wrenchy;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;

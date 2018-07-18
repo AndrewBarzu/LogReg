@@ -98,8 +98,6 @@ public class ProfileFragment extends Fragment {
         TVName.setText(getString(R.string.hello, mName));
         TVEmail.setText(mEmail);
         TVPhone.setText(mPhone);
-        Log.d("+++", currentUser.getAvatar());
-        Log.d("+++", currentUser.getEmail());
         if(currentUser.getAvatar().length() > 10){
             IVProfilePic.setImageBitmap(Helper.getINSTANCE().getBitmapFromString(currentUser.getAvatar()));
         }
