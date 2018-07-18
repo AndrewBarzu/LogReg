@@ -56,6 +56,8 @@ public class OfferFragment extends Fragment {
         TVOfferExpire.setText(mOfferExpire);
         TVOfferLocation.setText(mOfferLocation);
         TVOfferPrice.setText(mOfferPrice);
+        TextView toolbarTitle = ((MainActivity)getActivity()).toolbar.findViewById(R.id.toolbar_title);
+        toolbarTitle.setText(R.string.offer_details);
         return v;
     }
 
