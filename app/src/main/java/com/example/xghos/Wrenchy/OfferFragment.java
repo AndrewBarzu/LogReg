@@ -45,7 +45,7 @@ public class OfferFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_offer, container, false);
+        View v = inflater.inflate(R.layout.fragment_offer_details, container, false);
         TVOfferTitle = v.findViewById(R.id.offerTitle);
         TVOfferDescription = v.findViewById(R.id.offerDetails);
         TVOfferExpire = v.findViewById(R.id.expireDate);

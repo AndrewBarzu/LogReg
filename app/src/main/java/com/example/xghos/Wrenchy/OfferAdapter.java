@@ -2,6 +2,7 @@ package com.example.xghos.Wrenchy;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -32,17 +33,20 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
     private String mOfferLocation;
     private String mOfferExpire;
     private String mOfferPrice;
+    private Boolean wasClicked;
 
     public OfferAdapter(Context context, int resource, ArrayList<MyOffer> offers) {
         mResource = resource;
         mOffers = offers;
         mContext = context;
+        wasClicked = false;
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder{
+    public class MyHolder extends RecyclerView.ViewHolder {
         public TextView offerName, offerPrice, offerLocation, offerer;
         public String offer_id;
-        public MyHolder(View view){
+
+        public MyHolder(View view) {
             super(view);
             offerName = view.findViewById(R.id.offerName);
             offerPrice = view.findViewById(R.id.offerPrice);
@@ -51,7 +55,19 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new GetOfferAsync().execute(offer_id);
+                    if (!wasClicked) {
+                        new GetOfferAsync().execute(offer_id);
+                        wasClicked = true;
+                        new CountDownTimer(1000, 1000) {
+
+                            public void onTick(long millisUntilFinished) {
+                            }
+
+                            public void onFinish() {
+                                wasClicked = false;
+                            }
+                        }.start();
+                    }
                 }
             });
         }
@@ -100,18 +116,17 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
                 mOfferPrice = Object.getString("pret_oferta");
                 return message;
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 return "Unknown Error";
             }
         }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            switch (s){
+            switch (s) {
                 case "success":
-                    FragmentTransaction fragmentTransaction = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
+                    FragmentTransaction fragmentTransaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
                     OfferFragment offerFragment = OfferFragment.newInstance(mOfferTitle, mOfferDescription, mOfferLocation, mOfferExpire, mOfferPrice);
                     fragmentTransaction.replace(R.id.content_frame, offerFragment);

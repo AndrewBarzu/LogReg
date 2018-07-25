@@ -38,6 +38,6 @@
     <string name="description">Description: </string>
     <string name="take_job">Take job</string>
 
-    <string name="offer_details">Offer details</string>
+    <string name="offer_details">Details:</string>
 
 </resources>
