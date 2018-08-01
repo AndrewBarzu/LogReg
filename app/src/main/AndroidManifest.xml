@@ -17,14 +17,18 @@
         <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity" />
         <activity
             android:name=".NavigationFragment"
-            android:label="@string/title_activity_calendar_scroll"/>
+            android:label="@string/title_activity_calendar_scroll" />
+        <activity
+            android:name=".HistoryFragment"
+            android:label="@string/title_activity_history_fragment"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

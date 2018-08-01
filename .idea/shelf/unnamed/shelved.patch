@@ -1,0 +1,95 @@
+Index: app/src/main/java/com/example/xghos/Wrenchy/DBHelper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.xghos.Wrenchy;\n\nimport android.content.ContentValues;\nimport android.content.Context;\nimport android.database.Cursor;\nimport android.database.sqlite.SQLiteDatabase;\nimport android.database.sqlite.SQLiteOpenHelper;\nimport android.util.Log;\n\n\n\npublic class DBHelper extends SQLiteOpenHelper {\n\n    private static final int DATABASE_VERSION = 5;\n\n    private static final String DATABASE_NAME = \"MY_DATABASE.db\";\n\n    private static final String TABLE_NAME = \"MY_TABLE\";\n\n    private static final String ACC_TYPE = \"TYPE\";\n    private static final String USER_ID = \"ID\";\n    private static final String USERNAME = \"USERNAME\";\n    private static final String EMAIL = \"EMAIL\";\n    private static final String PASSWORD = \"PASSWORD\";\n\n    DBHelper(Context context) {\n        super(context, DATABASE_NAME, null, DATABASE_VERSION);\n    }\n\n    @Override\n    public void onCreate(SQLiteDatabase DBHelper) {\n        String CREATE_USER_TABLE = \" CREATE TABLE \" + TABLE_NAME + \" ( \" + USER_ID + \" INTEGER PRIMARY KEY AUTOINCREMENT, \" + ACC_TYPE + \" TEXT,\" + USERNAME + \" TEXT, \" + EMAIL + \" TEXT, \" + PASSWORD + \" TEXT ); \";\n        DBHelper.execSQL(CREATE_USER_TABLE);\n    }\n\n    @Override\n    public void onUpgrade(SQLiteDatabase DBHelper, int i, int il) {\n\n        DBHelper.execSQL(\"DROP TABLE IF EXISTS \" + TABLE_NAME);\n\n        onCreate(DBHelper);\n    }\n\n    void addUser(User user) {\n\n        SQLiteDatabase db = this.getWritableDatabase();\n\n        ContentValues values = new ContentValues();\n\n        values.put(USERNAME, user.userName);\n        values.put(EMAIL, user.email);\n        values.put(PASSWORD, user.password);\n        values.put(ACC_TYPE, user.accType);\n\n        db.insert(TABLE_NAME, null, values);\n    }\n\n    User Authenticate(User user) {\n\n        SQLiteDatabase db = this.getReadableDatabase();\n        Cursor cursor = db.query(TABLE_NAME,\n                new String[]{USER_ID, USERNAME, EMAIL, PASSWORD, ACC_TYPE},\n                EMAIL + \"=?\",\n                new String[]{user.email},\n                null, null, null);\n\n        if (cursor != null && cursor.moveToFirst() && cursor.getCount() > 0) {\n            User user1 = new User(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));\n\n            if (user.password.equals(user1.password)) {\n                return user1;\n            }\n        }\n        return null;\n    }\n\n//    public ArrayList<User> getUsers(DBHelper dbhelper)\n//    {\n//        SQLiteDatabase db = dbhelper.getReadableDatabase();\n//\n//        Cursor cursor = db.rawQuery(\"SELECT * from users_table\", null);\n//\n//        ArrayList<User> users = new ArrayList<User>();\n//\n//        while (cursor.moveToNext())\n//        {\n//            User user = new User();\n//            user.userName = cursor.getString(cursor.getColumnIndex(USERNAME));\n//            user.email = cursor.getString(cursor.getColumnIndex(EMAIL));\n//            user.accType = cursor.getString(cursor.getColumnIndex(ACC_TYPE));\n//\n//            users.add(user);\n//        }\n//\n//        return users;\n//    }\n\n//    public boolean deleteUser(String username, DBHelper dbhelper, Context context)\n//    {\n//        SQLiteDatabase db = dbhelper.getWritableDatabase();\n//\n//        try {\n//            db.delete(TABLE_NAME, \"USERNAME=?\", new String[]{username});\n//        }\n//        catch (Exception e) {\n//            Log.d(\"+++\", e.getStackTrace().toString());\n//            return false;\n//        }\n//        return true;\n//    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/xghos/Wrenchy/DBHelper.java	(revision 0a347c2926927178b6518b4fa723745f2a66913a)
++++ app/src/main/java/com/example/xghos/Wrenchy/DBHelper.java	(date 1532524573369)
+@@ -30,8 +30,8 @@
+     @Override
+     public void onCreate(SQLiteDatabase DBHelper) {
+         String CREATE_USER_TABLE = " CREATE TABLE " + TABLE_NAME + " ( " + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + ACC_TYPE + " TEXT," + USERNAME + " TEXT, " + EMAIL + " TEXT, " + PASSWORD + " TEXT ); ";
+-        DBHelper.execSQL(CREATE_USER_TABLE);
+-    }
++            DBHelper.execSQL(CREATE_USER_TABLE);
++}
+ 
+     @Override
+     public void onUpgrade(SQLiteDatabase DBHelper, int i, int il) {
+Index: app/src/main/java/com/example/xghos/Wrenchy/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.xghos.Wrenchy;\n\nimport android.os.AsyncTask;\nimport android.os.Bundle;\nimport android.support.v4.app.Fragment;\nimport android.support.v7.app.ActionBar;\nimport android.support.v7.app.AppCompatActivity;\nimport android.support.v7.widget.Toolbar;\nimport android.util.Log;\n\nimport org.json.JSONObject;\n\nimport java.util.HashMap;\n\npublic class MainActivity extends AppCompatActivity {\n\n//    private DrawerLayout mDrawerLayout;\n//    private ArrayList<User> list;\n    public Toolbar toolbar;\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_main);\n\n        if (currentUser.getStatus().equals(\"2\")) { //daca statusul e 2, adica daca am schimbat parola prin Forgot Password, se va intra direct in fragmentul de Change Password\n            getSupportFragmentManager().beginTransaction().add(R.id.content_frame, new ChangePW()).commit();\n\n        } else {  //altfel se va intra in Navigation Fragment -> Home Fragment, adica cel cu calendarul si listView-ul\n            getSupportFragmentManager().beginTransaction().add(R.id.content_frame, new NavigationFragment()).commit();\n        }\n\n        toolbar = findViewById(R.id.toolbar);\n        setSupportActionBar(toolbar);\n        ActionBar actionbar = getSupportActionBar();\n        actionbar.setDisplayHomeAsUpEnabled(true);\n        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);\n        actionbar.setTitle(\"\");\n//        mDrawerLayout = findViewById(R.id.drawer_layout);\n//\n\n//\n//\n//\n//        NavigationView navigationView = findViewById(R.id.nav_view);\n//        navigationView.setNavigationItemSelectedListener(\n//                new NavigationView.OnNavigationItemSelectedListener() {\n//                    @Override\n//                    public boolean onNavigationItemSelected(MenuItem menuItem) {\n//\n//                        switch (menuItem.getItemId()){\n//                            case R.id.offers:\n//                                Toast.makeText(MainActivity.this, \"Offers\", Toast.LENGTH_SHORT).show();\n//                                return true;\n//                            case R.id.history:\n//                                Toast.makeText(MainActivity.this, \"history\", Toast.LENGTH_SHORT).show();\n//                                return true;\n//                            case R.id.settings:\n//                                Toast.makeText(MainActivity.this, \"settings\", Toast.LENGTH_SHORT).show();\n//                                return true;\n//                            case R.id.logout:\n//                                finish();\n//                        }\n//\n//                        menuItem.setChecked(true);\n//                        // close drawer when item is tapped\n//                        mDrawerLayout.closeDrawers();\n//\n//                        return true;\n//                    }\n//                });\n\n\n//        new getUsersAsync().execute();\n\n\n        //}\n\n//    @Override\n//    public boolean onOptionsItemSelected(MenuItem item) {\n//        switch (item.getItemId()) {\n//            case android.R.id.home:\n//                mDrawerLayout.openDrawer(GravityCompat.START);\n//                return true;\n//        }\n//        return super.onOptionsItemSelected(item);\n    }\n\n    @Override\n    public void onBackPressed() {\n        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_content);\n        if (fragment instanceof NavigationFragment) {\n            NavigationFragment navigationFragment = (NavigationFragment) fragment;\n            if (navigationFragment.viewPager.getCurrentItem() != 0) {\n                navigationFragment.viewPager.setCurrentItem(0);\n            } else {\n                super.onBackPressed();\n            }\n        }\n        else {\n            super.onBackPressed();\n        }\n    }\n\n    private class getUsersAsync extends AsyncTask<String, Void, String> {  //asta nu mai stiu ce face, oricum nu e folosita\n\n        @Override\n        protected String doInBackground(String... objects) {\n            HashMap<String, String> getParams = new HashMap<>();\n\n            getParams.put(MCrypt.getInstance().encryptHex(\"sk\"), MCrypt.getInstance().SECRET_KEY);\n            Log.d(\"+++\", \"sk: \" + MCrypt.getInstance().encryptHex(\"sk\"));\n            getParams.put(MCrypt.getInstance().encryptHex(\"msg\"), MCrypt.getInstance().encryptHex(\"asinfapweklsndioawe\"));\n\n\n            try {\n                String response = new HttpRequest(getParams, \"http://students.doubleuchat.com/mcrypt_test.php\").connect();\n                JSONObject responseObject = new JSONObject(response);\n                String message = responseObject.getString(\"response\");\n                Log.d(\"+++\", MCrypt.getInstance().decryptHex(message));\n                //list = new ArrayList<>();\n//                JSONArray jsonArray = responseObject.getJSONArray(\"array\");\n//\n//                for (int i = 0; i < jsonArray.length(); i++) {\n//                    JSONObject contactObj = jsonArray.getJSONObject(i);\n//                    User user = new User();\n//                    user.setUserName(contactObj.getString(\"user\"));\n//                    Log.d(\"+++\", user.getUserName());\n//                    user.setEmail(contactObj.getString(\"email\"));\n//                    Log.d(\"+++\", user.getEmail());\n//                    list.add(user);\n//                }\n            } catch (Exception e) {\n                e.printStackTrace();\n            }\n            return \"ok\";\n        }\n\n        @Override\n        protected void onPostExecute(String s) {\n            super.onPostExecute(s);\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/xghos/Wrenchy/MainActivity.java	(revision 0a347c2926927178b6518b4fa723745f2a66913a)
++++ app/src/main/java/com/example/xghos/Wrenchy/MainActivity.java	(date 1532511380573)
+@@ -7,6 +7,7 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.util.Log;
++import android.view.Menu;
+ 
+ import org.json.JSONObject;
+ 
+@@ -18,6 +19,11 @@
+ //    private ArrayList<User> list;
+     public Toolbar toolbar;
+ 
++    @Override
++    public boolean onCreateOptionsMenu(Menu menu) {
++        return super.onCreateOptionsMenu(menu);
++    }
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -36,6 +42,9 @@
+         actionbar.setDisplayHomeAsUpEnabled(true);
+         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+         actionbar.setTitle("");
++
++
++
+ //        mDrawerLayout = findViewById(R.id.drawer_layout);
+ //
+ 
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"NullableNotNullManager\">\n    <option name=\"myDefaultNullable\" value=\"android.support.annotation.Nullable\" />\n    <option name=\"myDefaultNotNull\" value=\"android.support.annotation.NonNull\" />\n    <option name=\"myNullables\">\n      <value>\n        <list size=\"5\">\n          <item index=\"0\" class=\"java.lang.String\" itemvalue=\"org.jetbrains.annotations.Nullable\" />\n          <item index=\"1\" class=\"java.lang.String\" itemvalue=\"javax.annotation.Nullable\" />\n          <item index=\"2\" class=\"java.lang.String\" itemvalue=\"javax.annotation.CheckForNull\" />\n          <item index=\"3\" class=\"java.lang.String\" itemvalue=\"edu.umd.cs.findbugs.annotations.Nullable\" />\n          <item index=\"4\" class=\"java.lang.String\" itemvalue=\"android.support.annotation.Nullable\" />\n        </list>\n      </value>\n    </option>\n    <option name=\"myNotNulls\">\n      <value>\n        <list size=\"4\">\n          <item index=\"0\" class=\"java.lang.String\" itemvalue=\"org.jetbrains.annotations.NotNull\" />\n          <item index=\"1\" class=\"java.lang.String\" itemvalue=\"javax.annotation.Nonnull\" />\n          <item index=\"2\" class=\"java.lang.String\" itemvalue=\"edu.umd.cs.findbugs.annotations.NonNull\" />\n          <item index=\"3\" class=\"java.lang.String\" itemvalue=\"android.support.annotation.NonNull\" />\n        </list>\n      </value>\n    </option>\n  </component>\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_7\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\n  </component>\n  <component name=\"ProjectType\">\n    <option name=\"id\" value=\"Android\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 0a347c2926927178b6518b4fa723745f2a66913a)
++++ .idea/misc.xml	(date 1532523797858)
+@@ -25,7 +25,7 @@
+       </value>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectModuleManager\">\n    <modules>\n      <module fileurl=\"file://$PROJECT_DIR$/LogReg.iml\" filepath=\"$PROJECT_DIR$/LogReg.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/app/app.iml\" filepath=\"$PROJECT_DIR$/app/app.iml\" />\n    </modules>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/modules.xml	(revision 0a347c2926927178b6518b4fa723745f2a66913a)
++++ .idea/modules.xml	(date 1532511170963)
+@@ -2,7 +2,7 @@
+ <project version="4">
+   <component name="ProjectModuleManager">
+     <modules>
+-      <module fileurl="file://$PROJECT_DIR$/LogReg.iml" filepath="$PROJECT_DIR$/LogReg.iml" />
++      <module fileurl="file://$PROJECT_DIR$/LogReg-master.iml" filepath="$PROJECT_DIR$/LogReg-master.iml" />
+       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+     </modules>
+   </component>

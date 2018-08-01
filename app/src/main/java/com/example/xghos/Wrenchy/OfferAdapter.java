@@ -33,6 +33,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
     private String mOfferLocation;
     private String mOfferExpire;
     private String mOfferPrice;
+    private String mImageString;
     private Boolean wasClicked;
 
     public OfferAdapter(Context context, int resource, ArrayList<MyOffer> offers) {
@@ -114,6 +115,8 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
                 mOfferExpire = Object.getString("data_expirare_oferta");
                 mOfferLocation = Object.getString("nume_locatie");
                 mOfferPrice = Object.getString("pret_oferta");
+                if(Object.getString("count_images").equals("1"))
+                    mImageString = Object.getString("imagine_oferta_1");
                 return message;
 
             } catch (Exception e) {
@@ -128,7 +131,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
                 case "success":
                     FragmentTransaction fragmentTransaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-                    OfferFragment offerFragment = OfferFragment.newInstance(mOfferTitle, mOfferDescription, mOfferLocation, mOfferExpire, mOfferPrice);
+                    OfferFragment offerFragment = OfferFragment.newInstance(mOfferTitle, mOfferDescription, mOfferLocation, mOfferExpire, mOfferPrice, mImageString);
                     fragmentTransaction.replace(R.id.content_frame, offerFragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();

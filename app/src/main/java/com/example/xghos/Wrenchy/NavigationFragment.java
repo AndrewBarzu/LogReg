@@ -56,11 +56,11 @@ public class NavigationFragment extends Fragment {
                                 viewPager.setCurrentItem(0);
                                 toolbarTitle.setText(R.string.title_home);
                                 break;
-                            case R.id.history:
+                            case R.id.profile:
                                 viewPager.setCurrentItem(1);
                                 toolbarTitle.setText(R.string.title_profile);
                                 break;
-                            case R.id.profile:
+                            case R.id.history:
                                 viewPager.setCurrentItem(2);
                                 break;
                         }
