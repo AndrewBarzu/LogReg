@@ -25,6 +25,7 @@ public class NavigationFragment extends Fragment {
 
     HomeFragment mHomeFragment;
     ProfileFragment mProfileFragment;
+    HistoryFragment mHistoryFragment;
     MenuItem mPrevMenuItem;
 
     BottomNavigationView bottomNavigationView;
@@ -32,7 +33,6 @@ public class NavigationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("status", currentUser.getStatus());
     }
 
     @Nullable
@@ -62,6 +62,7 @@ public class NavigationFragment extends Fragment {
                                 break;
                             case R.id.history:
                                 viewPager.setCurrentItem(2);
+                                toolbarTitle.setText(R.string.title_history);
                                 break;
                         }
                         return false;
@@ -91,6 +92,10 @@ public class NavigationFragment extends Fragment {
                         break;
                     case(1):
                         toolbarTitle.setText(R.string.title_profile);
+                        break;
+                    case(2):
+                        toolbarTitle.setText(R.string.title_history);
+                        break;
                 }
                 mPrevMenuItem = bottomNavigationView.getMenu().getItem(position);
 
@@ -130,9 +135,11 @@ public class NavigationFragment extends Fragment {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         mHomeFragment = new HomeFragment();
         mProfileFragment = new ProfileFragment();
+        mHistoryFragment = new HistoryFragment();
 
         adapter.addFragment(mHomeFragment);
         adapter.addFragment(mProfileFragment);
+        adapter.addFragment(mHistoryFragment);
         viewPager.setAdapter(adapter);
     }
 

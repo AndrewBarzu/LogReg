@@ -79,8 +79,10 @@ public class LoginFragment extends Fragment {
         BLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {   //incercarea de login
-                if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString()))
+                if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString())) {
                     new LoginAsyncTask().execute();
+                    BLogin.setClickable(false);
+                }
                 else
                     Toast.makeText(getContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
@@ -269,12 +271,15 @@ public class LoginFragment extends Fragment {
             switch (s){
                 case "Parola incorecta.":
                     Toast.makeText(getContext(), "Email or password is incorrect!", Toast.LENGTH_SHORT).show();
+                    BLogin.setClickable(true);
                     break;
                 case "Logare cu succes.":
                     Toast.makeText(getActivity().getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                    BLogin.setClickable(true);
                     break;
                 case "Unknown Error":
                     Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                    BLogin.setClickable(true);
                     break;
             }
         }

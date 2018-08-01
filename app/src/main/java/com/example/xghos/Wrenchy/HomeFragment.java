@@ -75,8 +75,8 @@ public class HomeFragment extends Fragment {
         if(item == null) {
             item = inflater.inflate(R.layout.fragment_home, container, false);
             offerList = item.findViewById(R.id.offers);
-            dateAdapter = new DateAdapter(getContext(), mStartDate, mEndDate, offerList);
             recyclerView = item.findViewById(R.id.calendar);
+            dateAdapter = new DateAdapter(getContext(), mStartDate, mEndDate, offerList);
             recyclerView.setAdapter(dateAdapter);
             recyclerView.setLayoutManager(layoutManager);
             itemDecoration = new HeaderItemDecoration(recyclerView, dateAdapter);
