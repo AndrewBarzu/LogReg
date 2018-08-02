@@ -29,6 +29,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
 }
 
 configurations.all {
@@ -41,3 +43,5 @@ configurations.all {
         }
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
