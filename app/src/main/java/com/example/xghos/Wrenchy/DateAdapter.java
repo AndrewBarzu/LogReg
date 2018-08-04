@@ -14,6 +14,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ethanhua.skeleton.RecyclerViewSkeletonScreen;
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
+import com.ethanhua.skeleton.ViewSkeletonScreen;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,6 +40,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     private Context mContext;
     private ArrayList<MyOffer> mOffers;
     private ArrayList<String> offerIDs;
+    private RecyclerViewSkeletonScreen skeletonScreen;
 
     public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate, RecyclerView recyclerView) {  //initializarea clasei si a listei cu date afisate
         mOfferList = recyclerView;
@@ -137,6 +143,10 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
             view.setOnClickListener(new View.OnClickListener() {  //onClick listener pentru datele din calendar
                 @Override
                 public void onClick(View v) {
+                    skeletonScreen = Skeleton.bind(mOfferList)
+                            .adapter(offerAdapter)
+                            .load(R.layout.offer_item_skeleton)
+                            .show();
                     if (prevSelectedItem == null) {
                         prevSelectedItem = v;
                         prevSelectedItem.setClickable(false);
@@ -146,7 +156,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                         v.setClickable(false);
                         v.setBackground(mContext.getDrawable(R.drawable.date_item_bg));
                         prevSelectedItem.setClickable(true);
-                        prevSelectedItem.setBackgroundColor(Color.parseColor("#C4DEF9"));
+                        prevSelectedItem.setBackgroundColor(Color.parseColor("#C6E5FA"));
                         prevSelectedItem = v;
                         mOffers.clear();
                         new GetOffersAsync().execute();
@@ -163,7 +173,21 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
         if (viewType == 0) {
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.header_item, parent, false);
-        } else {
+        }
+        else if (viewType == 1){
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.date_item, parent, false);
+            prevSelectedItem = itemView;
+            prevSelectedItem.setClickable(false);
+            prevSelectedItem.setBackground(mContext.getDrawable(R.drawable.date_item_bg));
+            skeletonScreen = Skeleton.bind(mOfferList)
+                    .adapter(offerAdapter)
+                    .load(R.layout.offer_item_skeleton)
+                    .count(3)
+                    .show();
+            new GetOffersAsync().execute();
+        }
+         else {
             itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.date_item, parent, false);
         }
@@ -179,12 +203,6 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
         } else {   //restul itemilor
             holder.date.setText(String.valueOf(mDates.get(position).getDay()));
             holder.name.setText(mDates.get(position).getDayName());
-            if (position == 1) {
-                prevSelectedItem = holder.itemView;
-                prevSelectedItem.setClickable(false);
-                prevSelectedItem.setBackground(mContext.getDrawable(R.drawable.date_item_bg));
-                new GetOffersAsync().execute();
-            }
         }
     }
 
@@ -238,6 +256,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             offerAdapter.notifyDataSetChanged();
+            skeletonScreen.hide();
         }
     }
 }

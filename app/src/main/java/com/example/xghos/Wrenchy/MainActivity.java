@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+//        actionbar.setDisplayHomeAsUpEnabled(true);
+//        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         actionbar.setTitle("");
 //        mDrawerLayout = findViewById(R.id.drawer_layout);
 //
@@ -99,46 +99,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             super.onBackPressed();
-        }
-    }
-
-    private class getUsersAsync extends AsyncTask<String, Void, String> {  //asta nu mai stiu ce face, oricum nu e folosita
-
-        @Override
-        protected String doInBackground(String... objects) {
-            HashMap<String, String> getParams = new HashMap<>();
-
-            getParams.put(MCrypt.getInstance().encryptHex("sk"), MCrypt.getInstance().SECRET_KEY);
-            Log.d("+++", "sk: " + MCrypt.getInstance().encryptHex("sk"));
-            getParams.put(MCrypt.getInstance().encryptHex("msg"), MCrypt.getInstance().encryptHex("asinfapweklsndioawe"));
-
-
-            try {
-                String response = new HttpRequest(getParams, "http://students.doubleuchat.com/mcrypt_test.php").connect();
-                JSONObject responseObject = new JSONObject(response);
-                String message = responseObject.getString("response");
-                Log.d("+++", MCrypt.getInstance().decryptHex(message));
-                //list = new ArrayList<>();
-//                JSONArray jsonArray = responseObject.getJSONArray("array");
-//
-//                for (int i = 0; i < jsonArray.length(); i++) {
-//                    JSONObject contactObj = jsonArray.getJSONObject(i);
-//                    User user = new User();
-//                    user.setUserName(contactObj.getString("user"));
-//                    Log.d("+++", user.getUserName());
-//                    user.setEmail(contactObj.getString("email"));
-//                    Log.d("+++", user.getEmail());
-//                    list.add(user);
-//                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return "ok";
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
         }
     }
 }

@@ -3,24 +3,18 @@ package com.example.xghos.Wrenchy;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,14 +23,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
+import com.ethanhua.skeleton.ViewSkeletonScreen;
+
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
-
-import static android.support.v4.graphics.TypefaceCompatUtil.getTempFile;
 
 
 public class ProfileFragment extends Fragment {
@@ -46,15 +39,15 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PHONE = "phone";
     final int PIC_CROP = 999;
 
-    private String mName;
     private String mEmail;
     private String mPhone;
     private TextView TVName;
     private TextView TVEmail;
     private TextView TVPhone;
     private ImageView IVProfilePic;
-
     private Bitmap croppedImageFile;
+    private LockableViewPager reviewsContainer;
+    private TabLayout tabLayout;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -69,7 +62,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mName = currentUser.getUserName();
         mEmail = currentUser.getEmail();
         mPhone = currentUser.getPhoneNumber();
     }
@@ -77,30 +69,47 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
-    }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        TVName = getView().findViewById(R.id.name);
-        TVEmail = getView().findViewById(R.id.email);
-        TVPhone = getView().findViewById(R.id.phone);
-        IVProfilePic = getView().findViewById(R.id.profilePic);
+        reviewsContainer = v.findViewById(R.id.reviewContainer);
+        setupViewPager(reviewsContainer);
+        reviewsContainer.setSwipeable(false);
+
+        tabLayout = v.findViewById(R.id.reviewTabs);
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(reviewsContainer));
+
+        TVEmail = v.findViewById(R.id.email);
+        TVPhone = v.findViewById(R.id.phone);
+
+        IVProfilePic = v.findViewById(R.id.profilePic);
         IVProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startImageChooserActivity(ProfileFragment.this);
             }
         });
-        TVName.setText(getString(R.string.hello, mName));
+
         TVEmail.setText(mEmail);
         TVPhone.setText(mPhone);
+        
         if(currentUser.getAvatar().length() > 10){
             IVProfilePic.setImageBitmap(Helper.getINSTANCE().getBitmapFromString(currentUser.getAvatar()));
         }
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+
+        adapter.addFragment(new NoReviewsFragment());
+        adapter.addFragment(new NoReviewsFragment());
+        viewPager.setAdapter(adapter);
     }
 
     public void startImageChooserActivity(Fragment fragment) {

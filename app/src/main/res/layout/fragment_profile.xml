@@ -4,74 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/profile_bg"
     tools:context=".ProfileFragment">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="260dp"
-        android:drawableStart="@drawable/ic_person_outline_black_24dp"
-        android:text=""
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--<View-->
+        <!--android:id="@+id/view2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:layout_marginTop="110dp"-->
+        <!--android:background="@android:color/white"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <TextView
-        android:id="@+id/email"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="40dp"
-        android:drawableStart="@drawable/ic_email_black_24dp"
-        android:text=""
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:layout_height="0dp"
+        android:layout_marginTop="110dp"
+        android:background="@drawable/profile_bg2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/phone"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="40dp"
-        android:drawableStart="@drawable/ic_phone_black_24dp"
-        android:text=""
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="250dp"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/ic_phone_black_24dp"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:drawableStart="@drawable/ic_email_black_24dp"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/reviewTabs"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="25dp"
+            android:background="#8EA6E5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+            app:tabTextColor="@android:color/white">
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/worker_review" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabItem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/employer_review" />
+
+        </android.support.design.widget.TabLayout>
+
+        <com.example.xghos.Wrenchy.LockableViewPager
+            android:id="@+id/reviewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviewTabs" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilePic"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginBottom="108dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginEnd="176dp"
         android:layout_marginStart="176dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="60dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@android:drawable/btn_star_big_off"
-        app:civ_border_color="@android:color/holo_blue_dark"
+        android:src="@drawable/add_profile_img"
+        app:civ_border_color="@android:color/white"
         app:civ_border_width="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.583" />
-
-    <Space
-        android:id="@+id/space"
-        android:layout_width="36dp"
-        android:layout_height="179dp"
-        android:layout_marginBottom="134dp"
-        android:layout_marginTop="254dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/name"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

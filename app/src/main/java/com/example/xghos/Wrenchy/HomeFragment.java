@@ -81,6 +81,9 @@ public class HomeFragment extends Fragment {
             recyclerView.setLayoutManager(layoutManager);
             itemDecoration = new HeaderItemDecoration(recyclerView, dateAdapter);
             recyclerView.addItemDecoration(itemDecoration);
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                    layoutManager.getOrientation());
+            recyclerView.addItemDecoration(dividerItemDecoration);
         }
         return item;
     }

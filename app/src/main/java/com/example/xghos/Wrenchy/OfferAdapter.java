@@ -3,6 +3,7 @@ package com.example.xghos.Wrenchy;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.support.constraint.Placeholder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -140,7 +141,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
                     Toast.makeText(mContext, "nu merge", Toast.LENGTH_SHORT).show();
                     break;
                 case "Unknown Error":
-                    Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "You can't see your own offer!", Toast.LENGTH_SHORT).show();
             }
         }
     }

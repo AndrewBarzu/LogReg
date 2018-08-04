@@ -56,13 +56,13 @@ public class NavigationFragment extends Fragment {
                                 viewPager.setCurrentItem(0);
                                 toolbarTitle.setText(R.string.title_home);
                                 break;
-                            case R.id.profile:
-                                viewPager.setCurrentItem(1);
-                                toolbarTitle.setText(R.string.title_profile);
-                                break;
                             case R.id.history:
-                                viewPager.setCurrentItem(2);
+                                viewPager.setCurrentItem(1);
                                 toolbarTitle.setText(R.string.title_history);
+                                break;
+                            case R.id.profile:
+                                viewPager.setCurrentItem(2);
+                                toolbarTitle.setText(currentUser.getUserName());
                                 break;
                         }
                         return false;
@@ -91,21 +91,21 @@ public class NavigationFragment extends Fragment {
                         toolbarTitle.setText(R.string.title_home);
                         break;
                     case(1):
-                        toolbarTitle.setText(R.string.title_profile);
+                        toolbarTitle.setText(R.string.title_history);
                         break;
                     case(2):
-                        toolbarTitle.setText(R.string.title_history);
+                        toolbarTitle.setText(currentUser.getUserName());
                         break;
                 }
                 mPrevMenuItem = bottomNavigationView.getMenu().getItem(position);
 
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
         });
+        viewPager.setCurrentItem(2);
 
 
 //        Calendar startDate = Calendar.getInstance();
@@ -134,12 +134,12 @@ public class NavigationFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         mHomeFragment = new HomeFragment();
-        mProfileFragment = new ProfileFragment();
         mHistoryFragment = new HistoryFragment();
+        mProfileFragment = new ProfileFragment();
 
         adapter.addFragment(mHomeFragment);
-        adapter.addFragment(mProfileFragment);
         adapter.addFragment(mHistoryFragment);
+        adapter.addFragment(mProfileFragment);
         viewPager.setAdapter(adapter);
     }
 
