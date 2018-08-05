@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#8EA6E5"
+        app:tabIndicatorColor="#7C7BD5"
+        app:tabMaxWidth="0dp"
         app:tabSelectedTextColor="@android:color/white"
         app:tabTextColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"

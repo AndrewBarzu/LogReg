@@ -1,5 +1,6 @@
 package com.example.xghos.Wrenchy;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_content);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (fragment instanceof NavigationFragment) {
             NavigationFragment navigationFragment = (NavigationFragment) fragment;
             if (navigationFragment.viewPager.getCurrentItem() != 0) {
@@ -100,5 +101,11 @@ public class MainActivity extends AppCompatActivity {
         else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).edit().putInt("tabindex", 0).apply();
     }
 }

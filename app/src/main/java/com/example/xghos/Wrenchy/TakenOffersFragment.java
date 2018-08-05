@@ -20,17 +20,15 @@ import java.util.HashMap;
 public class TakenOffersFragment extends Fragment {
 
     private ArrayList<MyOffer> mOffers;
-    private OfferAdapter offerAdapter;
+    private SwipeRecyclerViewAdapter offerAdapter;
     private ArrayList<String> offerIDs;
-    private RecyclerView mTakenOffers;
 
     public TakenOffersFragment() {
         // Required empty public constructor
     }
 
     public static TakenOffersFragment newInstance() {
-        TakenOffersFragment fragment = new TakenOffersFragment();
-        return fragment;
+        return new TakenOffersFragment();
     }
 
     @Override
@@ -38,7 +36,7 @@ public class TakenOffersFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mOffers = new ArrayList<>();
         offerIDs = new ArrayList<>();
-        offerAdapter = new OfferAdapter(getContext(), R.layout.offer_item, mOffers);
+        offerAdapter = new SwipeRecyclerViewAdapter(getContext(), mOffers, false);
         new GetTakenOffersAsync().execute();
     }
 
@@ -46,7 +44,7 @@ public class TakenOffersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_taken_offers, container, false);
-        mTakenOffers = v.findViewById(R.id.takenOffers);
+        RecyclerView mTakenOffers = v.findViewById(R.id.takenOffers);
         mTakenOffers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mTakenOffers.setAdapter(offerAdapter);
         return v;

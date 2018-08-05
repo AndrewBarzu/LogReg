@@ -146,6 +146,8 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                     skeletonScreen = Skeleton.bind(mOfferList)
                             .adapter(offerAdapter)
                             .load(R.layout.offer_item_skeleton)
+                            .count(3)
+                            .duration(500)
                             .show();
                     if (prevSelectedItem == null) {
                         prevSelectedItem = v;
@@ -184,6 +186,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                     .adapter(offerAdapter)
                     .load(R.layout.offer_item_skeleton)
                     .count(3)
+                    .duration(500)
                     .show();
             new GetOffersAsync().execute();
         }

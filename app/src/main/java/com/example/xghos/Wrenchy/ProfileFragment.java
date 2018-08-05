@@ -92,7 +92,7 @@ public class ProfileFragment extends Fragment {
 
         TVEmail.setText(mEmail);
         TVPhone.setText(mPhone);
-        
+
         if(currentUser.getAvatar().length() > 10){
             IVProfilePic.setImageBitmap(Helper.getINSTANCE().getBitmapFromString(currentUser.getAvatar()));
         }

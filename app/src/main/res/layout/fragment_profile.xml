@@ -60,6 +60,8 @@
             android:layout_height="50dp"
             android:layout_marginTop="25dp"
             android:background="#8EA6E5"
+            app:tabIndicatorColor="#7C7BD5"
+            app:tabMaxWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email"
