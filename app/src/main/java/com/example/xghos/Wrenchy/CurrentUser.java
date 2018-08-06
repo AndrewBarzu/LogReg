@@ -1,6 +1,6 @@
 package com.example.xghos.Wrenchy;
 
-public class currentUser {
+public class CurrentUser {
 
     public static String id;
     public static String userName;
@@ -10,14 +10,15 @@ public class currentUser {
     public static String avatar;
     public static String status;
     public static String oldpw;
+    public static int tabindex = 0;
 
-    private static final currentUser ourInstance = new currentUser();
+    private static final CurrentUser ourInstance = new CurrentUser();
 
-    public static currentUser getInstance() {
+    public static CurrentUser getInstance() {
         return ourInstance;
     }
 
-    private currentUser() {
+    private CurrentUser() {
     }
 
     public static String getStatus() {
@@ -25,7 +26,7 @@ public class currentUser {
     }
 
     public static void setStatus(String status) {
-        currentUser.status = status;
+        CurrentUser.status = status;
     }
 
     public static String getId() {
@@ -33,7 +34,7 @@ public class currentUser {
     }
 
     public static void setId(String id) {
-        currentUser.id = id;
+        CurrentUser.id = id;
     }
 
     public static String getUserName() {
@@ -41,7 +42,7 @@ public class currentUser {
     }
 
     public static void setUserName(String userName) {
-        currentUser.userName = userName;
+        CurrentUser.userName = userName;
     }
 
     public static String getEmail() {
@@ -49,7 +50,7 @@ public class currentUser {
     }
 
     public static void setEmail(String email) {
-        currentUser.email = email;
+        CurrentUser.email = email;
     }
 
     public static String getAccType() {
@@ -57,7 +58,7 @@ public class currentUser {
     }
 
     public static void setAccType(String accType) {
-        currentUser.accType = accType;
+        CurrentUser.accType = accType;
     }
 
     public static String getPhoneNumber() {
@@ -65,7 +66,7 @@ public class currentUser {
     }
 
     public static void setPhoneNumber(String phoneNumber) {
-        currentUser.phoneNumber = phoneNumber;
+        CurrentUser.phoneNumber = phoneNumber;
     }
 
     public static String getAvatar() {
@@ -73,7 +74,7 @@ public class currentUser {
     }
 
     public static void setAvatar(String avatar) {
-        currentUser.avatar = avatar;
+        CurrentUser.avatar = avatar;
     }
 
     public static String getOldpw() {
@@ -81,11 +82,18 @@ public class currentUser {
     }
 
     public static void setOldpw(String oldpw) {
-        currentUser.oldpw = oldpw;
+        CurrentUser.oldpw = oldpw;
     }
 
-    public static currentUser getOurInstance() {
+    public static CurrentUser getOurInstance() {
         return ourInstance;
     }
 
+    public static int getTabindex() {
+        return tabindex;
+    }
+
+    public static void setTabindex(int tabindex) {
+        CurrentUser.tabindex = tabindex;
+    }
 }

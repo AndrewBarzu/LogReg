@@ -65,7 +65,7 @@ public class PostedOffersFragment extends Fragment {
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
-            getParams.put("id_user", currentUser.getId());
+            getParams.put("id_user", CurrentUser.getId());
             getParams.put("request", "getTakenOffers");
 
             try {

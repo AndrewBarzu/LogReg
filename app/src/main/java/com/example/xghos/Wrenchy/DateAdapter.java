@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import com.ethanhua.skeleton.RecyclerViewSkeletonScreen;
 import com.ethanhua.skeleton.Skeleton;
-import com.ethanhua.skeleton.SkeletonScreen;
-import com.ethanhua.skeleton.ViewSkeletonScreen;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -228,7 +226,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
-            getParams.put("id_user", currentUser.getId());
+            getParams.put("id_user", CurrentUser.getId());
             getParams.put("request", "getUsers");
 
             try {

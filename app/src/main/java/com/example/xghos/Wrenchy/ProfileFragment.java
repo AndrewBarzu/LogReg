@@ -23,10 +23,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ethanhua.skeleton.Skeleton;
-import com.ethanhua.skeleton.SkeletonScreen;
-import com.ethanhua.skeleton.ViewSkeletonScreen;
-
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -62,8 +58,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mEmail = currentUser.getEmail();
-        mPhone = currentUser.getPhoneNumber();
+        mEmail = CurrentUser.getEmail();
+        mPhone = CurrentUser.getPhoneNumber();
     }
 
     @Override
@@ -93,8 +89,8 @@ public class ProfileFragment extends Fragment {
         TVEmail.setText(mEmail);
         TVPhone.setText(mPhone);
 
-        if(currentUser.getAvatar().length() > 10){
-            IVProfilePic.setImageBitmap(Helper.getINSTANCE().getBitmapFromString(currentUser.getAvatar()));
+        if(CurrentUser.getAvatar().length() > 10){
+            IVProfilePic.setImageBitmap(Helper.getINSTANCE().getBitmapFromString(CurrentUser.getAvatar()));
         }
         return v;
     }
@@ -176,7 +172,7 @@ public class ProfileFragment extends Fragment {
             String encoded = Helper.getINSTANCE().getStringFromBitmap(croppedImageFile);
             //Log.d("++++", encoded);
             getParams.put("avatar", encoded);
-            getParams.put("id", String.valueOf(currentUser.getId()));
+            getParams.put("id", String.valueOf(CurrentUser.getId()));
             getParams.put("request", "avatarchange");
 
             try {

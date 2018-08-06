@@ -55,13 +55,13 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TabLayout.Tab selectedTab = tabLayout.getTabAt(sharedPrefs.getInt("tabindex", 0));
+        TabLayout.Tab selectedTab = tabLayout.getTabAt(CurrentUser.getTabindex());
         selectedTab.select();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        sharedPrefs.edit().putInt("tabindex", tabLayout.getSelectedTabPosition()).apply();
+        CurrentUser.setTabindex(tabLayout.getSelectedTabPosition());
     }
 }

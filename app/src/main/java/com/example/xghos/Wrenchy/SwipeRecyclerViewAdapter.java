@@ -3,7 +3,6 @@ package com.example.xghos.Wrenchy;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -213,7 +211,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
             HashMap<String, String> getParams = new HashMap<>();
 
             getParams.put("id_oferta", objects[0]);
-            getParams.put("id_user", String.valueOf(currentUser.getId()));
+            getParams.put("id_user", String.valueOf(CurrentUser.getId()));
             getParams.put("request", "listofferdetails");
 
             try {

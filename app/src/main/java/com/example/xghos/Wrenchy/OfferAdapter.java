@@ -3,7 +3,6 @@ package com.example.xghos.Wrenchy;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
-import android.support.constraint.Placeholder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -102,7 +101,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
             HashMap<String, String> getParams = new HashMap<>();
 
             getParams.put("id_oferta", objects[0]);
-            getParams.put("id_user", String.valueOf(currentUser.getId()));
+            getParams.put("id_user", String.valueOf(CurrentUser.getId()));
             getParams.put("request", "listofferdetails");
 
             try {

@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,7 +167,7 @@ public class LoginFragment extends Fragment {
 //                String email = ETMail.getText().toString();
 //                String pass = ETPassword.getText().toString();
 //
-//                User currentUser = db.Authenticate(new User(null, null, email, pass, null));
+//                User CurrentUser = db.Authenticate(new User(null, null, email, pass, null));
 //
 //                DBHelper dbh = new DBHelper(getApplicationContext());
 //
@@ -185,7 +184,7 @@ public class LoginFragment extends Fragment {
 //                Log.d("APPLOG", "");
 //
 //
-//                if (currentUser != null) {
+//                if (CurrentUser != null) {
 //                    if (CRemember.isChecked()) {
 //                        editor.putString("Email", email);
 //                        editor.putString("Pass", pass);
@@ -195,8 +194,8 @@ public class LoginFragment extends Fragment {
 //                    editor.commit();
 //                    Toast.makeText(LoginFragment.this, "LoginFragment Successful!", Toast.LENGTH_SHORT).show();
 //                    Intent intent = new Intent(LoginFragment.this, MainActivity.class);
-//                    intent.putExtra("userName", currentUser.userName);
-//                    intent.putExtra("accType", currentUser.accType);
+//                    intent.putExtra("userName", CurrentUser.userName);
+//                    intent.putExtra("accType", CurrentUser.accType);
 //                    startActivity(intent);
 //                } else
 //                    Toast.makeText(LoginFragment.this, "LoginFragment Failed!", Toast.LENGTH_SHORT).show();
@@ -230,14 +229,14 @@ public class LoginFragment extends Fragment {
                 String email = Object.getString("email");
                 String phone = Object.getString("nr_telefon");
 
-                currentUser.setUserName(name);
-                currentUser.setEmail(email);
-                currentUser.setPhoneNumber(phone);
-                currentUser.setId(Object.getString("id_user"));
-                currentUser.setAccType(Object.getString("tip_user"));
-                currentUser.setAvatar(Object.getString("avatar"));
-                currentUser.setStatus(Object.getString("status"));
-                currentUser.setOldpw(password);
+                CurrentUser.setUserName(name);
+                CurrentUser.setEmail(email);
+                CurrentUser.setPhoneNumber(phone);
+                CurrentUser.setId(Object.getString("id_user"));
+                CurrentUser.setAccType(Object.getString("tip_user"));
+                CurrentUser.setAvatar(Object.getString("avatar"));
+                CurrentUser.setStatus(Object.getString("status"));
+                CurrentUser.setOldpw(password);
 
                 if (message.equals("success"))
                 {
