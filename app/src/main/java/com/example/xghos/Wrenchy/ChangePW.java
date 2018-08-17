@@ -106,7 +106,7 @@ public class ChangePW extends Fragment {
             super.onPostExecute(s);
             if(s.equals("ok")){
                 Toast.makeText(getActivity(), "Password Changed", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_content, new NavigationFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new NavigationFragment()).commit();
                 }
             else {
                 Log.d("+++", s);
