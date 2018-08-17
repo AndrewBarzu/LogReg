@@ -48,4 +48,7 @@
 
     <string name="no_reviews">No reviews available!</string>
 
+    <string name="channel_name">my channel</string>
+    <string name="channel_description">a channel</string>
+
 </resources>

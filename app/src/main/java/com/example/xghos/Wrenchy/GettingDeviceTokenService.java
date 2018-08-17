@@ -12,8 +12,8 @@ public class GettingDeviceTokenService extends FirebaseMessagingService {
         Log.d("DeviceToken ==> ",  s);
     }
 
-    @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-        super.onMessageReceived(remoteMessage);
-    }
+//    @Override
+//    public void onMessageReceived(RemoteMessage remoteMessage) {
+//        super.onMessageReceived(remoteMessage);
+//    }
 }

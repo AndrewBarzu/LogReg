@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class LoginFragment extends Fragment {
      * Fragmentul de login
      */
 
-
+    public String token;
     private EditText ETMail;               //mailul userului, folosit in logare, trimis prin async task la server
     private EditText ETPassword;           //parola userului, la fel ca mailul
     private Button BLogin;                 //butonul care apare in ui
@@ -47,6 +48,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {    //functia onCreateView, in care se fac toate operatiunile UI
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         container.setAlpha(1F);
+
 
         layout = view.findViewById(R.id.LoginPanel);
         layout.setOnClickListener(new View.OnClickListener() {   //listener pentru click in layout, prin click pe layout se ascunde tastatura
@@ -208,14 +210,16 @@ public class LoginFragment extends Fragment {
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
+            final SharedPreferences.Editor editor = sharedPrefs.edit();
+
             String mail = ETMail.getText().toString();
             String password = ETPassword.getText().toString();
             getParams.put("mail", mail);
             getParams.put("parola", password);
             getParams.put("request", "login");
-
-            final SharedPreferences.Editor editor = sharedPrefs.edit();
-
+            getParams.put("SO", "ANDROID");
+            if(token != null)
+                getParams.put("token", token);
             try {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/login.php").connect();
                 JSONObject responseObject = new JSONObject(response);

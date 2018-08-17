@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "518053209061",
-    "firebase_url": "https://notificari-fc259.firebaseio.com",
-    "project_id": "notificari-fc259",
-    "storage_bucket": "notificari-fc259.appspot.com"
+    "project_number": "484013896308",
+    "firebase_url": "https://dmt-ios-8aac8.firebaseio.com",
+    "project_id": "dmt-ios-8aac8",
+    "storage_bucket": "dmt-ios-8aac8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:518053209061:android:8310d1e4a7ec9e71",
+        "mobilesdk_app_id": "1:484013896308:android:8310d1e4a7ec9e71",
         "android_client_info": {
           "package_name": "com.example.xghos.Wrenchy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "518053209061-g9g55i7neasff1kmf0duf3vlmhi745f2.apps.googleusercontent.com",
+          "client_id": "484013896308-intpgriooo0sdl279jq98a96827qtoc0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAr_673a2Fj6dHOg7fvH8MuuzMk5mLUM9c"
+          "current_key": "AIzaSyDawl0vb6hgH_JEbD_T9fx6yEE09h6pIlw"
         }
       ],
       "services": {
