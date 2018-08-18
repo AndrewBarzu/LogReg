@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/profile_bg"
-    tools:context=".start_activity.ProfileFragment">
+    tools:context=".main_activity.ProfileFragment">
 
     <!--<View-->
         <!--android:id="@+id/view2"-->

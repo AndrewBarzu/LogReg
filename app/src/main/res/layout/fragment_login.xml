@@ -9,6 +9,22 @@
     android:clickable="false"
     tools:context="com.example.xghos.Wrenchy.start_activity.LoginFragment">
 
+    <Button
+        android:id="@+id/BLogin"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:background="@drawable/rounded_corner_button_res"
+        android:text="@string/login"
+        android:textColor="#ffffff"
+        android:stateListAnimator="@null"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/ETEmail"
         android:layout_width="0dp"
@@ -43,21 +59,6 @@
         android:textColor="#ffffff"
         android:textColorHint="#f1eded"
         app:layout_constraintBottom_toTopOf="@+id/CRemember"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/BLogin"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginStart="48dp"
-        android:background="@drawable/rounded_corner_button_res"
-        android:text="@string/login"
-        android:textColor="#ffffff"
-        app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -124,5 +125,33 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/BLogin"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/loading_screen"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#70000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="303dp"
+            android:layout_marginTop="216dp"
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

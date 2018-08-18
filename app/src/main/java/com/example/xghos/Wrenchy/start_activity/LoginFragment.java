@@ -3,8 +3,10 @@ package com.example.xghos.Wrenchy.start_activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -42,6 +44,7 @@ public class LoginFragment extends Fragment {
     private SharedPreferences sharedPrefs; //in care sunt salvatele datele de logare ale utilizatorului, pentru completarea automata a acestora in viitor
     private CheckBox CRemember;            //remember me
     private ConstraintLayout layout;       //layoutul in sine, folosit pentru ascunderea tastaturii prin apasarea acestuia
+    private ConstraintLayout loadingScreen;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {        //functie onCreate, necesara fragmentului
@@ -54,6 +57,7 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         container.setAlpha(1F);
 
+        loadingScreen = view.findViewById(R.id.loading_screen);
 
         layout = view.findViewById(R.id.LoginPanel);
         layout.setOnClickListener(new View.OnClickListener() {   //listener pentru click in layout, prin click pe layout se ascunde tastatura
@@ -88,6 +92,7 @@ public class LoginFragment extends Fragment {
                 if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString())) {
                     new LoginAsyncTask().execute();
                     BLogin.setClickable(false);
+                    loadingScreen.setVisibility(View.VISIBLE);
                 }
                 else
                     Toast.makeText(getContext(), "Login Failed", Toast.LENGTH_SHORT).show();
@@ -260,9 +265,6 @@ public class LoginFragment extends Fragment {
                         editor.putString("Pass", "");
                         editor.apply();
                     }
-
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    startActivity(intent);
                 }
                 return responseMessage;
             }
@@ -276,17 +278,30 @@ public class LoginFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            switch (s){
+            switch (s) {
                 case "Parola incorecta.":
                     Toast.makeText(getContext(), "Email or password is incorrect!", Toast.LENGTH_SHORT).show();
+                    loadingScreen.setVisibility(View.GONE);
                     BLogin.setClickable(true);
                     break;
                 case "Logare cu succes.":
                     Toast.makeText(getActivity().getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+                    new CountDownTimer(1000, 1000) {
+
+                        public void onTick(long millisUntilFinished) {
+                        }
+
+                        public void onFinish() {
+                            loadingScreen.setVisibility(View.GONE);
+                        }
+                    }.start();
                     BLogin.setClickable(true);
                     break;
                 case "Unknown Error":
                     Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+                    loadingScreen.setVisibility(View.GONE);
                     BLogin.setClickable(true);
                     break;
             }

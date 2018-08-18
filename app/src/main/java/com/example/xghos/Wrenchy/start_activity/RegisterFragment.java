@@ -32,7 +32,10 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
+
+import id.zelory.compressor.Compressor;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -148,8 +151,18 @@ public class RegisterFragment extends Fragment {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                croppedImageFile = Helper.getINSTANCE().getImageResized(getContext(), resultUri);
+                File cropableImage = new File(result.getUri().getPath());
+                try {
+                    croppedImageFile = new Compressor(getContext())
+                            .setMaxWidth(124)
+                            .setMaxHeight(124)
+                            .setQuality(60)
+                            .compressToBitmap(cropableImage);
+                }
+                catch (Exception e){
+                    Toast.makeText(getContext(), "Could not compress image file!", Toast.LENGTH_SHORT).show();
+                    Log.d("compression exception", e.toString());
+                }
                 IVProfilePic.setImageBitmap(croppedImageFile);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Log.d("+++", result.getError().toString());

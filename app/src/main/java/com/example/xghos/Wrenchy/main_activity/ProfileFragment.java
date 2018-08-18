@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy.start_activity;
+package com.example.xghos.Wrenchy.main_activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -34,7 +34,10 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
+
+import id.zelory.compressor.Compressor;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -162,8 +165,18 @@ public class ProfileFragment extends Fragment {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                croppedImageFile = Helper.getINSTANCE().getImageResized(getContext(), resultUri);
+                File cropableImage = new File(result.getUri().getPath());
+                try {
+                    croppedImageFile = new Compressor(getContext())
+                            .setMaxWidth(124)
+                            .setMaxHeight(124)
+                            .setQuality(60)
+                            .compressToBitmap(cropableImage);
+                }
+                catch (Exception e){
+                    Toast.makeText(getContext(), "Could not compress image file!", Toast.LENGTH_SHORT).show();
+                    Log.d("compression exception", e.toString());
+                }
                 IVProfilePic.setImageBitmap(croppedImageFile);
                 new ChangeProfilePic().execute(croppedImageFile);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -180,6 +193,7 @@ public class ProfileFragment extends Fragment {
 
 
             String encoded = Helper.getINSTANCE().getStringFromBitmap(objects[0]);
+            CurrentUser.setAvatar(encoded);
             getParams.put("avatar", encoded);
             getParams.put("id", String.valueOf(CurrentUser.getId()));
             getParams.put("request", "avatarchange");

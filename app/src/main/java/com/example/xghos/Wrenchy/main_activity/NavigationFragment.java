@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
-import com.example.xghos.Wrenchy.start_activity.ProfileFragment;
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
 
