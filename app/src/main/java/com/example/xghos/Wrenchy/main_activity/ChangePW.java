@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.main_activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.helpers_extras.Helper;
+import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
+import com.example.xghos.Wrenchy.R;
 
 import org.json.JSONObject;
 

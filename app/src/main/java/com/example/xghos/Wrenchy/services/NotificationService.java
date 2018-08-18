@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.services;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -15,6 +15,8 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.text.Html;
 import android.util.Log;
 
+import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.start_activity.StartActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

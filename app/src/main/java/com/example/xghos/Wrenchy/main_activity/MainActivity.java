@@ -1,10 +1,13 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.main_activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (CurrentUser.getStatus().equals("2")) { //daca statusul e 2, adica daca am schimbat parola prin Forgot Password, se va intra direct in fragmentul de Change Password
+        if (CurrentUser.getStatus().equals("2")) {
             getSupportFragmentManager().beginTransaction().add(R.id.content_frame, new ChangePW()).commit();
 
-        } else {  //altfel se va intra in Navigation Fragment -> Home Fragment, adica cel cu calendarul si listView-ul
+        } else {
             getSupportFragmentManager().beginTransaction().add(R.id.content_frame, new NavigationFragment()).commit();
         }
 

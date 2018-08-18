@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:clickable="false"
-    tools:context="com.example.xghos.Wrenchy.LoginFragment">
+    tools:context="com.example.xghos.Wrenchy.start_activity.LoginFragment">
 
     <EditText
         android:id="@+id/ETEmail"

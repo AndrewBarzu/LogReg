@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.start_activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.helpers_extras.Helper;
+import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
+import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.main_activity.MainActivity;
 
 import org.json.JSONObject;
 

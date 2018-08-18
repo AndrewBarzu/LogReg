@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.helpers_extras;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

@@ -1,8 +1,7 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.start_activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,9 +24,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.xghos.Wrenchy.helpers_extras.Helper;
+import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
+import com.example.xghos.Wrenchy.R;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class RegisterFragment extends Fragment {
@@ -41,7 +48,7 @@ public class RegisterFragment extends Fragment {
     ImageView IVProfilePic;
     Button BRegister;
     Bitmap croppedImageFile;
-    int PIC_CROP = 999;
+    Uri mCropImageUri;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +68,7 @@ public class RegisterFragment extends Fragment {
         IVProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startImageChooserActivity(getActivity());
+                startImageChooserActivity();
             }
         });
         BRegister = view.findViewById(R.id.BRegister);
@@ -89,86 +96,10 @@ public class RegisterFragment extends Fragment {
         return view;
     }
 
-    //    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.fragment_register);
-//
-//
-//        ETName = findViewById(R.id.Name);
-//        ETMail = findViewById(R.id.email);
-//        ETPassword = findViewById(R.id.ETPassword);
-//        ETPhone = findViewById(R.id.ETPhone);
-//        IVProfilePic = findViewById(R.id.profilePic);
-//
-//        final Button BRegister = findViewById(R.id.BRegister);
-//
-//        layout = findViewById(R.id.RegisterPanel);
-//
-//        layout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//                if (imm != null) {
-//                    imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
-//                }
-//            }
-//        });
-//
-//        BRegister.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(Helper.getINSTANCE().registerValidation(ETMail.getText().toString(), ETPassword.getText().toString(), ETName.getText().toString(),
-//                        ETPhone.getText().toString()))
-//                    new RegisterAsyncTask().execute();
-//                else
-//                    Toast.makeText(RegisterFragment.this, "RegisterFragment Failed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        IVProfilePic.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startImageChooserActivity(RegisterFragment.this);
-//            }
-//        });
-
-//        BRegister.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String name = ETName.getText().toString();
-//                String mail = ETMail.getText().toString();
-//                String pass = ETPassword.getText().toString();
-//                String conpass = ETConPassword.getText().toString();
-//                String accType = "0";
-//                if (SType.isChecked())
-//                {
-//                    accType = "1";
-//                }
-//
-//                if (name.isEmpty() || mail.isEmpty() || pass.isEmpty() || conpass.isEmpty()) {
-//                    Toast.makeText(RegisterFragment.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
-//                } else if (!(mail.contains("@") && mail.contains("."))) {
-//                    Toast.makeText(RegisterFragment.this, "Your Email address is not valid!", Toast.LENGTH_SHORT).show();
-//                } else if (pass.length() < 6) {
-//                    Toast.makeText(RegisterFragment.this, "Your Password is too short!", Toast.LENGTH_SHORT).show();
-//                } else if (!pass.equals(conpass)) {
-//                    Toast.makeText(RegisterFragment.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
-//                } else {
-//
-//                    db.addUser(new User(null, name, mail, pass, accType));
-//                    finish();
-//                    Toast.makeText(RegisterFragment.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//    }
-
-    public void startImageChooserActivity(Activity activity) {
-        int permissionCheck = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+    public void startImageChooserActivity() {
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            activity.startActivityForResult(Intent.createChooser(intent, "Choose photo"), 2);
+            CropImage.startPickImageActivity(getContext(), this);
         } else {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
@@ -178,43 +109,51 @@ public class RegisterFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length > 0) {
             if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startImageChooserActivity(getActivity());
+                startImageChooserActivity();
+            }
+        }
+        if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
+            if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // required permissions granted, start crop image activity
+                performCrop(mCropImageUri);
+            } else {
+                Toast.makeText(getContext(), "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
             }
         }
     }
 
     private void performCrop(Uri picUri) {
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(picUri, "image/*");
-            cropIntent.putExtra("crop", true);
-            cropIntent.putExtra("aspectX", 1);
-            cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 150);
-            cropIntent.putExtra("outputY", 150);
-            cropIntent.putExtra("return-data", true);
-            cropIntent.putExtra("scaleUpIfNeeded", true);
-            startActivityForResult(cropIntent, PIC_CROP);
-        }
-        catch (ActivityNotFoundException anfe) {
-            String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast toast = Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        }
+        CropImage.activity(picUri)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                .start(getContext(), this);
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
-            performCrop(selectedImage);
+
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(getContext(), data);
+
+            if (CropImage.isReadExternalStoragePermissionsRequired(getContext(), imageUri)) {
+
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+            } else {
+
+                performCrop(imageUri);
+            }
         }
-        if(requestCode == PIC_CROP && resultCode == Activity.RESULT_OK){
-            Bundle extras = data.getExtras();
-            croppedImageFile = extras.getParcelable("data");
-            IVProfilePic.setImageBitmap(croppedImageFile);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                croppedImageFile = Helper.getINSTANCE().getImageResized(getContext(), resultUri);
+                IVProfilePic.setImageBitmap(croppedImageFile);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Log.d("+++", result.getError().toString());
+            }
         }
     }
 

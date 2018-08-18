@@ -1,8 +1,7 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.start_activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,37 +22,40 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.helpers_extras.Helper;
+import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
+import com.example.xghos.Wrenchy.helpers_extras.LockableViewPager;
+import com.example.xghos.Wrenchy.helpers_extras.NoReviewsFragment;
+import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class ProfileFragment extends Fragment {
 
-    private static final String ARG_NAME = "name";
-    private static final String ARG_EMAIL = "email";
-    private static final String ARG_PHONE = "phone";
-    final int PIC_CROP = 999;
-
     private String mEmail;
     private String mPhone;
-    private TextView TVName;
-    private TextView TVEmail;
-    private TextView TVPhone;
     private ImageView IVProfilePic;
     private Bitmap croppedImageFile;
-    private LockableViewPager reviewsContainer;
-    private TabLayout tabLayout;
+    private Uri mCropImageUri;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
 
-    public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
-        return fragment;
-    }
+//    public static ProfileFragment newInstance() {
+//        ProfileFragment fragment = new ProfileFragment();
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,21 +70,21 @@ public class ProfileFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        reviewsContainer = v.findViewById(R.id.reviewContainer);
+        LockableViewPager reviewsContainer = v.findViewById(R.id.reviewContainer);
         setupViewPager(reviewsContainer);
         reviewsContainer.setSwipeable(false);
 
-        tabLayout = v.findViewById(R.id.reviewTabs);
+        TabLayout tabLayout = v.findViewById(R.id.reviewTabs);
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(reviewsContainer));
 
-        TVEmail = v.findViewById(R.id.email);
-        TVPhone = v.findViewById(R.id.phone);
+        TextView TVEmail = v.findViewById(R.id.email);
+        TextView TVPhone = v.findViewById(R.id.phone);
 
         IVProfilePic = v.findViewById(R.id.profilePic);
         IVProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startImageChooserActivity(ProfileFragment.this);
+                startImageChooserActivity();
             }
         });
 
@@ -108,11 +110,10 @@ public class ProfileFragment extends Fragment {
         viewPager.setAdapter(adapter);
     }
 
-    public void startImageChooserActivity(Fragment fragment) {
+    public void startImageChooserActivity() {
         int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            fragment.startActivityForResult(Intent.createChooser(intent, "Choose photo"), 2);
+            CropImage.startPickImageActivity(getContext(), this);
         } else {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
@@ -122,55 +123,63 @@ public class ProfileFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length > 0) {
             if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startImageChooserActivity(ProfileFragment.this);
+                startImageChooserActivity();
+            }
+        }
+        if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
+            if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // required permissions granted, start crop image activity
+                performCrop(mCropImageUri);
+            } else {
+                Toast.makeText(getContext(), "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
             }
         }
     }
 
     private void performCrop(Uri picUri) {
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            cropIntent.setDataAndType(picUri, "image/*");
-            cropIntent.putExtra("crop", true);
-            cropIntent.putExtra("aspectX", 1);
-            cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 192);
-            cropIntent.putExtra("outputY", 192);
-            cropIntent.putExtra("return-data", true);
-            cropIntent.putExtra("scaleUpIfNeeded", true);
-            startActivityForResult(cropIntent, PIC_CROP);
-        }
-        catch (ActivityNotFoundException anfe) {
-            String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast toast = Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        }
+        CropImage.activity(picUri)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                .start(getContext(), this);
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
-            performCrop(selectedImage);
+
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(getContext(), data);
+
+            if (CropImage.isReadExternalStoragePermissionsRequired(getContext(), imageUri)) {
+
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+            } else {
+
+                performCrop(imageUri);
+            }
         }
-        if(requestCode == PIC_CROP && resultCode == Activity.RESULT_OK){
-            Bundle extras = data.getExtras();
-            croppedImageFile = extras.getParcelable("data");
-            IVProfilePic.setImageBitmap(croppedImageFile);
-            new ChangeProfilePic().execute();
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                croppedImageFile = Helper.getINSTANCE().getImageResized(getContext(), resultUri);
+                IVProfilePic.setImageBitmap(croppedImageFile);
+                new ChangeProfilePic().execute(croppedImageFile);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Log.d("+++", result.getError().toString());
+            }
         }
     }
 
-    private class ChangeProfilePic extends AsyncTask<String, Void, String> {
+    private static class ChangeProfilePic extends AsyncTask<Bitmap, Void, String> {
 
         @Override
-        protected String doInBackground(String... objects) {
+        protected String doInBackground(Bitmap... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
-            String encoded = Helper.getINSTANCE().getStringFromBitmap(croppedImageFile);
-            //Log.d("++++", encoded);
+
+            String encoded = Helper.getINSTANCE().getStringFromBitmap(objects[0]);
             getParams.put("avatar", encoded);
             getParams.put("id", String.valueOf(CurrentUser.getId()));
             getParams.put("request", "avatarchange");

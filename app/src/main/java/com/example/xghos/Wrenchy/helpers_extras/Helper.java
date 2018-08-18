@@ -1,6 +1,5 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.helpers_extras;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -8,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Base64;
-import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
 

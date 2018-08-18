@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.adapters;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,6 +17,11 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
+import com.example.xghos.Wrenchy.helpers_extras.MyOffer;
+import com.example.xghos.Wrenchy.main_activity.OfferFragment;
+import com.example.xghos.Wrenchy.R;
 
 import org.json.JSONObject;
 
@@ -35,6 +40,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
     private String mOfferExpire;
     private String mOfferPrice;
     private String mImageString;
+    private String mOfferID;
     private boolean editable;
 
     public SwipeRecyclerViewAdapter(Context context, ArrayList<MyOffer> objects, boolean editable) {
@@ -220,6 +226,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
                 String message = responseObject.getString("msg");
                 JSONObject Object = responseObject.getJSONObject("result");
                 Log.d("oferta", Object.toString());
+                mOfferID = Object.getString("id_oferta");
                 mOfferTitle = Object.getString("titlu_oferta");
                 mOfferDescription = Object.getString("descriere_oferta");
                 mOfferExpire = Object.getString("data_expirare_oferta");
@@ -241,7 +248,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
                 case "success":
                     FragmentTransaction fragmentTransaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-                    OfferFragment offerFragment = OfferFragment.newInstance(mOfferTitle, mOfferDescription, mOfferLocation, mOfferExpire, mOfferPrice, mImageString);
+                    OfferFragment offerFragment = OfferFragment.newInstance(mOfferID, mOfferTitle, mOfferDescription, mOfferLocation, mOfferExpire, mOfferPrice, mImageString);
                     fragmentTransaction.replace(R.id.content_frame, offerFragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();

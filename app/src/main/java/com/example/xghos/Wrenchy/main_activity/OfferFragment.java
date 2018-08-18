@@ -1,16 +1,19 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.main_activity;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.xghos.Wrenchy.helpers_extras.Helper;
+import com.example.xghos.Wrenchy.helpers_extras.OfferPicture;
+import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
 
 
 public class OfferFragment extends Fragment {
@@ -22,18 +25,12 @@ public class OfferFragment extends Fragment {
     private String mOfferExpire;
     private String mOfferPrice;
     private String mOfferImage;
-    private TextView TVOfferTitle;
-    private TextView TVOfferDescription;
-    private TextView TVOfferLocation;
-    private TextView TVOfferExpire;
-    private TextView TVOfferPrice;
-    private ViewPager VPImageList;
 
     public OfferFragment(){
 
     }
 
-    public static OfferFragment newInstance(String OfferTitle, String OfferDescription, String OfferLocation, String OfferExpire, String OfferPrice, String OfferImage) {  //TODO also send the title, description, expiration date etc with the id so that we can skip the loading
+    public static OfferFragment newInstance(String OfferID, String OfferTitle, String OfferDescription, String OfferLocation, String OfferExpire, String OfferPrice, String OfferImage) {  //TODO also send the title, description, expiration date etc with the id so that we can skip the loading
         OfferFragment fragment = new OfferFragment();
         fragment.mOfferTitle = OfferTitle;
         fragment.mOfferDescription = OfferDescription;
@@ -41,6 +38,7 @@ public class OfferFragment extends Fragment {
         fragment.mOfferExpire = OfferExpire;
         fragment.mOfferPrice = OfferPrice;
         fragment.mOfferImage = OfferImage;
+        fragment.mOfferId = OfferID;
         return fragment;
     }
 
@@ -55,12 +53,12 @@ public class OfferFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_offer_details, container, false);
         ((MainActivity)getActivity()).toolbar.setVisibility(View.GONE);
         TabLayout dots = v.findViewById(R.id.dots);
-        TVOfferTitle = v.findViewById(R.id.offerTitle);
-        TVOfferDescription = v.findViewById(R.id.offerDetails);
-        TVOfferExpire = v.findViewById(R.id.expireDate);
-        TVOfferLocation = v.findViewById(R.id.offerLocation);
-        TVOfferPrice = v.findViewById(R.id.price);
-        VPImageList = v.findViewById(R.id.viewPager);
+        TextView TVOfferTitle = v.findViewById(R.id.offerTitle);
+        TextView TVOfferDescription = v.findViewById(R.id.offerDetails);
+        TextView TVOfferExpire = v.findViewById(R.id.expireDate);
+        TextView TVOfferLocation = v.findViewById(R.id.offerLocation);
+        TextView TVOfferPrice = v.findViewById(R.id.price);
+        ViewPager VPImageList = v.findViewById(R.id.viewPager);
         TVOfferTitle.setText(mOfferTitle);
         TVOfferDescription.setText(mOfferDescription);
         TVOfferExpire.setText(mOfferExpire);

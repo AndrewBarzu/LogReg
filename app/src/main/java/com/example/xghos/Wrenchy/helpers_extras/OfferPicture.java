@@ -1,8 +1,6 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.helpers_extras;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.xghos.Wrenchy.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OfferPicture.OnFragmentInteractionListener} interface
+ * {@link  interface
  * to handle interaction events.
  * Use the {@link OfferPicture#newInstance} factory method to
  * create an instance of this fragment.

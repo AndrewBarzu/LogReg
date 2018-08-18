@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.main_activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,6 +10,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.helpers_extras.LockableViewPager;
+import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
 
 public class HistoryFragment extends Fragment {
 

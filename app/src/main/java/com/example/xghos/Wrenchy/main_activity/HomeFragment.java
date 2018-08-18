@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.main_activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,11 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
+
+import com.example.xghos.Wrenchy.helpers_extras.HeaderItemDecoration;
+import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.adapters.DateAdapter;
 
 import java.util.Calendar;
 

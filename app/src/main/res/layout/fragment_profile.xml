@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/profile_bg"
-    tools:context=".ProfileFragment">
+    tools:context=".start_activity.ProfileFragment">
 
     <!--<View-->
         <!--android:id="@+id/view2"-->
@@ -83,7 +83,7 @@
 
         </android.support.design.widget.TabLayout>
 
-        <com.example.xghos.Wrenchy.LockableViewPager
+        <com.example.xghos.Wrenchy.helpers_extras.LockableViewPager
             android:id="@+id/reviewContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"

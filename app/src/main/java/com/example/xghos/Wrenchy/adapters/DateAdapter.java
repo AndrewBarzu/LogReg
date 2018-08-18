@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.adapters;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -16,6 +16,12 @@ import android.widget.TextView;
 
 import com.ethanhua.skeleton.RecyclerViewSkeletonScreen;
 import com.ethanhua.skeleton.Skeleton;
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.helpers_extras.HeaderItemDecoration;
+import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
+import com.example.xghos.Wrenchy.helpers_extras.MyDate;
+import com.example.xghos.Wrenchy.helpers_extras.MyOffer;
+import com.example.xghos.Wrenchy.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

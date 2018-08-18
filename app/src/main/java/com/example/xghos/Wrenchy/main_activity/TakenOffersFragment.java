@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.main_activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,26 +10,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
+import com.example.xghos.Wrenchy.helpers_extras.MyOffer;
+import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.adapters.SwipeRecyclerViewAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
-public class PostedOffersFragment extends Fragment {
+public class TakenOffersFragment extends Fragment {
 
     private ArrayList<MyOffer> mOffers;
     private SwipeRecyclerViewAdapter offerAdapter;
     private ArrayList<String> offerIDs;
 
-    public PostedOffersFragment() {
+    public TakenOffersFragment() {
         // Required empty public constructor
     }
 
-    public static PostedOffersFragment newInstance() {
-        return new PostedOffersFragment();
+    public static TakenOffersFragment newInstance() {
+        return new TakenOffersFragment();
     }
 
     @Override
@@ -37,21 +41,21 @@ public class PostedOffersFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mOffers = new ArrayList<>();
         offerIDs = new ArrayList<>();
-        offerAdapter = new SwipeRecyclerViewAdapter(getContext(), mOffers, true);
-        new GetPostedOffersAsync().execute();
+        offerAdapter = new SwipeRecyclerViewAdapter(getContext(), mOffers, false);
+        new GetTakenOffersAsync().execute();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_posted_offers, container, false);
-        RecyclerView mTakenOffers = v.findViewById(R.id.postedOffers);
+        View v = inflater.inflate(R.layout.fragment_taken_offers, container, false);
+        RecyclerView mTakenOffers = v.findViewById(R.id.takenOffers);
         mTakenOffers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         mTakenOffers.setAdapter(offerAdapter);
         return v;
     }
 
-    private class GetPostedOffersAsync extends AsyncTask<String, Void, String> {
+    private class GetTakenOffersAsync extends AsyncTask<String, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -73,7 +77,7 @@ public class PostedOffersFragment extends Fragment {
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("msg");
                 JSONObject object = responseObject.getJSONObject("result");
-                JSONArray takenOffers = object.getJSONArray("ofertepuse");
+                JSONArray takenOffers = object.getJSONArray("oferteluate");
                 for (int i = 0; i < takenOffers.length(); i++) {
                     MyOffer offer = new MyOffer();
                     offer.setName(takenOffers.getJSONObject(i).getString("titlu_oferta"));
@@ -99,3 +103,5 @@ public class PostedOffersFragment extends Fragment {
         }
     }
 }
+
+

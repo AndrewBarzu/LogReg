@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

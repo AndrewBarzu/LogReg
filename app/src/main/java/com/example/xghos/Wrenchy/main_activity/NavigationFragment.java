@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.main_activity;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.start_activity.ProfileFragment;
+import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
 
 
 public class NavigationFragment extends Fragment {

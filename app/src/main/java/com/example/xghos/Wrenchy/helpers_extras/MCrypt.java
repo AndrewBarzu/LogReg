@@ -1,8 +1,6 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.helpers_extras;
 
 import java.math.BigInteger;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -11,7 +9,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import android.util.Base64;
 import android.util.Log;
 
 class MCrypt {

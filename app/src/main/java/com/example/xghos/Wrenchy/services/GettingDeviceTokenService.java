@@ -1,4 +1,4 @@
-package com.example.xghos.Wrenchy;
+package com.example.xghos.Wrenchy.services;
 
 import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
