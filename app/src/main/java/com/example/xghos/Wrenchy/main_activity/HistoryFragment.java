@@ -20,8 +20,6 @@ public class HistoryFragment extends Fragment {
 
     private TakenOffersFragment takenOffersFragment;
     private PostedOffersFragment postedOffersFragment;
-    private LockableViewPager mViewPager;
-    private SharedPreferences sharedPrefs;
     private TabLayout tabLayout;
 
     @Override
@@ -33,12 +31,11 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
-        sharedPrefs = getContext().getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
 
         takenOffersFragment = new TakenOffersFragment();
         postedOffersFragment = new PostedOffersFragment();
 
-        mViewPager = rootView.findViewById(R.id.historyContainer);
+        LockableViewPager mViewPager = rootView.findViewById(R.id.historyContainer);
         mViewPager.setSwipeable(false);
         setupViewPager(mViewPager);
 

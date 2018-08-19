@@ -54,12 +54,6 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-//    public static ProfileFragment newInstance() {
-//        ProfileFragment fragment = new ProfileFragment();
-//        return fragment;
-//    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

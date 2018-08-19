@@ -14,6 +14,8 @@ import com.example.xghos.Wrenchy.helpers_extras.Helper;
 import com.example.xghos.Wrenchy.helpers_extras.OfferPicture;
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
+import com.example.xghos.Wrenchy.interfaces.DrawerInterface;
+import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
 
 
 public class OfferFragment extends Fragment {
@@ -25,6 +27,7 @@ public class OfferFragment extends Fragment {
     private String mOfferExpire;
     private String mOfferPrice;
     private String mOfferImage;
+    private ToolbarInterface toolbarInterface;
 
     public OfferFragment(){
 
@@ -51,7 +54,7 @@ public class OfferFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_offer_details, container, false);
-        ((MainActivity)getActivity()).toolbar.setVisibility(View.GONE);
+        toolbarInterface.hideToolbar();
         TabLayout dots = v.findViewById(R.id.dots);
         TextView TVOfferTitle = v.findViewById(R.id.offerTitle);
         TextView TVOfferDescription = v.findViewById(R.id.offerDetails);
@@ -69,8 +72,7 @@ public class OfferFragment extends Fragment {
         viewPagerAdapter.addFragment(offerPicture);
         VPImageList.setAdapter(viewPagerAdapter);
         dots.setupWithViewPager(VPImageList);
-        TextView toolbarTitle = ((MainActivity)getActivity()).toolbar.findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(R.string.offer_details);
+        toolbarInterface.setToolbarTitle(R.string.offer_details);
         return v;
     }
 
@@ -78,10 +80,17 @@ public class OfferFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        try{
+            toolbarInterface = (ToolbarInterface)context;
+        }
+        catch (ClassCastException e){
+            throw new ClassCastException(context.toString() + " must implement ToolbarInterface");
+        }
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
+        super.onDestroyView();
+        toolbarInterface.showToolbar();
     }
 }

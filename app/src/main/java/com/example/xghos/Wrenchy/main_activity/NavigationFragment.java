@@ -1,21 +1,20 @@
 package com.example.xghos.Wrenchy.main_activity;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
 
 
 public class NavigationFragment extends Fragment {
@@ -28,6 +27,7 @@ public class NavigationFragment extends Fragment {
     ProfileFragment mProfileFragment;
     HistoryFragment mHistoryFragment;
     MenuItem mPrevMenuItem;
+    ToolbarInterface toolbarInterface;
 
     BottomNavigationView bottomNavigationView;
 
@@ -43,9 +43,14 @@ public class NavigationFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_navigation, container, false);
 
-        final Toolbar toolbar = ((MainActivity)getActivity()).toolbar.findViewById(R.id.toolbar);
-        final TextView toolbarTitle = ((MainActivity)getActivity()).toolbar.findViewById(R.id.toolbar_title);
-        toolbarTitle.setText(R.string.title_home);
+        try{
+            toolbarInterface = (ToolbarInterface)getContext();
+            toolbarInterface.setToolbarTitle(R.string.title_home);
+        }
+        catch (ClassCastException e){
+            throw new ClassCastException(getContext().toString() + " must implement ToolbarInterface");
+        }
+
 
         bottomNavigationView = view.findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -55,15 +60,15 @@ public class NavigationFragment extends Fragment {
                         switch (item.getItemId()) {
                             case R.id.home:
                                 viewPager.setCurrentItem(0);
-                                toolbarTitle.setText(R.string.title_home);
+                                toolbarInterface.setToolbarTitle(R.string.title_home);
                                 break;
                             case R.id.history:
                                 viewPager.setCurrentItem(1);
-                                toolbarTitle.setText(R.string.title_history);
+                                toolbarInterface.setToolbarTitle(R.string.title_history);
                                 break;
                             case R.id.profile:
                                 viewPager.setCurrentItem(2);
-                                toolbarTitle.setText(CurrentUser.getUserName());
+                                toolbarInterface.setToolbarTitle(CurrentUser.getUserName());
                                 break;
                         }
                         return false;
@@ -89,13 +94,13 @@ public class NavigationFragment extends Fragment {
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
                 switch (position){
                     case(0):
-                        toolbarTitle.setText(R.string.title_home);
+                        toolbarInterface.setToolbarTitle(R.string.title_home);
                         break;
                     case(1):
-                        toolbarTitle.setText(R.string.title_history);
+                        toolbarInterface.setToolbarTitle(R.string.title_history);
                         break;
                     case(2):
-                        toolbarTitle.setText(CurrentUser.getUserName());
+                        toolbarInterface.setToolbarTitle(CurrentUser.getUserName());
                         break;
                 }
                 mPrevMenuItem = bottomNavigationView.getMenu().getItem(position);

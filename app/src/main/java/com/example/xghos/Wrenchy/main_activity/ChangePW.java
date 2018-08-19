@@ -34,16 +34,11 @@ public class ChangePW extends Fragment {
     private TextView mOldPass;
     private TextView mNewPass;
     private TextView mConPass;
-    private Button mChangePass;
     private DrawerInterface drawerInterface;
     private ToolbarInterface toolbarInterface;
 
     public ChangePW() {
         // Required empty public constructor
-    }
-    public static ChangePW newInstance() {
-        ChangePW fragment = new ChangePW();
-        return fragment;
     }
 
     @Override
@@ -76,7 +71,7 @@ public class ChangePW extends Fragment {
         mNewPass = view.findViewById(R.id.ETNpass);
         mConPass = view.findViewById(R.id.ETCpass);
 
-        mChangePass = view.findViewById(R.id.BChangePass);
+        Button mChangePass = view.findViewById(R.id.BChangePass);
         mChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

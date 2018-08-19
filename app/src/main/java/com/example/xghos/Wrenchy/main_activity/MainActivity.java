@@ -140,4 +140,15 @@ public class MainActivity extends AppCompatActivity implements DrawerInterface, 
         toolbar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void setToolbarTitle(int s){
+        TextView textView = toolbar.findViewById(R.id.toolbar_title);
+        textView.setText(s);
+    }
+
+    @Override
+    public void setToolbarTitle(String s){
+        TextView textView = toolbar.findViewById(R.id.toolbar_title);
+        textView.setText(s);
+    }
 }
