@@ -18,8 +18,10 @@ import android.widget.Toast;
 import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.helpers_extras.Helper;
+import com.example.xghos.Wrenchy.interfaces.DrawerInterface;
+import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DrawerInterface, ToolbarInterface{
 
     private DrawerLayout mDrawerLayout;
 //    private ArrayList<User> list;
@@ -117,4 +119,25 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         CurrentUser.setTabindex(0);
     }
+
+    @Override
+    public void lockDrawer() {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    @Override
+    public void unlockDrawer() {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    @Override
+    public void showToolbar(){
+        toolbar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideToolbar(){
+        toolbar.setVisibility(View.GONE);
+    }
+
 }

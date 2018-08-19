@@ -1,5 +1,6 @@
 package com.example.xghos.Wrenchy.main_activity;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.interfaces.DrawerInterface;
 import com.example.xghos.Wrenchy.helpers_extras.Helper;
 import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
 import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
 
 import org.json.JSONObject;
 
@@ -32,6 +35,8 @@ public class ChangePW extends Fragment {
     private TextView mNewPass;
     private TextView mConPass;
     private Button mChangePass;
+    private DrawerInterface drawerInterface;
+    private ToolbarInterface toolbarInterface;
 
     public ChangePW() {
         // Required empty public constructor
@@ -39,6 +44,18 @@ public class ChangePW extends Fragment {
     public static ChangePW newInstance() {
         ChangePW fragment = new ChangePW();
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            drawerInterface = (DrawerInterface)context;
+            toolbarInterface = (ToolbarInterface)context;
+        }
+        catch (ClassCastException e){
+            throw new ClassCastException(context.toString() + " must implement DrawerInterface and ToolbarInterface");
+        }
     }
 
     @Override
@@ -69,9 +86,19 @@ public class ChangePW extends Fragment {
                 }
             }
         });
-        ((MainActivity)getActivity()).toolbar.setVisibility(View.GONE);
+        drawerInterface.lockDrawer();
+        toolbarInterface.hideToolbar();
         return view;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        drawerInterface.unlockDrawer();
+        toolbarInterface.showToolbar();
+    }
+
+
     private class ChangePassword extends AsyncTask<String, Void, String> {
 
         @Override

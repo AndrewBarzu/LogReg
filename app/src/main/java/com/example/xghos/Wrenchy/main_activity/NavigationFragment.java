@@ -126,8 +126,6 @@ public class NavigationFragment extends Fragment {
 //            }
 //        });
         setupViewPager(viewPager);
-        ((MainActivity)getActivity()).toolbar.setVisibility(View.VISIBLE);
-
         return view;
     }
 
