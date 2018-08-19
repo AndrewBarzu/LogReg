@@ -24,8 +24,7 @@
         </activity>
 
         <activity android:name=".main_activity.MainActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"/>
-
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
 

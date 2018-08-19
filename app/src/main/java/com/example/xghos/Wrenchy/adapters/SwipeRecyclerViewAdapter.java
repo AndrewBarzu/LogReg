@@ -198,7 +198,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
         ImageView ivEdit;
         String offer_id;
 
-        public SimpleViewHolder(View itemView) {
+        SimpleViewHolder(View itemView) {
             super(itemView);
             swipeLayout = itemView.findViewById(R.id.swipe);
             tvOfferName = itemView.findViewById(R.id.offerNameSwipe);

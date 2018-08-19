@@ -43,7 +43,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
     private String mOfferID;
     private Boolean wasClicked;
 
-    public OfferAdapter(Context context, int resource, ArrayList<MyOffer> offers) {
+    OfferAdapter(Context context, int resource, ArrayList<MyOffer> offers) {
         mResource = resource;
         mOffers = offers;
         mContext = context;
@@ -52,9 +52,9 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
 
     public class MyHolder extends RecyclerView.ViewHolder {
         public TextView offerName, offerPrice, offerLocation, offerer;
-        public String offer_id;
+        String offer_id;
 
-        public MyHolder(View view) {
+        MyHolder(View view) {
             super(view);
             offerName = view.findViewById(R.id.offerName);
             offerPrice = view.findViewById(R.id.offerPrice);

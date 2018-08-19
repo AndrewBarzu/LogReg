@@ -138,7 +138,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     public class MyHolder extends RecyclerView.ViewHolder {  //construirea obiectelor de tip date_item
         public TextView date, name, month;
 
-        public MyHolder(View view) {
+        MyHolder(View view) {
             super(view);
             date = view.findViewById(R.id.day);
             name = view.findViewById(R.id.dayName);
@@ -238,7 +238,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
             try {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/listoffers.php").connect();
                 JSONObject responseObject = new JSONObject(response);
-                String message = responseObject.getString("msg");
+                //String message = responseObject.getString("msg");
                 JSONArray Object = responseObject.getJSONArray("result");
                 for (int i = 0; i < Object.length(); i++) {
                     MyOffer offer = new MyOffer();

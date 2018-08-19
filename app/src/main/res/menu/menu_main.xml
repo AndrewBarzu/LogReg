@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/offers"
-        android:title="My Offers"
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="none">
+    <item android:id="@+id/new_offer"
+        android:title="Create new offer"
+        android:icon="@drawable/add_24p"/>
+    <item android:id="@+id/favorites"
+        android:title="Favorites"
         android:icon="@drawable/ic_library_books_black_24dp" />
-    <item android:id="@+id/history"
-        android:title="Offers History"
-        android:icon="@drawable/ic_history_black_24dp" />
     <item android:id="@+id/settings"
         android:title="Settings"
         android:icon="@drawable/ic_settings_black_24dp" />
+    </group>
+
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
     <item android:id="@+id/logout"
-        android:title="Logout" />
+        android:title="Logout"
+        android:icon="@drawable/ic_close_24dp"/>
+    <item android:id="@+id/support"
+        android:title="Support"
+        android:icon="@drawable/support_24p"/>
+    </group>
 
 </menu>

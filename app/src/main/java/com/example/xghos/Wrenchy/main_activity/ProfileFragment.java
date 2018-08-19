@@ -170,7 +170,7 @@ public class ProfileFragment extends Fragment {
                     croppedImageFile = new Compressor(getContext())
                             .setMaxWidth(124)
                             .setMaxHeight(124)
-                            .setQuality(60)
+                            .setQuality(30)
                             .compressToBitmap(cropableImage);
                 }
                 catch (Exception e){
