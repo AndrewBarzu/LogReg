@@ -36,7 +36,7 @@
     <string name="images">Images:</string>
     <string name="price">Sum: </string>
     <string name="description">Description: </string>
-    <string name="take_job">Take job</string>
+    <string name="post_job">Post offer</string>
 
     <string name="offer_details">Details:</string>
     <string name="title_activity_history_fragment">HistoryFragment</string>
@@ -51,4 +51,7 @@
     <string name="channel_name">my channel</string>
     <string name="channel_description">a channel</string>
 
+    <string name="offer_title">Offer title</string>
+    <string name="offer_location">Location</string>
+    <string name="offer_price">Price</string>
 </resources>

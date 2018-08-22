@@ -4,13 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,24 +67,30 @@ public class MainActivity extends AppCompatActivity implements DrawerInterface, 
 
                         switch (menuItem.getItemId()){
                             case R.id.new_offer:
-                                Toast.makeText(MainActivity.this, "new offer", Toast.LENGTH_SHORT).show();
-                                return true;
+                                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+                                if(!(fragment instanceof CreateOfferFragment)) {
+                                    Toast.makeText(MainActivity.this, "new offer", Toast.LENGTH_SHORT).show();
+                                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new CreateOfferFragment());
+                                    fragmentTransaction.addToBackStack(null);
+                                    fragmentTransaction.commit();
+                                }
+                                break;
                             case R.id.favorites:
                                 Toast.makeText(MainActivity.this, "favorites", Toast.LENGTH_SHORT).show();
-                                return true;
+                                break;
                             case R.id.settings:
                                 Toast.makeText(MainActivity.this, "settings", Toast.LENGTH_SHORT).show();
-                                return true;
+                                break;
                             case R.id.support:
                                 Toast.makeText(MainActivity.this, "support", Toast.LENGTH_SHORT).show();
-                                return true;
+                                break;
                             case R.id.logout:
                                 finish();
                         }
 
+                        mDrawerLayout.closeDrawers();
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
 
                         return true;
                     }
@@ -92,8 +101,14 @@ public class MainActivity extends AppCompatActivity implements DrawerInterface, 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+                if(!mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                    return true;
+                }
+               else{
+                    mDrawerLayout.closeDrawers();
+                    return true;
+                }
         }
         return super.onOptionsItemSelected(item);
     }
