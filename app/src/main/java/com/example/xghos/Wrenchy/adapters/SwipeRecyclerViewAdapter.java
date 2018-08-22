@@ -3,6 +3,7 @@ package com.example.xghos.Wrenchy.adapters;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -12,28 +13,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.swipe.SwipeLayout;
-import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
+import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
 import com.example.xghos.Wrenchy.helpers_extras.MyOffer;
 import com.example.xghos.Wrenchy.main_activity.OfferFragment;
-import com.example.xghos.Wrenchy.R;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecyclerViewAdapter.SimpleViewHolder> {
+public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecyclerViewAdapter.MyHolder> {
 
+    /*
+    *Adaptorul pentru oferte, aici sunt luate ofertele de pe server si puse in listView prin apasarea unei date afisate in calendar
+    Momentan apare doar titlul ofertei
+     */
 
+    private ArrayList<MyOffer> mOffers;
     private Context mContext;
-    private ArrayList<MyOffer> offerList;
-    private Boolean wasClicked;
     private String mOfferTitle;
     private String mOfferDescription;
     private String mOfferLocation;
@@ -41,173 +44,94 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
     private String mOfferPrice;
     private String mImageString;
     private String mOfferID;
-    private boolean editable;
+    private Boolean wasClicked;
+    private Boolean mEditable;
 
-    public SwipeRecyclerViewAdapter(Context context, ArrayList<MyOffer> objects, boolean editable) {
-        this.mContext = context;
-        this.offerList = objects;
-        this.editable = editable;
-        this.wasClicked = false;
+    public SwipeRecyclerViewAdapter(Context context, ArrayList<MyOffer> offers, boolean editable) {
+        mOffers = offers;
+        mContext = context;
+        wasClicked = false;
+        mEditable = editable;
+    }
+
+    public class MyHolder extends RecyclerView.ViewHolder {
+        public TextView offerName, offerPrice, offerLocation, offerer;
+        String offer_id;
+        Boolean wasSwiped;
+
+        MyHolder(View view) {
+            super(view);
+            offerName = view.findViewById(R.id.offerNameSwipe);
+            offerPrice = view.findViewById(R.id.offerPriceSwipe);
+            offerLocation = view.findViewById(R.id.offerLocationSwipe);
+            offerer = view.findViewById(R.id.offerorNameSwipe);
+            final LinearLayout bottomWrapper = itemView.findViewById(R.id.bottom_wrapper);
+            final ConstraintLayout constraintLayout = view.findViewById(R.id.viewToSwipe);
+            Button swipe = view.findViewById(R.id.swipeButton);
+
+            final ImageView ivEdit = view.findViewById(R.id.ivEdit);
+            final ImageView ivDelete = view.findViewById(R.id.ivDelete);
+            wasSwiped = false;
+            swipe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    float width;
+                    if (mEditable) {
+                        width = bottomWrapper.getWidth();
+                        ivDelete.setVisibility(View.VISIBLE);
+                        ivEdit.setVisibility(View.VISIBLE);
+                    } else {
+                        width = bottomWrapper.getWidth() / 2;
+                        ivDelete.setVisibility(View.VISIBLE);
+                    }
+                    if (!wasSwiped) {
+                        constraintLayout.animate().translationX(-width);
+                        wasSwiped = true;
+                    } else {
+                        constraintLayout.animate().translationX(0);
+                        wasSwiped = false;
+                    }
+                }
+            });
+            constraintLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!wasClicked) {
+                        new GetOfferAsync().execute(offer_id);
+                        wasClicked = true;
+                        new CountDownTimer(1000, 1000) {
+
+                            public void onTick(long millisUntilFinished) {
+                            }
+
+                            public void onFinish() {
+                                wasClicked = false;
+                            }
+                        }.start();
+                    }
+                }
+            });
+        }
     }
 
     @Override
-    public SimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.offer_item_swipeable, parent, false);
-        return new SimpleViewHolder(view);
+    public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.offer_item_swipeable, parent, false);
+        return new MyHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
-        final MyOffer item = offerList.get(position);
-
-        viewHolder.tvOfferName.setText(item.getName());
-        viewHolder.tvOfferLocation.setText(item.getLocation());
-        viewHolder.tvOfferorName.setText(item.getOfferer());
-        viewHolder.bOfferPrice.setText(item.getPrice());
-        viewHolder.offer_id = item.getOffer_id();
-
-        if(!editable){
-            viewHolder.ivEdit.setVisibility(View.GONE);
-            Log.d("check", "done");
-        }
-        else {
-            Log.d("check", "failed");
-        }
-
-
-        viewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
-
-        // Drag From Right
-        viewHolder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, viewHolder.swipeLayout.findViewById(R.id.bottom_wrapper));
-
-
-        // Handling different events when swiping
-        viewHolder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
-            @Override
-            public void onClose(SwipeLayout layout) {
-                //when the SurfaceView totally cover the BottomView.
-            }
-
-            @Override
-            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-                //you are swiping.
-            }
-
-            @Override
-            public void onStartOpen(SwipeLayout layout) {
-
-            }
-
-            @Override
-            public void onOpen(SwipeLayout layout) {
-                //when the BottomView totally show.
-            }
-
-            @Override
-            public void onStartClose(SwipeLayout layout) {
-
-            }
-
-            @Override
-            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-                //when user's hand released.
-            }
-        });
-
-        /*viewHolder.swipeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                if ((((SwipeLayout) v).getOpenStatus() == SwipeLayout.Status.Close)) {
-                    //Start your activity
-
-                    Toast.makeText(mContext, " onClick : " + item.getName() + " \n" + item.getEmailId(), Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });*/
-
-
-        viewHolder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!wasClicked) {
-                    new GetOfferAsync().execute(viewHolder.offer_id);
-                    wasClicked = true;
-                    new CountDownTimer(1000, 1000) {
-
-                        public void onTick(long millisUntilFinished) {
-                        }
-
-                        public void onFinish() {
-                            wasClicked = false;
-                        }
-                    }.start();
-                }
-            }
-        });
-
-
-        viewHolder.ivEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(view.getContext(), "Clicked on Edit  " + viewHolder.tvOfferName.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        viewHolder.ivDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                mItemManger.removeShownLayouts(viewHolder.swipeLayout);
-//                offerList.remove(position);
-//                notifyItemRemoved(position);
-//                notifyItemRangeChanged(position, offerList.size());
-//                mItemManger.closeAllItems();
-                Toast.makeText(view.getContext(), "Deleted " + viewHolder.tvOfferName.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        mItemManger.bindView(viewHolder.itemView, position);
-
+    public void onBindViewHolder(MyHolder holder, int position) {
+        holder.offerName.setText(mOffers.get(position).getName());
+        holder.offerPrice.setText(mOffers.get(position).getPrice());
+        holder.offerLocation.setText(mOffers.get(position).getLocation());
+        holder.offerer.setText(mOffers.get(position).getOfferer());
+        holder.offer_id = mOffers.get(position).getOffer_id();
     }
 
     @Override
     public int getItemCount() {
-        return offerList.size();
-    }
-
-    @Override
-    public int getSwipeLayoutResourceId(int position) {
-        return R.id.swipe;
-    }
-
-
-    //  ViewHolder Class
-
-    public class SimpleViewHolder extends RecyclerView.ViewHolder {
-        SwipeLayout swipeLayout;
-        TextView tvOfferName;
-        Button bOfferPrice;
-        TextView tvOfferorName;
-        TextView tvOfferLocation;
-        ImageView ivDelete;
-        ImageView ivEdit;
-        String offer_id;
-
-        SimpleViewHolder(View itemView) {
-            super(itemView);
-            swipeLayout = itemView.findViewById(R.id.swipe);
-            tvOfferName = itemView.findViewById(R.id.offerNameSwipe);
-            bOfferPrice = itemView.findViewById(R.id.offerPriceSwipe);
-            tvOfferorName = itemView.findViewById(R.id.offerorNameSwipe);
-            tvOfferLocation = itemView.findViewById(R.id.offerLocationSwipe);
-            ivDelete = itemView.findViewById(R.id.ivDelete);
-            ivEdit = itemView.findViewById(R.id.ivEdit);
-        }
+        return mOffers.size();
     }
 
     private class GetOfferAsync extends AsyncTask<String, Void, String> {
@@ -232,7 +156,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
                 mOfferExpire = Object.getString("data_expirare_oferta");
                 mOfferLocation = Object.getString("nume_locatie");
                 mOfferPrice = Object.getString("pret_oferta");
-                if(Object.getString("count_images").equals("1"))
+                if (Object.getString("count_images").equals("1"))
                     mImageString = Object.getString("imagine_oferta_1");
                 return message;
 

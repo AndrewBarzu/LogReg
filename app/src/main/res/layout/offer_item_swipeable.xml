@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,43 +10,48 @@
 
     <!--Bottom View For Right to Left-->
 
+    <!-- Top View,  Row itemView of RecyclerView -->
+
     <LinearLayout
         android:id="@+id/bottom_wrapper"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:weightSum="3">
+        android:layout_width="103dp"
+        android:layout_height="85dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:weightSum="3"
+        swipe:layout_constraintEnd_toEndOf="parent"
+        swipe:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/ivEdit"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#B5A6F3"
-            android:src="@drawable/ic_edit_24dp"
             android:adjustViewBounds="true"
+            android:background="#B5A6F3"
+            android:gravity="center"
             android:scaleType="centerInside"
-            android:gravity="center" />
+            android:src="@drawable/ic_edit_24dp" />
 
         <ImageView
             android:id="@+id/ivDelete"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#6E59C6"
-            android:src="@drawable/ic_close_24dp"
             android:adjustViewBounds="true"
+            android:background="#6E59C6"
+            android:gravity="center"
             android:scaleType="centerInside"
-            android:gravity="center" />
+            android:src="@drawable/ic_close_24dp" />
     </LinearLayout>
 
-    <!-- Top View,  Row itemView of RecyclerView -->
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/viewToSwipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/offer_item_bg"
-        android:clickable="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/offer_item_bg">
 
         <TextView
             android:id="@+id/offerNameSwipe"
@@ -54,8 +60,8 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="30dp"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/offerPriceSwipe"
-            app:layout_constraintTop_toTopOf="parent" />
+            swipe:layout_constraintStart_toEndOf="@+id/offerPriceSwipe"
+            swipe:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/offerPriceSwipe"
@@ -69,9 +75,9 @@
             android:text=""
             android:textColor="@android:color/white"
             android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            swipe:layout_constraintBottom_toBottomOf="parent"
+            swipe:layout_constraintStart_toStartOf="parent"
+            swipe:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/offerorNameSwipe"
@@ -83,8 +89,8 @@
             android:textColor="#7F70DF"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/offerPriceSwipe"
-            app:layout_constraintTop_toTopOf="parent" />
+            swipe:layout_constraintStart_toEndOf="@+id/offerPriceSwipe"
+            swipe:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/offerLocationSwipe"
@@ -95,8 +101,18 @@
             android:text=""
             android:textColor="#7F70DF"
             android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/offerPriceSwipe"
-            app:layout_constraintTop_toBottomOf="@+id/offerorNameSwipe" />
+            swipe:layout_constraintStart_toEndOf="@+id/offerPriceSwipe"
+            swipe:layout_constraintTop_toBottomOf="@+id/offerorNameSwipe" />
+
+        <Button
+            android:id="@+id/swipeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sageata Stanga"
+            swipe:layout_constraintBottom_toBottomOf="parent"
+            swipe:layout_constraintEnd_toEndOf="parent"
+            swipe:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
 
-</com.daimajia.swipe.SwipeLayout>
+</android.support.constraint.ConstraintLayout>
