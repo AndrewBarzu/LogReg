@@ -1,8 +1,10 @@
 package com.example.xghos.Wrenchy.helpers_extras;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +23,21 @@ import com.example.xghos.Wrenchy.R;
  */
 public class OfferPicture extends Fragment {
 
-    private Bitmap imageBitmap;
+    private String imageString;
     private ImageView imageView;
+    private Drawable drawable;
 
     public OfferPicture() {
         // Required empty public constructor
     }
 
-    public static OfferPicture newInstance(Bitmap image) {
+    public static OfferPicture newInstance(String image, Drawable resource) {
         OfferPicture fragment = new OfferPicture();
-        fragment.imageBitmap = image;
+        fragment.imageString = image;
+        fragment.drawable = resource;
         return fragment;
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +48,10 @@ public class OfferPicture extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_offer_picture, container, false);
         imageView = view.findViewById(R.id.imageView);
-        imageView.setImageBitmap(imageBitmap);
+        if (imageString != null)
+            imageView.setImageBitmap(Helper.getINSTANCE().getBitmapFromString(imageString));
+        else
+            imageView.setImageDrawable(drawable);
         return view;
     }
 }

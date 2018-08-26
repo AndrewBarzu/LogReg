@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".main_activity.TakenOffersFragment">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_taken_offers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/takenOffers"
         android:layout_width="match_parent"
@@ -15,5 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>

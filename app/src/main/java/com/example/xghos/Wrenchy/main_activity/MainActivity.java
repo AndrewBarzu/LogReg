@@ -1,5 +1,6 @@
 package com.example.xghos.Wrenchy.main_activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -10,16 +11,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.helpers_extras.Helper;
 import com.example.xghos.Wrenchy.interfaces.DrawerInterface;
 import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
@@ -29,13 +30,14 @@ public class MainActivity extends AppCompatActivity implements DrawerInterface, 
     private DrawerLayout mDrawerLayout;
 //    private ArrayList<User> list;
     public Toolbar toolbar;
+    private int numStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (CurrentUser.getStatus().equals("2")) {
+        if (getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("status", "1").equals("2")) {
             getSupportFragmentManager().beginTransaction().add(R.id.content_frame, new ChangePW()).commit();
 
         } else {
@@ -45,9 +47,11 @@ public class MainActivity extends AppCompatActivity implements DrawerInterface, 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-        actionbar.setTitle("");
+        if (actionbar != null){
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+            actionbar.setTitle("");
+        }
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
 
@@ -69,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements DrawerInterface, 
                             case R.id.new_offer:
                                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
                                 if(!(fragment instanceof CreateOfferFragment)) {
-                                    Toast.makeText(MainActivity.this, "new offer", Toast.LENGTH_SHORT).show();
                                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new CreateOfferFragment());
                                     fragmentTransaction.addToBackStack(null);
                                     fragmentTransaction.commit();

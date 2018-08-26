@@ -1,6 +1,7 @@
 package com.example.xghos.Wrenchy.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
@@ -32,25 +33,24 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
      */
 
     private ArrayList<MyOffer> mOffers;
-    private int mResource;
     private Context mContext;
     private String mOfferTitle;
     private String mOfferDescription;
     private String mOfferLocation;
     private String mOfferExpire;
     private String mOfferPrice;
-    private String mImageString;
+    private ArrayList<String>mImageStrings;
     private String mOfferID;
     private Boolean wasClicked;
 
     OfferAdapter(Context context, int resource, ArrayList<MyOffer> offers) {
-        mResource = resource;
         mOffers = offers;
         mContext = context;
         wasClicked = false;
+        mImageStrings = new ArrayList<>();
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder {
         public TextView offerName, offerPrice, offerLocation, offerer;
         String offer_id;
 
@@ -64,6 +64,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
                 @Override
                 public void onClick(View v) {
                     if (!wasClicked) {
+                        mImageStrings.clear();
                         new GetOfferAsync().execute(offer_id);
                         wasClicked = true;
                         new CountDownTimer(1000, 1000) {
@@ -116,15 +117,46 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("msg");
                 JSONObject Object = responseObject.getJSONObject("result");
-                Log.d("oferta", Object.toString());
                 mOfferID = Object.getString("id_oferta");
                 mOfferTitle = Object.getString("titlu_oferta");
                 mOfferDescription = Object.getString("descriere_oferta");
                 mOfferExpire = Object.getString("data_expirare_oferta");
                 mOfferLocation = Object.getString("nume_locatie");
                 mOfferPrice = Object.getString("pret_oferta");
-                if(Object.getString("count_images").equals("1"))
-                    mImageString = Object.getString("imagine_oferta_1");
+                String imageCount = Object.getString("count_images");
+                mImageStrings.clear();
+                Log.d("imagecount", imageCount);
+                switch (imageCount) {
+                    case "1":
+                        mImageStrings.add(Object.getString("imagine_oferta_1"));
+                        break;
+
+                    case "2":
+                        mImageStrings.add(Object.getString("imagine_oferta_1"));
+                        mImageStrings.add(Object.getString("imagine_oferta_2"));
+                        break;
+
+                    case "3":
+                        mImageStrings.add(Object.getString("imagine_oferta_1"));
+                        mImageStrings.add(Object.getString("imagine_oferta_2"));
+                        mImageStrings.add(Object.getString("imagine_oferta_3"));
+                        break;
+
+                    case "4":
+                        mImageStrings.add(Object.getString("imagine_oferta_1"));
+                        mImageStrings.add(Object.getString("imagine_oferta_2"));
+                        mImageStrings.add(Object.getString("imagine_oferta_3"));
+                        mImageStrings.add(Object.getString("imagine_oferta_4"));
+                        break;
+
+                    case "5":
+                        mImageStrings.add(Object.getString("imagine_oferta_1"));
+                        mImageStrings.add(Object.getString("imagine_oferta_2"));
+                        mImageStrings.add(Object.getString("imagine_oferta_3"));
+                        mImageStrings.add(Object.getString("imagine_oferta_4"));
+                        mImageStrings.add(Object.getString("imagine_oferta_5"));
+                        break;
+                }
                 return message;
 
             } catch (Exception e) {
@@ -139,7 +171,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
                 case "success":
                     FragmentTransaction fragmentTransaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-                    OfferFragment offerFragment = OfferFragment.newInstance(mOfferID, mOfferTitle, mOfferDescription, mOfferLocation, mOfferExpire, mOfferPrice, mImageString);
+                    OfferFragment offerFragment = OfferFragment.newInstance(mOfferID, mOfferTitle, mOfferDescription, mOfferLocation, mOfferExpire, mOfferPrice, mImageStrings);
                     fragmentTransaction.replace(R.id.content_frame, offerFragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();

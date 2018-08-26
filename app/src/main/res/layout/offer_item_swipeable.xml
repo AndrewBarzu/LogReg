@@ -106,9 +106,9 @@
 
         <Button
             android:id="@+id/swipeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sageata Stanga"
+            android:layout_width="103dp"
+            android:layout_height="85dp"
+            android:background="@drawable/ic_keyboard_arrow_left_black_24dp"
             swipe:layout_constraintBottom_toBottomOf="parent"
             swipe:layout_constraintEnd_toEndOf="parent"
             swipe:layout_constraintTop_toTopOf="parent" />

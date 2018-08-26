@@ -8,7 +8,6 @@ public class CurrentUser {
     public static String accType;
     public static String phoneNumber;
     public static String avatar;
-    public static String status;
     public static String oldpw;
     public static int tabindex = 0;
 
@@ -19,14 +18,6 @@ public class CurrentUser {
     }
 
     private CurrentUser() {
-    }
-
-    public static String getStatus() {
-        return status;
-    }
-
-    public static void setStatus(String status) {
-        CurrentUser.status = status;
     }
 
     public static String getId() {

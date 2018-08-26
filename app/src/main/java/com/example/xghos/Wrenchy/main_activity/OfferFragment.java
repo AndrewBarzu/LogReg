@@ -1,6 +1,7 @@
 package com.example.xghos.Wrenchy.main_activity;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,8 @@ import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
 import com.example.xghos.Wrenchy.interfaces.DrawerInterface;
 import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
 
+import java.util.ArrayList;
+
 
 public class OfferFragment extends Fragment {
 
@@ -26,21 +29,21 @@ public class OfferFragment extends Fragment {
     private String mOfferLocation;
     private String mOfferExpire;
     private String mOfferPrice;
-    private String mOfferImage;
+    private ArrayList<String> mOfferImages;
     private ToolbarInterface toolbarInterface;
 
     public OfferFragment(){
 
     }
 
-    public static OfferFragment newInstance(String OfferID, String OfferTitle, String OfferDescription, String OfferLocation, String OfferExpire, String OfferPrice, String OfferImage) {  //TODO also send the title, description, expiration date etc with the id so that we can skip the loading
+    public static OfferFragment newInstance(String OfferID, String OfferTitle, String OfferDescription, String OfferLocation, String OfferExpire, String OfferPrice, ArrayList<String> OfferImages) {  //TODO also send the title, description, expiration date etc with the id so that we can skip the loading
         OfferFragment fragment = new OfferFragment();
         fragment.mOfferTitle = OfferTitle;
         fragment.mOfferDescription = OfferDescription;
         fragment.mOfferLocation = OfferLocation;
         fragment.mOfferExpire = OfferExpire;
         fragment.mOfferPrice = OfferPrice;
-        fragment.mOfferImage = OfferImage;
+        fragment.mOfferImages = OfferImages;
         fragment.mOfferId = OfferID;
         return fragment;
     }
@@ -68,8 +71,17 @@ public class OfferFragment extends Fragment {
         TVOfferLocation.setText(mOfferLocation);
         TVOfferPrice.setText(mOfferPrice);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        OfferPicture offerPicture = OfferPicture.newInstance(Helper.getINSTANCE().getBitmapFromString(mOfferImage));
-        viewPagerAdapter.addFragment(offerPicture);
+        OfferPicture offerPicture;
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_photo_black_24dp);
+        if(mOfferImages.size()>0)
+            for (String image : mOfferImages) {
+                offerPicture = OfferPicture.newInstance(image, drawable);
+                viewPagerAdapter.addFragment(offerPicture);
+            }
+        else{
+            offerPicture = OfferPicture.newInstance(null, drawable);
+            viewPagerAdapter.addFragment(offerPicture);
+        }
         VPImageList.setAdapter(viewPagerAdapter);
         dots.setupWithViewPager(VPImageList);
         toolbarInterface.setToolbarTitle(R.string.offer_details);

@@ -3,7 +3,6 @@ package com.example.xghos.Wrenchy.start_activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,10 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.helpers_extras.Helper;
 import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
-import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.main_activity.MainActivity;
 
 import org.json.JSONObject;
@@ -55,7 +54,9 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {    //functia onCreateView, in care se fac toate operatiunile UI
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        container.setAlpha(1F);
+
+        if(container != null)
+            container.setAlpha(1F);
 
         loadingScreen = view.findViewById(R.id.loading_screen);
 
@@ -214,7 +215,7 @@ public class LoginFragment extends Fragment {
 //            }
 //        });
 //  }
-    private class LoginAsyncTask extends AsyncTask<String, Void, String>{
+     public class LoginAsyncTask extends AsyncTask<String, Void, String>{
 
         @Override
         protected String doInBackground(String... objects) {
@@ -249,7 +250,6 @@ public class LoginFragment extends Fragment {
                 CurrentUser.setId(Object.getString("id_user"));
                 CurrentUser.setAccType(Object.getString("tip_user"));
                 CurrentUser.setAvatar(Object.getString("avatar"));
-                CurrentUser.setStatus(Object.getString("status"));
                 CurrentUser.setOldpw(password);
 
                 if (message.equals("success"))
@@ -265,6 +265,7 @@ public class LoginFragment extends Fragment {
                         editor.putString("Pass", "");
                         editor.apply();
                     }
+                    editor.putString("Status", Object.getString("status"));
                 }
                 return responseMessage;
             }

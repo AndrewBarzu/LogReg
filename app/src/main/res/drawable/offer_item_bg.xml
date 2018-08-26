@@ -2,8 +2,11 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/colorPrimaryDark">
     <item>
         <shape android:shape="rectangle">
-            <solid
-                android:color="#FFFFFF"
+            <gradient
+                android:type="linear"
+                android:endColor="#CACDF6"
+                android:startColor="#DAF8FF"
+                android:angle="225"
                 />
         </shape>
     </item>

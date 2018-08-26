@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import com.example.xghos.Wrenchy.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -45,13 +47,19 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     private ArrayList<MyOffer> mOffers;
     private ArrayList<String> offerIDs;
     private RecyclerViewSkeletonScreen skeletonScreen;
+    private DateAdapter dateAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate, RecyclerView recyclerView) {  //initializarea clasei si a listei cu date afisate
+    public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate, RecyclerView recyclerView, SwipeRefreshLayout swipeRefreshLayout) {//initializarea clasei si a listei cu date afisate
         mOfferList = recyclerView;
         mOfferList.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
+        mSwipeRefreshLayout = swipeRefreshLayout;
+
         mContext = context;
         offerIDs = new ArrayList<>();
+
+        dateAdapter = this;
 
         mOffers = new ArrayList<>();
         offerAdapter = new OfferAdapter(mContext, R.layout.offer_item, mOffers);
@@ -157,7 +165,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                         prevSelectedItem = v;
                         prevSelectedItem.setClickable(false);
                         prevSelectedItem.setBackground(mContext.getDrawable(R.drawable.date_item_bg));
-                        new GetOffersAsync().execute();
+                        new GetOffersAsync(dateAdapter).execute();
                     } else {
                         v.setClickable(false);
                         v.setBackground(mContext.getDrawable(R.drawable.date_item_bg));
@@ -165,7 +173,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                         prevSelectedItem.setBackgroundColor(Color.parseColor("#C6E5FA"));
                         prevSelectedItem = v;
                         mOffers.clear();
-                        new GetOffersAsync().execute();
+                        new GetOffersAsync(dateAdapter).execute();
                     }
                 }
             });
@@ -192,7 +200,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                     .count(3)
                     .duration(500)
                     .show();
-            new GetOffersAsync().execute();
+            new GetOffersAsync(dateAdapter).execute();
         }
          else {
             itemView = LayoutInflater.from(parent.getContext())
@@ -218,14 +226,20 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
         return mDates.size();
     }
 
-    private class GetOffersAsync extends AsyncTask<String, Void, String> {
+    public static class GetOffersAsync extends AsyncTask<String, Void, String> {
+
+        private DateAdapter dateAdapter;
+
+        public GetOffersAsync(DateAdapter context){
+            dateAdapter = new WeakReference<>(context).get();
+        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mOffers.clear();
-            offerAdapter.notifyDataSetChanged();
-            offerIDs.clear();
+            dateAdapter.mOffers.clear();
+            dateAdapter.offerAdapter.notifyDataSetChanged();
+            dateAdapter.offerIDs.clear();
         }
 
         @Override
@@ -247,12 +261,12 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
                     offer.setLocation(Object.getJSONObject(i).getString("nume_locatie"));
                     offer.setOffer_id(Object.getJSONObject(i).getString("id_oferta"));
                     offer.setOfferer(Object.getJSONObject(i).getString("nume_angajator"));
-                    if (!offerIDs.contains(Object.getJSONObject(i).getString("id_oferta"))) {
-                        offerIDs.add(Object.getJSONObject(i).getString("id_oferta"));
-                        mOffers.add(offer);
+                    if (!dateAdapter.offerIDs.contains(Object.getJSONObject(i).getString("id_oferta"))) {
+                        dateAdapter.offerIDs.add(Object.getJSONObject(i).getString("id_oferta"));
+                        dateAdapter.mOffers.add(offer);
                     }
                 }
-                Log.d("+++", mOffers.size() + "");
+                Log.d("+++", dateAdapter.mOffers.size() + "");
             } catch (Exception e) {
                 return "nuok";
             }
@@ -262,8 +276,9 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            offerAdapter.notifyDataSetChanged();
-            skeletonScreen.hide();
+            dateAdapter.offerAdapter.notifyDataSetChanged();
+            dateAdapter.skeletonScreen.hide();
+            dateAdapter.mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 }

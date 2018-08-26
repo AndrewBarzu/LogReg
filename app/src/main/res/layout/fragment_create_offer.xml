@@ -12,23 +12,23 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/offerTitle"
+            android:id="@+id/postOfferTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="22dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginEnd="48dp"
             android:layout_marginStart="48dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@android:color/white"
             android:gravity="center_vertical"
+            android:hint="@string/offer_title"
             android:inputType="textPersonName"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             android:text=""
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:hint="@string/offer_title"
             android:textColorHint="#f1eded"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/textView5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -46,20 +46,19 @@
             android:text="@string/description"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/offerDetails"
+            app:layout_constraintBottom_toTopOf="@+id/postOfferDetails"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/offerDetails"
-            android:layout_width="0dp"
-            android:layout_height="122dp"
+            android:id="@+id/postOfferDetails"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:background="@drawable/textview_border"
-            android:inputType="textPersonName"
             android:paddingBottom="10dp"
             android:paddingEnd="15dp"
             android:paddingStart="15dp"
@@ -67,13 +66,13 @@
             android:scrollbars="vertical"
             android:text=""
             android:textColor="@android:color/white"
-            app:layout_constraintBottom_toTopOf="@+id/offerLocation"
+            app:layout_constraintBottom_toTopOf="@+id/postOfferLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/offerLocation"
+            android:id="@+id/postOfferLocation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="22dp"
@@ -111,14 +110,14 @@
             android:id="@+id/imagesText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="70dp"
             android:gravity="center_vertical"
             android:paddingEnd="20dp"
             android:paddingStart="20dp"
             android:text="@string/images"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/price"
+            app:layout_constraintBottom_toTopOf="@+id/postPrice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -132,27 +131,27 @@
             android:text="@string/price"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/takeJob"
+            app:layout_constraintBottom_toTopOf="@+id/postJob"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/price"
+            android:id="@+id/postPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginStart="10dp"
             android:backgroundTint="@android:color/white"
+            android:hint="@string/offer_price"
             android:inputType="number"
             android:text=""
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:hint="@string/offer_price"
             android:textColorHint="#f1eded"
-            app:layout_constraintBottom_toTopOf="@+id/takeJob"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/postJob"
             app:layout_constraintStart_toEndOf="@+id/priceText" />
 
         <Button
-            android:id="@+id/takeJob"
+            android:id="@+id/postJob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -169,6 +168,60 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="41dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/add_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imagesText" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/add_image"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/imageButton"
+            app:layout_constraintTop_toBottomOf="@+id/imagesText" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/add_image"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/imageButton2"
+            app:layout_constraintTop_toBottomOf="@+id/imagesText" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/add_image"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/imageButton3"
+            app:layout_constraintTop_toBottomOf="@+id/imagesText" />
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/add_image"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/imageButton4"
+            app:layout_constraintTop_toBottomOf="@+id/imagesText" />
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

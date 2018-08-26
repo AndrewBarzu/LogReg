@@ -104,16 +104,13 @@ public class Helper {
             e.printStackTrace();
         }
 
-        Bitmap actuallyUsableBitmap = BitmapFactory.decodeFileDescriptor(
+        return BitmapFactory.decodeFileDescriptor(
                 fileDescriptor.getFileDescriptor(), null, options);
-
-        return actuallyUsableBitmap;
     }
 
     public Bitmap getBitmapFromString (String profileImageString){
         byte[] arr = Base64.decode(profileImageString, Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(arr, 0, arr.length);
-        return decodedImage;
+        return BitmapFactory.decodeByteArray(arr, 0, arr.length);
     }
 
     public String getStringFromBitmap(Bitmap profileImageBitmap) {

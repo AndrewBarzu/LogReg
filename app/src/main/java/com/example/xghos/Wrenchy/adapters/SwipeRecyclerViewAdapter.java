@@ -42,7 +42,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
     private String mOfferLocation;
     private String mOfferExpire;
     private String mOfferPrice;
-    private String mImageString;
+    private ArrayList<String> mImageStrings;
     private String mOfferID;
     private Boolean wasClicked;
     private Boolean mEditable;
@@ -52,12 +52,17 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
         mContext = context;
         wasClicked = false;
         mEditable = editable;
+        mImageStrings = new ArrayList<>();
     }
 
-    public class MyHolder extends RecyclerView.ViewHolder {
-        public TextView offerName, offerPrice, offerLocation, offerer;
+    class MyHolder extends RecyclerView.ViewHolder {
+        TextView offerName, offerPrice, offerLocation, offerer;
+        ImageView ivDelete, ivEdit;
+        Button swipe;
         String offer_id;
         Boolean wasSwiped;
+        ConstraintLayout constraintLayout;
+        LinearLayout bottomWrapper;
 
         MyHolder(View view) {
             super(view);
@@ -65,12 +70,32 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
             offerPrice = view.findViewById(R.id.offerPriceSwipe);
             offerLocation = view.findViewById(R.id.offerLocationSwipe);
             offerer = view.findViewById(R.id.offerorNameSwipe);
-            final LinearLayout bottomWrapper = itemView.findViewById(R.id.bottom_wrapper);
-            final ConstraintLayout constraintLayout = view.findViewById(R.id.viewToSwipe);
-            Button swipe = view.findViewById(R.id.swipeButton);
+            ivDelete = view.findViewById(R.id.ivDelete);
+            ivEdit = view.findViewById(R.id.ivEdit);
+            bottomWrapper = view.findViewById(R.id.bottom_wrapper);
+            constraintLayout = view.findViewById(R.id.viewToSwipe);
+            swipe = view.findViewById(R.id.swipeButton);
 
-            final ImageView ivEdit = view.findViewById(R.id.ivEdit);
-            final ImageView ivDelete = view.findViewById(R.id.ivDelete);
+            ivEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Toast.makeText(view.getContext(), "Clicked on Edit  " + mOffers.get(getAdapterPosition()).getName(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                mItemManger.removeShownLayouts(viewHolder.swipeLayout);
+//                offerList.remove(position);
+//                notifyItemRemoved(position);
+//                notifyItemRangeChanged(position, offerList.size());
+//                mItemManger.closeAllItems();
+                    Toast.makeText(view.getContext(), "Deleted " + mOffers.get(getAdapterPosition()).getName(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
             wasSwiped = false;
             swipe.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,11 +103,8 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
                     float width;
                     if (mEditable) {
                         width = bottomWrapper.getWidth();
-                        ivDelete.setVisibility(View.VISIBLE);
-                        ivEdit.setVisibility(View.VISIBLE);
                     } else {
                         width = bottomWrapper.getWidth() / 2;
-                        ivDelete.setVisibility(View.VISIBLE);
                     }
                     if (!wasSwiped) {
                         constraintLayout.animate().translationX(-width);
@@ -93,6 +115,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
                     }
                 }
             });
+
             constraintLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -149,15 +172,40 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
                 JSONObject responseObject = new JSONObject(response);
                 String message = responseObject.getString("msg");
                 JSONObject Object = responseObject.getJSONObject("result");
-                Log.d("oferta", Object.toString());
+                Log.d("eroare2", Object.toString());
                 mOfferID = Object.getString("id_oferta");
                 mOfferTitle = Object.getString("titlu_oferta");
                 mOfferDescription = Object.getString("descriere_oferta");
                 mOfferExpire = Object.getString("data_expirare_oferta");
                 mOfferLocation = Object.getString("nume_locatie");
                 mOfferPrice = Object.getString("pret_oferta");
-                if (Object.getString("count_images").equals("1"))
-                    mImageString = Object.getString("imagine_oferta_1");
+                String imageCount = Object.getString("count_images");
+                mImageStrings.clear();
+                if(imageCount.equals("1")) {
+                    mImageStrings.add(Object.getString("imagine_oferta_1"));
+                }
+                else if (imageCount.equals("2")){
+                    mImageStrings.add(Object.getString("imagine_oferta_1"));
+                    mImageStrings.add(Object.getString("imagine_oferta_2"));
+                }
+                else if (imageCount.equals("3")){
+                    mImageStrings.add(Object.getString("imagine_oferta_1"));
+                    mImageStrings.add(Object.getString("imagine_oferta_2"));
+                    mImageStrings.add(Object.getString("imagine_oferta_3"));
+                }
+                else if (imageCount.equals("4")){
+                    mImageStrings.add(Object.getString("imagine_oferta_1"));
+                    mImageStrings.add(Object.getString("imagine_oferta_2"));
+                    mImageStrings.add(Object.getString("imagine_oferta_3"));
+                    mImageStrings.add(Object.getString("imagine_oferta_4"));
+                }
+                else if (imageCount.equals("5")){
+                    mImageStrings.add(Object.getString("imagine_oferta_1"));
+                    mImageStrings.add(Object.getString("imagine_oferta_2"));
+                    mImageStrings.add(Object.getString("imagine_oferta_3"));
+                    mImageStrings.add(Object.getString("imagine_oferta_4"));
+                    mImageStrings.add(Object.getString("imagine_oferta_5"));
+                }
                 return message;
 
             } catch (Exception e) {
@@ -172,7 +220,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
                 case "success":
                     FragmentTransaction fragmentTransaction = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-                    OfferFragment offerFragment = OfferFragment.newInstance(mOfferID, mOfferTitle, mOfferDescription, mOfferLocation, mOfferExpire, mOfferPrice, mImageString);
+                    OfferFragment offerFragment = OfferFragment.newInstance(mOfferID, mOfferTitle, mOfferDescription, mOfferLocation, mOfferExpire, mOfferPrice, mImageStrings);
                     fragmentTransaction.replace(R.id.content_frame, offerFragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
@@ -182,6 +230,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
                     break;
                 case "Unknown Error":
                     Toast.makeText(mContext, "You can't see your own offer!", Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     }

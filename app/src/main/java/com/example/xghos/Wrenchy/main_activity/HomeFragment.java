@@ -3,6 +3,7 @@ package com.example.xghos.Wrenchy.main_activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -76,7 +77,8 @@ public class HomeFragment extends Fragment {
             item = inflater.inflate(R.layout.fragment_home, container, false);
             offerList = item.findViewById(R.id.offers);
             recyclerView = item.findViewById(R.id.calendar);
-            dateAdapter = new DateAdapter(getContext(), mStartDate, mEndDate, offerList);
+            SwipeRefreshLayout swipeRefreshLayout = item.findViewById(R.id.home_refresh_layout);
+            dateAdapter = new DateAdapter(getContext(), mStartDate, mEndDate, offerList, swipeRefreshLayout);
             recyclerView.setAdapter(dateAdapter);
             recyclerView.setLayoutManager(layoutManager);
             itemDecoration = new HeaderItemDecoration(recyclerView, dateAdapter);
@@ -84,6 +86,12 @@ public class HomeFragment extends Fragment {
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                     layoutManager.getOrientation());
             recyclerView.addItemDecoration(dividerItemDecoration);
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    new DateAdapter.GetOffersAsync(dateAdapter).execute();
+                }
+            });
         }
         return item;
     }
