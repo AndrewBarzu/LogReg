@@ -11,11 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.xghos.Wrenchy.helpers_extras.Helper;
-import com.example.xghos.Wrenchy.helpers_extras.OfferPicture;
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
-import com.example.xghos.Wrenchy.interfaces.DrawerInterface;
+import com.example.xghos.Wrenchy.helpers_extras.OfferPicture;
 import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
 
 import java.util.ArrayList;

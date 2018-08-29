@@ -11,10 +11,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,12 +28,12 @@ public class MainActivity extends AppCompatActivity implements DrawerInterface, 
     private DrawerLayout mDrawerLayout;
 //    private ArrayList<User> list;
     public Toolbar toolbar;
-    private int numStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         if (getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("status", "1").equals("2")) {
             getSupportFragmentManager().beginTransaction().add(R.id.content_frame, new ChangePW()).commit();
