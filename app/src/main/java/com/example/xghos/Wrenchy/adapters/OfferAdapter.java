@@ -126,37 +126,16 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
                 String imageCount = Object.getString("count_images");
                 mImageStrings.clear();
                 Log.d("imagecount", imageCount);
-                switch (imageCount) {
-                    case "1":
-                        mImageStrings.add(Object.getString("imagine_oferta_1"));
-                        break;
 
-                    case "2":
-                        mImageStrings.add(Object.getString("imagine_oferta_1"));
-                        mImageStrings.add(Object.getString("imagine_oferta_2"));
-                        break;
+                int imgCount = Integer.valueOf(imageCount);
 
-                    case "3":
-                        mImageStrings.add(Object.getString("imagine_oferta_1"));
-                        mImageStrings.add(Object.getString("imagine_oferta_2"));
-                        mImageStrings.add(Object.getString("imagine_oferta_3"));
-                        break;
-
-                    case "4":
-                        mImageStrings.add(Object.getString("imagine_oferta_1"));
-                        mImageStrings.add(Object.getString("imagine_oferta_2"));
-                        mImageStrings.add(Object.getString("imagine_oferta_3"));
-                        mImageStrings.add(Object.getString("imagine_oferta_4"));
-                        break;
-
-                    case "5":
-                        mImageStrings.add(Object.getString("imagine_oferta_1"));
-                        mImageStrings.add(Object.getString("imagine_oferta_2"));
-                        mImageStrings.add(Object.getString("imagine_oferta_3"));
-                        mImageStrings.add(Object.getString("imagine_oferta_4"));
-                        mImageStrings.add(Object.getString("imagine_oferta_5"));
-                        break;
+                if (imgCount > 0) {
+                    for (int i = 1; i <= imgCount; i++)
+                    {
+                        mImageStrings.add(Object.getString("imagine_oferta_" + i));
+                    }
                 }
+
                 return message;
 
             } catch (Exception e) {

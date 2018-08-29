@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
 import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
+import com.example.xghos.Wrenchy.helpers_extras.LockableViewPager;
 import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
 
 
@@ -21,7 +22,7 @@ public class NavigationFragment extends Fragment {
 
     //Fragmentul in care se afiseaza Viewpagerul, cu cele 2 fragmente de profil si calendar(home)
 
-    public ViewPager viewPager;
+    public LockableViewPager viewPager;
 
     HomeFragment mHomeFragment;
     ProfileFragment mProfileFragment;
@@ -76,6 +77,7 @@ public class NavigationFragment extends Fragment {
                 });
 
         viewPager = view.findViewById(R.id.content);
+        viewPager.setSwipeable(false);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
