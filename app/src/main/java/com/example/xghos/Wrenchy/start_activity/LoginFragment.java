@@ -60,6 +60,12 @@ public class LoginFragment extends Fragment {
 
         loadingScreen = view.findViewById(R.id.loading_screen);
 
+        sharedPrefs = getContext().getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
+        if (!sharedPrefs.getString("Email", "").equals("") && !sharedPrefs.getString("Pass", "").equals("")){
+            loadingScreen.setVisibility(View.VISIBLE);
+            new LoginAsyncTask().execute(sharedPrefs.getString("Email", ""), sharedPrefs.getString("Pass", ""));
+        }
+
         layout = view.findViewById(R.id.LoginPanel);
         layout.setOnClickListener(new View.OnClickListener() {   //listener pentru click in layout, prin click pe layout se ascunde tastatura
             @Override
@@ -91,7 +97,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {   //incercarea de login
                 if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString())) {
-                    new LoginAsyncTask().execute();
+                    new LoginAsyncTask().execute(ETMail.getText().toString(), ETPassword.getText().toString());
                     BLogin.setClickable(false);
                     loadingScreen.setVisibility(View.VISIBLE);
                 }
@@ -101,7 +107,6 @@ public class LoginFragment extends Fragment {
         });
 
         CRemember = view.findViewById(R.id.CRemember);
-        sharedPrefs = getContext().getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
         if (sharedPrefs.contains("Email") && sharedPrefs.contains("Pass")) {   //completarea automata a campurilor email si parola
             ETMail.setText(sharedPrefs.getString("Email", ""));
             ETPassword.setText(sharedPrefs.getString("Pass", ""));
@@ -122,99 +127,6 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    //    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.fragment_login);
-//
-//        ETMail = findViewById(R.id.email);
-//        ETPassword = findViewById(R.id.ETPassword);
-//        Button BLogin = findViewById(R.id.BLogin);
-//        final TextView registerLink = findViewById(R.id.TVRegHere);
-//
-//        layout = findViewById(R.id.LoginPanel);
-//
-//        layout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                if (imm != null) {
-//                    imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
-//                }
-//            }
-//        });
-//
-//        CRemember = findViewById(R.id.CRemember);
-//
-//        sharedPrefs = this.getApplicationContext().getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-//
-//        if (sharedPrefs.contains("Email") && sharedPrefs.contains("Pass")) {
-//            ETMail.setText(sharedPrefs.getString("Email", ""));
-//            ETPassword.setText(sharedPrefs.getString("Pass", ""));
-//            CRemember.setChecked(true);
-//        }
-//
-//        registerLink.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                LoginFragment.this.startActivity(new Intent(LoginFragment.this, RegisterFragment.class));
-//
-//            }
-//        });
-//
-//
-//        BLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(Helper.getINSTANCE().loginValidation(ETMail.getText().toString(), ETPassword.getText().toString()))
-//                    new LoginAsyncTask().execute();
-//                else
-//                    Toast.makeText(LoginFragment.this, "LoginFragment Failed", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//
-//        BLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String email = ETMail.getText().toString();
-//                String pass = ETPassword.getText().toString();
-//
-//                User CurrentUser = db.Authenticate(new User(null, null, email, pass, null));
-//
-//                DBHelper dbh = new DBHelper(getApplicationContext());
-//
-//                SQLiteDatabase db = dbh.getReadableDatabase();
-//
-//                String query = "SELECT * FROM MY_TABLE;";
-//
-//                Cursor cursor = db.rawQuery(query, null);
-//
-//                while (cursor.moveToNext())
-//                {
-//                    Log.d("APPLOG", cursor.getString(cursor.getColumnIndex("USERNAME")) + " " + cursor.getString(cursor.getColumnIndex("PASSWORD")) + " " + cursor.getString(cursor.getColumnIndex("TYPE")));
-//                }
-//                Log.d("APPLOG", "");
-//
-//
-//                if (CurrentUser != null) {
-//                    if (CRemember.isChecked()) {
-//                        editor.putString("Email", email);
-//                        editor.putString("Pass", pass);
-//                    }
-//                    else
-//                        editor.clear();
-//                    editor.commit();
-//                    Toast.makeText(LoginFragment.this, "LoginFragment Successful!", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(LoginFragment.this, MainActivity.class);
-//                    intent.putExtra("userName", CurrentUser.userName);
-//                    intent.putExtra("accType", CurrentUser.accType);
-//                    startActivity(intent);
-//                } else
-//                    Toast.makeText(LoginFragment.this, "LoginFragment Failed!", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//  }
      public class LoginAsyncTask extends AsyncTask<String, Void, String>{
 
         @Override
@@ -223,10 +135,8 @@ public class LoginFragment extends Fragment {
 
             final SharedPreferences.Editor editor = sharedPrefs.edit();
 
-            String mail = ETMail.getText().toString();
-            String password = ETPassword.getText().toString();
-            getParams.put("mail", mail);
-            getParams.put("parola", password);
+            getParams.put("mail", objects[0]);
+            getParams.put("parola", objects[1]);
             getParams.put("request", "login");
             getParams.put("SO", "ANDROID");
             if(token != null)
@@ -250,13 +160,13 @@ public class LoginFragment extends Fragment {
                 CurrentUser.setId(Object.getString("id_user"));
                 CurrentUser.setAccType(Object.getString("tip_user"));
                 CurrentUser.setAvatar(Object.getString("avatar"));
-                CurrentUser.setOldpw(password);
+                CurrentUser.setOldpw(objects[1]);
 
                 if (message.equals("success"))
                 {
                     if (CRemember.isChecked()) {
-                        editor.putString("Email", mail);
-                        editor.putString("Pass", password);
+                        editor.putString("Email", objects[0]);
+                        editor.putString("Pass", objects[1]);
                         editor.apply();
                     }
                     else
@@ -286,7 +196,6 @@ public class LoginFragment extends Fragment {
                     BLogin.setClickable(true);
                     break;
                 case "Logare cu succes.":
-                    Toast.makeText(getActivity().getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getContext(), MainActivity.class);
                     startActivity(intent);
                     new CountDownTimer(1000, 1000) {
