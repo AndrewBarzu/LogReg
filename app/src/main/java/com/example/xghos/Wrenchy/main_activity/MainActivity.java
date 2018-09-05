@@ -1,6 +1,8 @@
 package com.example.xghos.Wrenchy.main_activity;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +25,13 @@ import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.helpers_extras.Helper;
 import com.example.xghos.Wrenchy.interfaces.DrawerInterface;
 import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DrawerInterface, ToolbarInterface{
 
@@ -100,6 +110,8 @@ public class MainActivity extends AppCompatActivity implements DrawerInterface, 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        if(!(fragment instanceof OfferFragment))
         switch (item.getItemId()) {
             case android.R.id.home:
                 if(!mDrawerLayout.isDrawerOpen(GravityCompat.START)){
@@ -111,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements DrawerInterface, 
                     return true;
                 }
         }
+        else
+            super.onBackPressed();
         return super.onOptionsItemSelected(item);
     }
 

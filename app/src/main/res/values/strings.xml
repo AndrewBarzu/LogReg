@@ -54,4 +54,5 @@
     <string name="offer_title">Offer title</string>
     <string name="offer_location">Location</string>
     <string name="offer_price">Price</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

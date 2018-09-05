@@ -1,11 +1,15 @@
 package com.example.xghos.Wrenchy.main_activity;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,7 @@ import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
 import com.example.xghos.Wrenchy.helpers_extras.OfferPicture;
 import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
 
@@ -29,6 +34,7 @@ public class OfferFragment extends Fragment {
     private String mOfferPrice;
     private ArrayList<String> mOfferImages;
     private ToolbarInterface toolbarInterface;
+    private GoogleMap mMap;
 
     public OfferFragment(){
 
@@ -55,7 +61,6 @@ public class OfferFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_offer_details, container, false);
-        toolbarInterface.hideToolbar();
         TabLayout dots = v.findViewById(R.id.dots);
         TextView TVOfferTitle = v.findViewById(R.id.offerTitle);
         TextView TVOfferDescription = v.findViewById(R.id.offerDetails);
@@ -83,9 +88,18 @@ public class OfferFragment extends Fragment {
         VPImageList.setAdapter(viewPagerAdapter);
         dots.setupWithViewPager(VPImageList);
         toolbarInterface.setToolbarTitle(R.string.offer_details);
+
+        ViewPager map = v.findViewById(R.id.mapContainer);
+        ViewPagerAdapter viewPagerAdapter1 = new ViewPagerAdapter(getChildFragmentManager());
+        viewPagerAdapter1.addFragment(MapsFragment.newInstance(mOfferLocation));
+        map.setAdapter(viewPagerAdapter1);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33000000")));
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_24dp);
+
+
         return v;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -101,6 +115,7 @@ public class OfferFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        toolbarInterface.showToolbar();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_gradient));
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
     }
 }
