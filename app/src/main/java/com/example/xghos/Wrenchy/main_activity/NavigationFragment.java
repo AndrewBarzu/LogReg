@@ -1,5 +1,6 @@
 package com.example.xghos.Wrenchy.main_activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +14,9 @@ import android.view.ViewGroup;
 
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
-import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.helpers_extras.LockableViewPager;
 import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
+import com.example.xghos.Wrenchy.interfaces.WindowInterface;
 
 
 public class NavigationFragment extends Fragment {
@@ -23,14 +24,12 @@ public class NavigationFragment extends Fragment {
     //Fragmentul in care se afiseaza Viewpagerul, cu cele 2 fragmente de profil si calendar(home)
 
     public LockableViewPager viewPager;
+    public MenuItem mPrevMenuItem;
+    private ToolbarInterface toolbarInterface;
+    private WindowInterface windowInterface;
+    private View rootView;
 
-    HomeFragment mHomeFragment;
-    ProfileFragment mProfileFragment;
-    HistoryFragment mHistoryFragment;
-    MenuItem mPrevMenuItem;
-    ToolbarInterface toolbarInterface;
-
-    BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,112 +40,89 @@ public class NavigationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        if(rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_navigation, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_navigation, container, false);
-
-        try{
-            toolbarInterface = (ToolbarInterface)getContext();
-            toolbarInterface.setToolbarTitle(R.string.title_home);
-        }
-        catch (ClassCastException e){
-            throw new ClassCastException(getContext().toString() + " must implement ToolbarInterface");
-        }
+            try {
+                toolbarInterface = (ToolbarInterface) getContext();
+                toolbarInterface.showToolbar();
+                windowInterface = (WindowInterface) getContext();
+            } catch (ClassCastException e) {
+                throw new ClassCastException(getContext().toString() + " must implement ToolbarInterface");
+            }
 
 
-        bottomNavigationView = view.findViewById(R.id.navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.home:
-                                viewPager.setCurrentItem(0);
-                                toolbarInterface.setToolbarTitle(R.string.title_home);
-                                break;
-                            case R.id.history:
-                                viewPager.setCurrentItem(1);
-                                toolbarInterface.setToolbarTitle(R.string.title_history);
-                                break;
-                            case R.id.profile:
-                                viewPager.setCurrentItem(2);
-                                toolbarInterface.setToolbarTitle(CurrentUser.getUserName());
-                                break;
+            bottomNavigationView = rootView.findViewById(R.id.navigation);
+            bottomNavigationView.setOnNavigationItemSelectedListener(
+                    new BottomNavigationView.OnNavigationItemSelectedListener() {
+                        @Override
+                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                            if (mPrevMenuItem != null) {
+                                mPrevMenuItem.setChecked(false);
+                            } else {
+                                bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                            }
+                            item.setChecked(true);
+                            mPrevMenuItem = item;
+                            switch (item.getItemId()) {
+                                case R.id.home:
+                                    viewPager.setCurrentItem(0);
+                                    toolbarInterface.showToolbar();
+                                    toolbarInterface.setToolbarTitle(R.string.title_home);
+                                    windowInterface.setStatusBarColor(Color.parseColor("#6E74A9"));
+                                    break;
+                                case R.id.history:
+                                    viewPager.setCurrentItem(1);
+                                    toolbarInterface.showToolbar();
+                                    toolbarInterface.setToolbarTitle(R.string.title_history);
+                                    windowInterface.setStatusBarColor(Color.parseColor("#6E74A9"));
+                                    break;
+                                case R.id.profile:
+                                    viewPager.setCurrentItem(2);
+                                    toolbarInterface.hideToolbar();
+                                    windowInterface.setStatusBarColor(Color.parseColor("#4A4070"));
+                                    break;
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
+                    });
 
-        viewPager = view.findViewById(R.id.content);
-        viewPager.setSwipeable(false);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (mPrevMenuItem != null) {
-                    mPrevMenuItem.setChecked(false);
-                }
-                else
-                {
-                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
-                }
-                bottomNavigationView.getMenu().getItem(position).setChecked(true);
-                switch (position){
-                    case(0):
-                        toolbarInterface.setToolbarTitle(R.string.title_home);
-                        break;
-                    case(1):
-                        toolbarInterface.setToolbarTitle(R.string.title_history);
-                        break;
-                    case(2):
-                        toolbarInterface.setToolbarTitle(CurrentUser.getUserName());
-                        break;
-                }
-                mPrevMenuItem = bottomNavigationView.getMenu().getItem(position);
-
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        viewPager.setCurrentItem(2);
-
-
-//        Calendar startDate = Calendar.getInstance();
-//
-//        Calendar endDate = Calendar.getInstance();
-//        endDate.add(Calendar.MONTH, 1);
-//
-//        mHorizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
-//                .range(startDate, endDate)
-//                .datesNumberOnScreen(5)
-//                .build();
-//
-//        mHorizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
-//            @Override
-//            public void onDateSelected(Calendar date, int position) {
-//
-//            }
-//        });
-        setupViewPager(viewPager);
-        return view;
+            viewPager = rootView.findViewById(R.id.content);
+            viewPager.setOffscreenPageLimit(2);
+            if (viewPager.getChildCount() == 0)
+                setupViewPager(viewPager);
+            viewPager.setSwipeable(false);
+        }
+        return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        switch (viewPager.getCurrentItem()){
+            case 0:
+                toolbarInterface.setToolbarTitle(R.string.title_home);
+                break;
+            case 1:
+                toolbarInterface.setToolbarTitle(R.string.title_history);
+                break;
+            case 2:
+                toolbarInterface.hideToolbar();
+                break;
+            default :
+                break;
+        }
+    }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        mHomeFragment = new HomeFragment();
-        mHistoryFragment = new HistoryFragment();
-        mProfileFragment = new ProfileFragment();
+        if (viewPager.getAdapter() == null) {
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
-        adapter.addFragment(mHomeFragment);
-        adapter.addFragment(mHistoryFragment);
-        adapter.addFragment(mProfileFragment);
-        viewPager.setAdapter(adapter);
+            adapter.addFragment(new HomeFragment());
+            adapter.addFragment(new HistoryFragment());
+            adapter.addFragment(new ProfileFragment());
+            viewPager.setAdapter(adapter);
+        }
     }
 
 }

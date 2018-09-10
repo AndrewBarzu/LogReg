@@ -62,11 +62,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC0NWPyY5Y4B37CJQDbDjn9gCcktNYU9Sc" />
 
-        <activity
-            android:name=".main_activity.MapsFragment"
-            android:label="@string/google_maps_key">
-
-        </activity>
     </application>
 
 </manifest>

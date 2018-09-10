@@ -2,20 +2,16 @@ package com.example.xghos.Wrenchy.main_activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +25,8 @@ import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.helpers_extras.Helper;
 import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
+import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
+import com.example.xghos.Wrenchy.interfaces.WindowInterface;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -54,6 +52,7 @@ public class CreateOfferFragment extends Fragment {
     private Uri mCropImageUri;
     private Bitmap croppedImageFile;
     private ImageButton lastClicked, nextImage;
+    private ToolbarInterface toolbarInterface;
 
     public CreateOfferFragment() {
     }
@@ -61,12 +60,16 @@ public class CreateOfferFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        toolbarInterface = (ToolbarInterface) getContext();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_create_offer, container, false);
+
+        toolbarInterface.setToolbarTitle("Offer details");
+        toolbarInterface.cancel();
         imageButton1 = v.findViewById(R.id.imageButton);
         imageButton2 = v.findViewById(R.id.imageButton2);
         imageButton3 = v.findViewById(R.id.imageButton3);
@@ -126,12 +129,18 @@ public class CreateOfferFragment extends Fragment {
         mPostJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!offerTitle.getText().toString().equals("") && !offerDetails.getText().toString().equals("")
+                if (!offerTitle.getText().toString().equals("") && !offerDetails.getText().toString().equals("")
                         && !offerLocation.getText().toString().equals("") && !price.getText().toString().equals(""))
                     new AddOffer(createOfferFragment).execute();
             }
         });
         return v;
+    }
+
+    @Override
+    public void onDestroyView() {
+        toolbarInterface.add();
+        super.onDestroyView();
     }
 
     public void startImageChooserActivity() {
@@ -177,7 +186,7 @@ public class CreateOfferFragment extends Fragment {
             if (CropImage.isReadExternalStoragePermissionsRequired(getContext(), imageUri)) {
 
                 mCropImageUri = imageUri;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
             } else {
 
                 performCrop(imageUri);
@@ -193,13 +202,12 @@ public class CreateOfferFragment extends Fragment {
                             .setMaxHeight(124)
                             .setQuality(30)
                             .compressToBitmap(cropableImage);
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(getContext(), "Could not compress image file!", Toast.LENGTH_SHORT).show();
                     Log.d("compression exception", e.toString());
                 }
                 lastClicked.setImageBitmap(croppedImageFile);
-                if(nextImage!=null){
+                if (nextImage != null) {
                     nextImage.setVisibility(View.VISIBLE);
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -212,7 +220,7 @@ public class CreateOfferFragment extends Fragment {
 
         CreateOfferFragment createOfferFragment;
 
-        public AddOffer(CreateOfferFragment context){
+        public AddOffer(CreateOfferFragment context) {
             createOfferFragment = new WeakReference<>(context).get();
         }
 
@@ -233,20 +241,20 @@ public class CreateOfferFragment extends Fragment {
             getParams.put("nume_locatie", "1");
             getParams.put("data_expirare_oferta", "2019-01-01");
             Integer imageCount = 0;
-            if(createOfferFragment.imageButton1.getDrawable() != null){
-                getParams.put("imagine_oferta_1", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable)createOfferFragment.imageButton1.getDrawable()).getBitmap()));
+            if (createOfferFragment.imageButton1.getDrawable() != null) {
+                getParams.put("imagine_oferta_1", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable) createOfferFragment.imageButton1.getDrawable()).getBitmap()));
                 imageCount++;
-                if(createOfferFragment.imageButton2.getDrawable() != null){
-                    getParams.put("imagine_oferta_2", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable)createOfferFragment.imageButton2.getDrawable()).getBitmap()));
+                if (createOfferFragment.imageButton2.getDrawable() != null) {
+                    getParams.put("imagine_oferta_2", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable) createOfferFragment.imageButton2.getDrawable()).getBitmap()));
                     imageCount++;
-                    if(createOfferFragment.imageButton3.getDrawable() != null){
-                        getParams.put("imagine_oferta_3", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable)createOfferFragment.imageButton3.getDrawable()).getBitmap()));
+                    if (createOfferFragment.imageButton3.getDrawable() != null) {
+                        getParams.put("imagine_oferta_3", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable) createOfferFragment.imageButton3.getDrawable()).getBitmap()));
                         imageCount++;
-                        if(createOfferFragment.imageButton4.getDrawable() != null){
-                            getParams.put("imagine_oferta_4", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable)createOfferFragment.imageButton4.getDrawable()).getBitmap()));
+                        if (createOfferFragment.imageButton4.getDrawable() != null) {
+                            getParams.put("imagine_oferta_4", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable) createOfferFragment.imageButton4.getDrawable()).getBitmap()));
                             imageCount++;
-                            if(createOfferFragment.imageButton5.getDrawable() != null){
-                                getParams.put("imagine_oferta_5", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable)createOfferFragment.imageButton5.getDrawable()).getBitmap()));
+                            if (createOfferFragment.imageButton5.getDrawable() != null) {
+                                getParams.put("imagine_oferta_5", Helper.getINSTANCE().getStringFromBitmap(((BitmapDrawable) createOfferFragment.imageButton5.getDrawable()).getBitmap()));
                                 imageCount++;
                             }
                         }
@@ -263,9 +271,7 @@ public class CreateOfferFragment extends Fragment {
                 String message = responseObject.getString("msg");
                 return message;
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 return "nuok";
             }
         }
@@ -273,7 +279,7 @@ public class CreateOfferFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            switch (s){
+            switch (s) {
                 case "success":
                     Toast.makeText(createOfferFragment.getActivity(), "Offer created!", Toast.LENGTH_SHORT).show();
                     createOfferFragment.getActivity().getSupportFragmentManager().popBackStack();

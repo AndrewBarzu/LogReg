@@ -15,12 +15,14 @@ import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.helpers_extras.LockableViewPager;
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
+import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
 
 public class HistoryFragment extends Fragment {
 
     private TakenOffersFragment takenOffersFragment;
     private PostedOffersFragment postedOffersFragment;
     private TabLayout tabLayout;
+    private View rootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,40 +32,31 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
 
-        View rootView = inflater.inflate(R.layout.fragment_history, container, false);
+        if(rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_history, container, false);
 
-        takenOffersFragment = new TakenOffersFragment();
-        postedOffersFragment = new PostedOffersFragment();
+            takenOffersFragment = new TakenOffersFragment();
+            postedOffersFragment = new PostedOffersFragment();
 
-        LockableViewPager mViewPager = rootView.findViewById(R.id.historyContainer);
-        mViewPager.setSwipeable(false);
-        setupViewPager(mViewPager);
+            LockableViewPager mViewPager = rootView.findViewById(R.id.historyContainer);
+            mViewPager.setSwipeable(false);
+            setupViewPager(mViewPager);
+            mViewPager.setOffscreenPageLimit(1);
 
-        tabLayout = rootView.findViewById(R.id.tabs);
+            tabLayout = rootView.findViewById(R.id.tabs);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
+            tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        }
         return rootView;
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        if(viewPager.getAdapter() == null) {
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
-        adapter.addFragment(takenOffersFragment);
-        adapter.addFragment(postedOffersFragment);
-        viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        TabLayout.Tab selectedTab = tabLayout.getTabAt(CurrentUser.getTabindex());
-        selectedTab.select();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        CurrentUser.setTabindex(tabLayout.getSelectedTabPosition());
+            adapter.addFragment(takenOffersFragment);
+            adapter.addFragment(postedOffersFragment);
+            viewPager.setAdapter(adapter);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.xghos.Wrenchy.main_activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -14,7 +15,6 @@ import android.widget.LinearLayout;
 
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.SwipeRecyclerViewAdapter;
-import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
 import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
 import com.example.xghos.Wrenchy.helpers_extras.MyOffer;
 
@@ -26,13 +26,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-
 public class PostedOffersFragment extends Fragment {
 
     private ArrayList<MyOffer> mOffers;
     private SwipeRecyclerViewAdapter offerAdapter;
     private ArrayList<String> offerIDs;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private View rootView;
 
     public PostedOffersFragment() {
         // Required empty public constructor
@@ -41,37 +41,48 @@ public class PostedOffersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mOffers = new ArrayList<>();
-        offerIDs = new ArrayList<>();
-        offerAdapter = new SwipeRecyclerViewAdapter(getContext(), mOffers, true);
-        new GetPostedOffersAsync(this).execute();
+        if (savedInstanceState == null) {
+            mOffers = new ArrayList<>();
+            offerIDs = new ArrayList<>();
+            offerAdapter = new SwipeRecyclerViewAdapter(getActivity().getIntent().getExtras().getString("id"), getContext(), mOffers, true);
+            new GetPostedOffersAsync(this, getActivity().getIntent().getExtras().getString("id")).execute();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_posted_offers, container, false);
-        swipeRefreshLayout = v.findViewById(R.id.refresh_posted_offers);
-        RecyclerView postedOffers = v.findViewById(R.id.postedOffers);
-        postedOffers.addItemDecoration(new DividerItemDecoration(postedOffers.getContext(), DividerItemDecoration.VERTICAL));
-        postedOffers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        postedOffers.setAdapter(offerAdapter);
-        final PostedOffersFragment postedOffersFragment = this;
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new GetPostedOffersAsync(postedOffersFragment).execute();
-            }
-        });
-        return v;
+        if (rootView == null)
+            rootView = inflater.inflate(R.layout.fragment_posted_offers, container, false);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View rootView, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(rootView, savedInstanceState);
+        if (savedInstanceState == null) {
+            swipeRefreshLayout = rootView.findViewById(R.id.refresh_posted_offers);
+            RecyclerView postedOffers = rootView.findViewById(R.id.postedOffers);
+            postedOffers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+            postedOffers.setAdapter(offerAdapter);
+            final PostedOffersFragment postedOffersFragment = this;
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    new GetPostedOffersAsync(postedOffersFragment, getActivity().getIntent().getExtras().getString("id")).execute();
+                }
+            });
+        }
     }
 
     static class GetPostedOffersAsync extends AsyncTask<String, Void, String> {
 
         private PostedOffersFragment postedOffersFragment;
+        private String mId;
 
-        GetPostedOffersAsync(PostedOffersFragment context){
+        GetPostedOffersAsync(PostedOffersFragment context, String id) {
             postedOffersFragment = new WeakReference<>(context).get();
+            mId = id;
         }
 
         @Override
@@ -86,7 +97,7 @@ public class PostedOffersFragment extends Fragment {
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
-            getParams.put("id_user", CurrentUser.getId());
+            getParams.put("id_user", mId);
             getParams.put("request", "getTakenOffers");
 
             try {

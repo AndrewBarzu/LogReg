@@ -2,6 +2,7 @@ package com.example.xghos.Wrenchy.main_activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -31,6 +32,7 @@ public class TakenOffersFragment extends Fragment {
     private SwipeRecyclerViewAdapter offerAdapter;
     private ArrayList<String> offerIDs;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private View rootView;
 
     public TakenOffersFragment() {
         // Required empty public constructor
@@ -39,37 +41,49 @@ public class TakenOffersFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mOffers = new ArrayList<>();
-        offerIDs = new ArrayList<>();
-        offerAdapter = new SwipeRecyclerViewAdapter(getContext(), mOffers, false);
-        new GetTakenOffersAsync(this).execute();
+        if (savedInstanceState == null) {
+            mOffers = new ArrayList<>();
+            offerIDs = new ArrayList<>();
+            offerAdapter = new SwipeRecyclerViewAdapter(getActivity().getIntent().getExtras().getString("id"), getContext(), mOffers, false);
+            new GetTakenOffersAsync(this, getActivity().getIntent().getExtras().getString("id")).execute();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_taken_offers, container, false);
-        swipeRefreshLayout = v.findViewById(R.id.refresh_taken_offers);
-        RecyclerView mTakenOffers = v.findViewById(R.id.takenOffers);
-        mTakenOffers.addItemDecoration(new DividerItemDecoration(mTakenOffers.getContext(), DividerItemDecoration.VERTICAL));
-        mTakenOffers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
-        mTakenOffers.setAdapter(offerAdapter);
-        final TakenOffersFragment takenOffersFragment = this;
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new GetTakenOffersAsync(takenOffersFragment).execute();
-            }
-        });
-        return v;
+        if(rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_taken_offers, container, false);
+        }
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View rootView, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(rootView, savedInstanceState);
+        if(savedInstanceState == null) {
+            swipeRefreshLayout = rootView.findViewById(R.id.refresh_taken_offers);
+            RecyclerView mTakenOffers = rootView.findViewById(R.id.takenOffers);
+            mTakenOffers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+            mTakenOffers.setAdapter(offerAdapter);
+            final TakenOffersFragment takenOffersFragment = this;
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    new GetTakenOffersAsync(takenOffersFragment, getActivity().getIntent().getExtras().getString("id")).execute();
+                }
+            });
+        }
     }
 
     static class GetTakenOffersAsync extends AsyncTask<String, Void, String> {
 
         private TakenOffersFragment takenOffersFragment;
+        private String mId;
 
-        GetTakenOffersAsync(TakenOffersFragment context){
+        GetTakenOffersAsync(TakenOffersFragment context, String id){
             takenOffersFragment = new WeakReference<>(context).get();
+            mId = id;
         }
 
         @Override
@@ -84,7 +98,7 @@ public class TakenOffersFragment extends Fragment {
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
-            getParams.put("id_user", CurrentUser.getId());
+            getParams.put("id_user", mId);
             getParams.put("request", "getTakenOffers");
 
             try {

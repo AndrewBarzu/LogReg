@@ -4,26 +4,37 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
 import com.example.xghos.Wrenchy.helpers_extras.OfferPicture;
 import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class OfferFragment extends Fragment {
+public class OfferFragment extends Fragment implements OnMapReadyCallback{
 
     private String mOfferId;
     private String mOfferTitle;
@@ -60,6 +71,18 @@ public class OfferFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_offer_details, container, false);
+        toolbarInterface.showBackButton();
+        toolbarInterface.remove_add();
+
+        final ScrollView scrollView = v.findViewById(R.id.offerScrollView);
+        WorkaroundMapFragment mapFragment = (WorkaroundMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+        mapFragment.getMapAsync(this);
+        mapFragment.setListener(new WorkaroundMapFragment.OnTouchListener() {
+            @Override
+            public void onTouch() {
+                scrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
         TabLayout dots = v.findViewById(R.id.dots);
         TextView TVOfferTitle = v.findViewById(R.id.offerTitle);
         TextView TVOfferDescription = v.findViewById(R.id.offerDetails);
@@ -88,16 +111,37 @@ public class OfferFragment extends Fragment {
         dots.setupWithViewPager(VPImageList);
         toolbarInterface.setToolbarTitle(R.string.offer_details);
 
-        ViewPager map = v.findViewById(R.id.mapContainer);
-        ViewPagerAdapter viewPagerAdapter1 = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter1.addFragment(MapsFragment.newInstance(mOfferLocation));
-        map.setAdapter(viewPagerAdapter1);
-
         ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33000000")));
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_24dp);
 
 
         return v;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+
+        List<LatLng> ll = new ArrayList<>();
+
+        if (Geocoder.isPresent()) {
+            try {
+                Geocoder gc = new Geocoder(getContext());
+                List<Address> addressList = gc.getFromLocationName(mOfferLocation, 1);
+                for (Address a : addressList){
+                    if(a.hasLatitude() && a.hasLongitude()) {
+                        ll.add(new LatLng(a.getLatitude(), a.getLongitude()));
+                    }
+                }
+            } catch (IOException e) {
+                Log.e("GEOLOCATION ERROR", e.toString());
+            }
+        }
+
+        LatLng location = ll.get(0);
+        mMap.addMarker(new MarkerOptions().position(location));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 9.0f ) );
     }
 
     @Override
@@ -115,6 +159,7 @@ public class OfferFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_gradient));
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        toolbarInterface.hideBackButton();
+        toolbarInterface.show_add();
     }
 }

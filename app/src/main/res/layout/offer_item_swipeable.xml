@@ -5,6 +5,7 @@
     android:id="@+id/swipe"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
     swipe:leftEdgeSwipeOffset="0dp"
     swipe:rightEdgeSwipeOffset="0dp">
 
@@ -51,7 +52,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/offer_item_bg">
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/offer_item_bg"
+        swipe:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/offerNameSwipe"

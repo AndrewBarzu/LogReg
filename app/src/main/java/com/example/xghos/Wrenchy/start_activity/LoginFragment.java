@@ -129,14 +129,25 @@ public class LoginFragment extends Fragment {
 
      public class LoginAsyncTask extends AsyncTask<String, Void, String>{
 
+        private String name;
+        private String email;
+        private String phone;
+        private String password;
+        private String id;
+        private String accType;
+        private String avatar;
+
         @Override
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
             final SharedPreferences.Editor editor = sharedPrefs.edit();
 
-            getParams.put("mail", objects[0]);
-            getParams.put("parola", objects[1]);
+            email = objects[0];
+            password = objects[1];
+
+            getParams.put("mail", email);
+            getParams.put("parola", password);
             getParams.put("request", "login");
             getParams.put("SO", "ANDROID");
             if(token != null)
@@ -150,17 +161,11 @@ public class LoginFragment extends Fragment {
                     return responseMessage;
                 JSONObject Object = responseObject.getJSONObject("result");
 
-                String name = Object.getString("nume");
-                String email = Object.getString("email");
-                String phone = Object.getString("nr_telefon");
-
-                CurrentUser.setUserName(name);
-                CurrentUser.setEmail(email);
-                CurrentUser.setPhoneNumber(phone);
-                CurrentUser.setId(Object.getString("id_user"));
-                CurrentUser.setAccType(Object.getString("tip_user"));
-                CurrentUser.setAvatar(Object.getString("avatar"));
-                CurrentUser.setOldpw(objects[1]);
+                name = Object.getString("nume");
+                phone = Object.getString("nr_telefon");
+                id = Object.getString("id_user");
+                accType = Object.getString("tip_user");
+                avatar = Object.getString("avatar");
 
                 if (message.equals("success"))
                 {
@@ -197,6 +202,14 @@ public class LoginFragment extends Fragment {
                     break;
                 case "Logare cu succes.":
                     Intent intent = new Intent(getContext(), MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("userName", name);
+                    bundle.putString("email", email);
+                    bundle.putString("phone", phone);
+                    bundle.putString("id", id);
+                    bundle.putString("accType", accType);
+                    bundle.putString("avatar", avatar);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                     new CountDownTimer(1000, 1000) {
 

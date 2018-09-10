@@ -1,6 +1,7 @@
 package com.example.xghos.Wrenchy.main_activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xghos.Wrenchy.helpers_extras.CurrentUser;
-import com.example.xghos.Wrenchy.interfaces.DrawerInterface;
 import com.example.xghos.Wrenchy.helpers_extras.Helper;
 import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
 import com.example.xghos.Wrenchy.R;
@@ -34,7 +34,6 @@ public class ChangePW extends Fragment {
     private TextView mOldPass;
     private TextView mNewPass;
     private TextView mConPass;
-    private DrawerInterface drawerInterface;
     private ToolbarInterface toolbarInterface;
 
     public ChangePW() {
@@ -45,7 +44,6 @@ public class ChangePW extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try{
-            drawerInterface = (DrawerInterface)context;
             toolbarInterface = (ToolbarInterface)context;
         }
         catch (ClassCastException e){
@@ -81,7 +79,6 @@ public class ChangePW extends Fragment {
                 }
             }
         });
-        drawerInterface.lockDrawer();
         toolbarInterface.hideToolbar();
         return view;
     }
@@ -89,7 +86,6 @@ public class ChangePW extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        drawerInterface.unlockDrawer();
         toolbarInterface.showToolbar();
     }
 
@@ -134,6 +130,8 @@ public class ChangePW extends Fragment {
             if(s.equals("ok")){
                 Toast.makeText(getActivity(), "Password Changed", Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new NavigationFragment()).commit();
+                SharedPreferences sharedPrefs = getContext().getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
+                sharedPrefs.edit().putString("Status", "1").apply();
                 }
             else {
                 Log.d("+++", s);

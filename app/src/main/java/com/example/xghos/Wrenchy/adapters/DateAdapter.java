@@ -23,6 +23,7 @@ import com.example.xghos.Wrenchy.helpers_extras.HttpRequest;
 import com.example.xghos.Wrenchy.helpers_extras.MyDate;
 import com.example.xghos.Wrenchy.helpers_extras.MyOffer;
 import com.example.xghos.Wrenchy.R;
+import com.example.xghos.Wrenchy.main_activity.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,15 +50,17 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
     private RecyclerViewSkeletonScreen skeletonScreen;
     private DateAdapter dateAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private String mId;
 
-    public DateAdapter(Context context, Calendar mStartDate, Calendar mEndDate, RecyclerView recyclerView, SwipeRefreshLayout swipeRefreshLayout) {//initializarea clasei si a listei cu date afisate
+    public DateAdapter(String id, Context context, Calendar mStartDate, Calendar mEndDate, RecyclerView recyclerView, SwipeRefreshLayout swipeRefreshLayout) {//initializarea clasei si a listei cu date afisate
         mOfferList = recyclerView;
-        mOfferList.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         mSwipeRefreshLayout = swipeRefreshLayout;
 
         mContext = context;
         offerIDs = new ArrayList<>();
+
+        mId = id;
 
         dateAdapter = this;
 
@@ -246,7 +249,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
-            getParams.put("id_user", CurrentUser.getId());
+            getParams.put("id_user", dateAdapter.mId);
             getParams.put("request", "getUsers");
 
             try {

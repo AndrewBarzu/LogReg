@@ -55,4 +55,13 @@
     <string name="offer_location">Location</string>
     <string name="offer_price">Price</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="details">Details</string>
+    <string name="reviews">Reviews</string>
+    <string name="offers">Offers</string>
+
+    <string name="phone_details">Tel.: %1$s</string>
+    <string name="mail_details">Mail: %1$s</string>
+    <string name="contact">Contact</string>
+
 </resources>

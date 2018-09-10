@@ -46,13 +46,15 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
     private String mOfferID;
     private Boolean wasClicked;
     private Boolean mEditable;
+    private String mId;
 
-    public SwipeRecyclerViewAdapter(Context context, ArrayList<MyOffer> offers, boolean editable) {
+    public SwipeRecyclerViewAdapter(String id, Context context, ArrayList<MyOffer> offers, boolean editable) {
         mOffers = offers;
         mContext = context;
         wasClicked = false;
         mEditable = editable;
         mImageStrings = new ArrayList<>();
+        mId = id;
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
@@ -120,7 +122,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
                 @Override
                 public void onClick(View v) {
                     if (!wasClicked) {
-                        new GetOfferAsync().execute(offer_id);
+                        new GetOfferAsync().execute(offer_id, mId);
                         wasClicked = true;
                         new CountDownTimer(1000, 1000) {
 
@@ -164,7 +166,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
             HashMap<String, String> getParams = new HashMap<>();
 
             getParams.put("id_oferta", objects[0]);
-            getParams.put("id_user", String.valueOf(CurrentUser.getId()));
+            getParams.put("id_user", objects[1]);
             getParams.put("request", "listofferdetails");
 
             try {
