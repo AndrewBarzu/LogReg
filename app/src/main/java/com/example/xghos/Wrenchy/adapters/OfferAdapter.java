@@ -42,12 +42,14 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
     private ArrayList<String>mImageStrings;
     private String mOfferID;
     private Boolean wasClicked;
+    private String mId;
 
-    OfferAdapter(Context context, int resource, ArrayList<MyOffer> offers) {
-        mOffers = offers;
-        mContext = context;
-        wasClicked = false;
-        mImageStrings = new ArrayList<>();
+    OfferAdapter(String id, Context context, int resource, ArrayList<MyOffer> offers) {
+        this.mOffers = offers;
+        this.mContext = context;
+        this.wasClicked = false;
+        this.mImageStrings = new ArrayList<>();
+        this.mId = id;
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
@@ -60,22 +62,14 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
             offerPrice = view.findViewById(R.id.offerPrice);
             offerLocation = view.findViewById(R.id.offerLocation);
             offerer = view.findViewById(R.id.offerorName);
-            view.setOnClickListener(new View.OnClickListener() {
+            View v = view.findViewById(R.id.view_to_click);
+            v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (!wasClicked) {
                         mImageStrings.clear();
-                        new GetOfferAsync().execute(offer_id);
+                        new GetOfferAsync().execute(offer_id, mId);
                         wasClicked = true;
-                        new CountDownTimer(1000, 1000) {
-
-                            public void onTick(long millisUntilFinished) {
-                            }
-
-                            public void onFinish() {
-                                wasClicked = false;
-                            }
-                        }.start();
                     }
                 }
             });
@@ -108,10 +102,13 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
         protected String doInBackground(String... objects) {
             HashMap<String, String> getParams = new HashMap<>();
 
+            Log.d("works til here", "it tries");
+
             getParams.put("id_oferta", objects[0]);
-            getParams.put("id_user", String.valueOf(CurrentUser.getId()));
+            getParams.put("id_user", objects[1]);
             getParams.put("request", "listofferdetails");
 
+            Log.d("works til here", "it tries" + objects[0] + " " + objects [1]);
             try {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/listofferdetails.php").connect();
                 JSONObject responseObject = new JSONObject(response);
@@ -161,6 +158,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.MyHolder> {
                 case "Unknown Error":
                     Toast.makeText(mContext, "You can't see your own offer!", Toast.LENGTH_SHORT).show();
             }
+            wasClicked = false;
         }
     }
 

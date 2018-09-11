@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
@@ -21,11 +23,11 @@ import android.widget.TextView;
 import com.example.xghos.Wrenchy.R;
 import com.example.xghos.Wrenchy.adapters.ViewPagerAdapter;
 import com.example.xghos.Wrenchy.helpers_extras.OfferPicture;
+import com.example.xghos.Wrenchy.helpers_extras.ScrollableViewPager;
 import com.example.xghos.Wrenchy.interfaces.ToolbarInterface;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -89,7 +91,7 @@ public class OfferFragment extends Fragment implements OnMapReadyCallback{
         TextView TVOfferExpire = v.findViewById(R.id.expireDate);
         TextView TVOfferLocation = v.findViewById(R.id.offerLocation);
         TextView TVOfferPrice = v.findViewById(R.id.price);
-        ViewPager VPImageList = v.findViewById(R.id.viewPager);
+        ScrollableViewPager VPImageList = v.findViewById(R.id.viewPager);
         TVOfferTitle.setText(mOfferTitle);
         TVOfferDescription.setText(mOfferDescription);
         TVOfferExpire.setText(mOfferExpire);
@@ -97,6 +99,12 @@ public class OfferFragment extends Fragment implements OnMapReadyCallback{
         TVOfferPrice.setText(mOfferPrice);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         OfferPicture offerPicture;
+        VPImageList.setListener(new ScrollableViewPager.OnTouchListener() {
+            @Override
+            public void onTouch() {
+                scrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
         Drawable drawable = getResources().getDrawable(R.drawable.ic_photo_black_24dp);
         if(mOfferImages.size()>0)
             for (String image : mOfferImages) {

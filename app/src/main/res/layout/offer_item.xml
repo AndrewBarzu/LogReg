@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:background="@drawable/offer_item_bg"
         android:clickable="true"
+        android:id="@+id/view_to_click"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView

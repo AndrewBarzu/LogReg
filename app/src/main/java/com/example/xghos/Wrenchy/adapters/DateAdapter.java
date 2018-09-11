@@ -65,7 +65,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
         dateAdapter = this;
 
         mOffers = new ArrayList<>();
-        offerAdapter = new OfferAdapter(mContext, R.layout.offer_item, mOffers);
+        offerAdapter = new OfferAdapter(id, mContext, R.layout.offer_item, mOffers);
         mOfferList.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
         mOfferList.setAdapter(offerAdapter);
 

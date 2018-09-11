@@ -83,6 +83,7 @@ public class ProfileFragment extends Fragment {
             reviewsContainer.setSwipeable(false);
 
             userName = rootView.findViewById(R.id.profileUserName);
+            userName.setText(getActivity().getIntent().getExtras().getString("userName"));
 
             TabLayout tabLayout = rootView.findViewById(R.id.profileContainerSelector);
             tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(reviewsContainer));
@@ -108,10 +109,8 @@ public class ProfileFragment extends Fragment {
                 }
             });
 
-            if (CurrentUser.getAvatar() != null) {
-                new LoadAvatar(this).execute(CurrentUser.getAvatar(), getActivity().getIntent().getExtras().getString("userName"));
-            } else if (getActivity().getIntent().getExtras().getString("avatar") != null) {
-                new LoadAvatar(this).execute(getActivity().getIntent().getExtras().getString("avatar"), getActivity().getIntent().getExtras().getString("userName"));
+            if (!getActivity().getIntent().getExtras().getString("avatar").equals("")) {
+                new LoadAvatar(this).execute(getActivity().getIntent().getExtras().getString("avatar"));
             }
         }
     }
@@ -128,7 +127,6 @@ public class ProfileFragment extends Fragment {
         protected Bitmap doInBackground(String... image) {
             Bitmap bitmap = Helper.getINSTANCE().getBitmapFromString(image[0]);
             profileFragment.IVProfilePic.setImageBitmap(bitmap);
-            profileFragment.userName.setText(image[1]);
             return null;
         }
     }
@@ -222,9 +220,7 @@ public class ProfileFragment extends Fragment {
             HashMap<String, String> getParams = new HashMap<>();
 
 
-            String encoded = objects[0];
-            CurrentUser.setAvatar(encoded);
-            getParams.put("avatar", encoded);
+            getParams.put("avatar", objects[0]);
             getParams.put("id", objects[1]);
             getParams.put("request", "avatarchange");
 

@@ -2,7 +2,6 @@ package com.example.xghos.Wrenchy.main_activity;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -32,29 +31,28 @@ public class MainActivity extends AppCompatActivity implements ToolbarInterface,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null) {
-            setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
-            window = getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.parseColor("#6E74A9"));
+        window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(Color.parseColor("#6E74A9"));
 
-            if (getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("status", "1").equals("2")) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new ChangePW()).commit();
+        if (getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE).getString("status", "1").equals("2")) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new ChangePW()).commit();
 
-            } else {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new NavigationFragment()).commit();
-            }
-
-            toolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-            actionbar = getSupportActionBar();
-            if (actionbar != null) {
-                actionbar.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_24dp);
-                actionbar.setTitle("");
-            }
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new NavigationFragment()).commit();
         }
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionbar = getSupportActionBar();
+        if (actionbar != null) {
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_24dp);
+            actionbar.setTitle("");
+        }
+
     }
 
     @Override
@@ -89,7 +87,9 @@ public class MainActivity extends AppCompatActivity implements ToolbarInterface,
                 navigationFragment.viewPager.setCurrentItem(0);
                 navigationFragment.mPrevMenuItem.setChecked(false);
                 navigationFragment.bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                toolbar.setVisibility(View.VISIBLE);
             }
+            else super.onBackPressed();
         } else {
             super.onBackPressed();
         }

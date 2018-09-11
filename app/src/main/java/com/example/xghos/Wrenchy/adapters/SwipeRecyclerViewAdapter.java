@@ -124,15 +124,6 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
                     if (!wasClicked) {
                         new GetOfferAsync().execute(offer_id, mId);
                         wasClicked = true;
-                        new CountDownTimer(1000, 1000) {
-
-                            public void onTick(long millisUntilFinished) {
-                            }
-
-                            public void onFinish() {
-                                wasClicked = false;
-                            }
-                        }.start();
                     }
                 }
             });
@@ -234,6 +225,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
                     Toast.makeText(mContext, "You can't see your own offer!", Toast.LENGTH_SHORT).show();
                     break;
             }
+            wasClicked = false;
         }
     }
 }

@@ -44,10 +44,12 @@ public class LoginFragment extends Fragment {
     private CheckBox CRemember;            //remember me
     private ConstraintLayout layout;       //layoutul in sine, folosit pentru ascunderea tastaturii prin apasarea acestuia
     private ConstraintLayout loadingScreen;
+    private Boolean loginTry;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {        //functie onCreate, necesara fragmentului
         super.onCreate(savedInstanceState);
+        loginTry = false;
     }
 
     @Nullable
@@ -61,9 +63,10 @@ public class LoginFragment extends Fragment {
         loadingScreen = view.findViewById(R.id.loading_screen);
 
         sharedPrefs = getContext().getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
-        if (!sharedPrefs.getString("Email", "").equals("") && !sharedPrefs.getString("Pass", "").equals("")){
+        if (!sharedPrefs.getString("Email", "").equals("") && !sharedPrefs.getString("Pass", "").equals("") && !loginTry){
             loadingScreen.setVisibility(View.VISIBLE);
             new LoginAsyncTask().execute(sharedPrefs.getString("Email", ""), sharedPrefs.getString("Pass", ""));
+            loginTry = true;
         }
 
         layout = view.findViewById(R.id.LoginPanel);
