@@ -19,11 +19,12 @@
             <ToggleButton
                 android:id="@+id/babysitting"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
+                android:layout_height="0dp"
                 android:background="@drawable/j_babysitting_selector"
                 android:textOn=""
                 android:textOff=""
                 android:text=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@+id/cleaning"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -31,11 +32,12 @@
             <ToggleButton
                 android:id="@+id/cleaning"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
+                android:layout_height="0dp"
                 android:background="@drawable/j_cleaning_selector"
                 android:textOn=""
                 android:textOff=""
                 android:text=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/babysitting"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -43,11 +45,12 @@
             <ToggleButton
                 android:id="@+id/cooking"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
+                android:layout_height="0dp"
                 android:background="@drawable/j_cooking_selector"
                 android:textOn=""
                 android:textOff=""
                 android:text=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@+id/electrician"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/babysitting" />
@@ -55,11 +58,12 @@
             <ToggleButton
                 android:id="@+id/electrician"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
+                android:layout_height="0dp"
                 android:background="@drawable/j_electrician_selector"
                 android:textOn=""
                 android:textOff=""
                 android:text=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cooking"
                 app:layout_constraintTop_toBottomOf="@+id/cleaning" />
@@ -67,11 +71,12 @@
             <ToggleButton
                 android:id="@+id/gardener"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
+                android:layout_height="0dp"
                 android:background="@drawable/j_gardener_selector"
                 android:textOn=""
                 android:textOff=""
                 android:text=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@+id/housepainter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cooking" />
@@ -79,11 +84,12 @@
             <ToggleButton
                 android:id="@+id/housepainter"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
+                android:layout_height="0dp"
                 android:background="@drawable/j_housepainter_selector"
                 android:textOn=""
                 android:textOff=""
                 android:text=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/gardener"
                 app:layout_constraintTop_toBottomOf="@+id/electrician" />
@@ -91,11 +97,12 @@
             <ToggleButton
                 android:id="@+id/mechanic"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
+                android:layout_height="0dp"
                 android:background="@drawable/j_mechanic_selector"
                 android:textOn=""
                 android:textOff=""
                 android:text=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@+id/plumber"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/gardener" />
@@ -103,11 +110,12 @@
             <ToggleButton
                 android:id="@+id/plumber"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
+                android:layout_height="0dp"
                 android:background="@drawable/j_plumber_selector"
                 android:textOn=""
                 android:textOff=""
                 android:text=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mechanic"
                 app:layout_constraintTop_toBottomOf="@+id/housepainter" />
@@ -115,11 +123,12 @@
             <ToggleButton
                 android:id="@+id/shopping"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
+                android:layout_height="0dp"
                 android:background="@drawable/j_shopping_selector"
                 android:textOn=""
                 android:textOff=""
                 android:text=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toStartOf="@+id/toggleButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mechanic" />
@@ -127,12 +136,13 @@
             <ToggleButton
                 android:id="@+id/toggleButton"
                 android:layout_width="0dp"
-                android:layout_height="192dp"
-                android:text="ToggleButton"
+                android:layout_height="0dp"
+                android:text=""
                 android:visibility="invisible"
                 android:clickable="false"
                 android:textOn=""
                 android:textOff=""
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/shopping"
                 app:layout_constraintTop_toBottomOf="@+id/plumber" />

@@ -87,6 +87,7 @@ public class CreateOfferFragment extends Fragment {
                 startImageChooserActivity();
                 lastClicked = imageButton1;
                 nextImage = imageButton2;
+                nextImage.setClickable(true);
             }
         });
 
@@ -96,6 +97,7 @@ public class CreateOfferFragment extends Fragment {
                 startImageChooserActivity();
                 lastClicked = imageButton2;
                 nextImage = imageButton3;
+                nextImage.setClickable(true);
             }
         });
 
@@ -105,6 +107,7 @@ public class CreateOfferFragment extends Fragment {
                 startImageChooserActivity();
                 lastClicked = imageButton3;
                 nextImage = imageButton4;
+                nextImage.setClickable(true);
             }
         });
 
@@ -114,6 +117,7 @@ public class CreateOfferFragment extends Fragment {
                 startImageChooserActivity();
                 lastClicked = imageButton4;
                 nextImage = imageButton5;
+                nextImage.setClickable(true);
             }
         });
 
