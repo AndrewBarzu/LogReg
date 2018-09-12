@@ -68,7 +68,7 @@ public class CreateOfferFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_create_offer, container, false);
 
-        toolbarInterface.setToolbarTitle("Offer details");
+        toolbarInterface.setToolbarTitle("Add offer");
         toolbarInterface.cancel();
         imageButton1 = v.findViewById(R.id.imageButton);
         imageButton2 = v.findViewById(R.id.imageButton2);
