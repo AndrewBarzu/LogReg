@@ -33,9 +33,13 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_keyboard_arrow_left_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\xghos" />
+                            <entry key="height" value="700" />
+                            <entry key="outputName" value="ic_download" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="D:\SVG\download.svg" />
+                            <entry key="width" value="700" />
                           </map>
                         </option>
                       </PersistentState>

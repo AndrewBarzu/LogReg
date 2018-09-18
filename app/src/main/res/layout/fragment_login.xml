@@ -71,6 +71,7 @@
         android:linksClickable="true"
         android:text="@string/register_here"
         android:textColor="#ffffff"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"

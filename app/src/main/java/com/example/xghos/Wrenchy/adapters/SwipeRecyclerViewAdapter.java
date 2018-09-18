@@ -64,7 +64,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerView.Adapter<SwipeRecycler
         String offer_id;
         Boolean wasSwiped;
         ConstraintLayout constraintLayout;
-        LinearLayout bottomWrapper;
+        ConstraintLayout bottomWrapper;
 
         MyHolder(View view) {
             super(view);

@@ -13,9 +13,9 @@
 
     <!-- Top View,  Row itemView of RecyclerView -->
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/bottom_wrapper"
-        android:layout_width="103dp"
+        android:layout_width="wrap_content"
         android:layout_height="85dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
@@ -32,7 +32,9 @@
             android:background="#B5A6F3"
             android:gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_edit_24dp" />
+            android:src="@drawable/ic_edit_24dp"
+            swipe:layout_constraintStart_toStartOf="parent"
+            swipe:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivDelete"
@@ -43,8 +45,12 @@
             android:background="#6E59C6"
             android:gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_close_24dp" />
-    </LinearLayout>
+            android:src="@drawable/ic_close_24dp"
+            swipe:layout_constraintBottom_toBottomOf="parent"
+            swipe:layout_constraintEnd_toEndOf="parent"
+            swipe:layout_constraintStart_toEndOf="@+id/ivEdit"
+            swipe:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/viewToSwipe"

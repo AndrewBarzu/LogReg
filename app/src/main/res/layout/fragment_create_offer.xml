@@ -70,6 +70,7 @@
                 android:scrollbars="vertical"
                 android:text=""
                 android:textColor="@android:color/white"
+                android:textAlignment="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
