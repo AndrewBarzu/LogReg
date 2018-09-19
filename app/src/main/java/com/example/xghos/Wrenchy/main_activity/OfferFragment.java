@@ -148,7 +148,7 @@ public class OfferFragment extends Fragment implements OnMapReadyCallback{
 
         LatLng location = ll.get(0);
         mMap.addMarker(new MarkerOptions().position(location));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(location));
         mMap.animateCamera( CameraUpdateFactory.zoomTo( 9.0f ) );
     }
 

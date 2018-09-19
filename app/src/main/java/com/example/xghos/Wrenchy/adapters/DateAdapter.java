@@ -251,6 +251,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.MyHolder> impl
 
             getParams.put("id_user", dateAdapter.mId);
             getParams.put("request", "getUsers");
+            getParams.put("specializari", "[\"1\",\"3\"]");
 
             try {
                 String response = new HttpRequest(getParams, "http://students.doubleuchat.com/listoffers.php").connect();

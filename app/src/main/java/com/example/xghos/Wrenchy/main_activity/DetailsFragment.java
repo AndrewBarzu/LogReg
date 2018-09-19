@@ -91,7 +91,7 @@ public class DetailsFragment extends Fragment implements OnMapReadyCallback{
             if (ll.size() != 0) {
                 LatLng location = ll.get(0);
                 mMap.addMarker(new MarkerOptions().position(location));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(location));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(9.0f));
             }
         }

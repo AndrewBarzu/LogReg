@@ -34,7 +34,7 @@ public class NotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        //Log.d("+++", remoteMessage.getNotification().toString());
+        Log.d("+++", remoteMessage.toString());
         //Call method to generate notification
         if (remoteMessage.getData().size() > 0) {
             Log.d("dataa", "Data Payload: " + remoteMessage.getData());
@@ -61,6 +61,7 @@ public class NotificationService extends FirebaseMessagingService {
     }
 
     private void generateNotification(String title, String message) {
+        Log.d("+++", "generate notif");
         Intent intent = new Intent(this, StartActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -86,6 +87,7 @@ public class NotificationService extends FirebaseMessagingService {
         if (NOTIFICATION_ID > 1073741824) {
             NOTIFICATION_ID = 0;
         }
+        Log.d("+++", NOTIFICATION_ID+"");
         notificationManager.notify(NOTIFICATION_ID++ , mNotifyBuilder.build());
     }
 

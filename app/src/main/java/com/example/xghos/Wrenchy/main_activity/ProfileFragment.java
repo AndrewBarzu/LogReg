@@ -96,9 +96,6 @@ public class ProfileFragment extends Fragment {
                 }
             });
 
-            Button accept_reject = rootView.findViewById(R.id.accept_reject);
-            accept_reject.setVisibility(View.GONE);
-
             Button button = rootView.findViewById(R.id.specializations);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
