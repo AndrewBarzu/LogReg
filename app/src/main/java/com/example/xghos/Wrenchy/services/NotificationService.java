@@ -30,7 +30,6 @@ import java.net.URL;
 public class NotificationService extends FirebaseMessagingService {
 
     public static  int NOTIFICATION_ID = 1;
-    private static final String CHANNEL_ID = "1";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -71,9 +70,7 @@ public class NotificationService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent piDismissIntent = PendingIntent.getBroadcast(this, 0, dismissIntent, 0);
 
-        Log.d("channel_id2", CHANNEL_ID);
-
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this, getString(R.string.CHANNEL_ID))
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle(title)
                 .setContentText(message)
@@ -108,7 +105,7 @@ public class NotificationService extends FirebaseMessagingService {
         bigPictureStyle.setBigContentTitle(title);
         bigPictureStyle.setSummaryText(Html.fromHtml(message).toString());
         bigPictureStyle.bigPicture(bitmap);
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this, getString(R.string.CHANNEL_ID))
                 .setAutoCancel(true)
                 .setContentTitle(title)
                 .setContentIntent(pendingIntent)
@@ -141,28 +138,6 @@ public class NotificationService extends FirebaseMessagingService {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    public void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            try {
-                notificationManager.createNotificationChannel(channel);
-                Log.d("channel_id1", channel.getId());
-            }
-            catch (NullPointerException e){
-                Log.d("NULL", "NU MERGE CA DA NULL");
-            }
         }
     }
 }

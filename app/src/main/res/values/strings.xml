@@ -64,4 +64,5 @@
     <string name="mail_details">Mail: %1$s</string>
     <string name="contact">Contact</string>
 
+    <string name="CHANNEL_ID">1</string>
 </resources>
