@@ -6,29 +6,165 @@
     android:layout_height="match_parent"
     tools:context=".main_activity.SpecializationsFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/set_specializations">
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/set_specializations">
-
-            <GridView
-                android:id="@+id/specialization_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:horizontalSpacing="1dp"
-                android:numColumns="2"
-                android:verticalSpacing="1dp" />
-
+            android:layout_height="wrap_content">
+            <ToggleButton
+                android:id="@+id/babysitting"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/j_babysitting_selector"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/cleaning"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ToggleButton
+                android:id="@+id/cleaning"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/j_cleaning_selector"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/babysitting"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ToggleButton
+                android:id="@+id/cooking"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/j_cooking_selector"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/electrician"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/babysitting" />
+            <ToggleButton
+                android:id="@+id/electrician"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/j_electrician_selector"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cooking"
+                app:layout_constraintTop_toBottomOf="@+id/cleaning" />
+            <ToggleButton
+                android:id="@+id/gardener"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/j_gardener_selector"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/housepainter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cooking" />
+            <ToggleButton
+                android:id="@+id/housepainter"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/j_housepainter_selector"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/gardener"
+                app:layout_constraintTop_toBottomOf="@+id/electrician" />
+            <ToggleButton
+                android:id="@+id/mechanic"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/j_mechanic_selector"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/plumber"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gardener" />
+            <ToggleButton
+                android:id="@+id/plumber"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/j_plumber_selector"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mechanic"
+                app:layout_constraintTop_toBottomOf="@+id/housepainter" />
+            <ToggleButton
+                android:id="@+id/shopping"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/j_shopping_selector"
+                android:textOn=""
+                android:textOff=""
+                android:text=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@+id/toggleButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mechanic" />
+            <ToggleButton
+                android:id="@+id/toggleButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text=""
+                android:visibility="invisible"
+                android:clickable="false"
+                android:textOn=""
+                android:textOff=""
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/shopping"
+                app:layout_constraintTop_toBottomOf="@+id/plumber" />
         </android.support.constraint.ConstraintLayout>
-
+    </ScrollView>
     <Button
         android:id="@+id/set_specializations"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@android:color/holo_blue_bright"
-        android:text="Button" />
+        android:text="Set Specializations"
+        android:stateListAnimator="@null"
+        android:background="@android:color/holo_blue_bright"/>
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/specializations_LS"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#70000000"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@android:color/white"
+            android:indeterminateTintMode="src_atop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 </RelativeLayout>

@@ -32,7 +32,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.example.xghos.Wrenchy.helpers_extras.ScrollableViewPager
+            <com.appist.xghos.Wrenchy.helpers_extras.ScrollableViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="0dp"
                 android:layout_height="170dp"
@@ -42,7 +42,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            </com.example.xghos.Wrenchy.helpers_extras.ScrollableViewPager>
+            </com.appist.xghos.Wrenchy.helpers_extras.ScrollableViewPager>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/dots"
@@ -160,7 +160,7 @@
 
             <fragment
                 android:id="@+id/fragment_map"
-                class="com.example.xghos.Wrenchy.main_activity.WorkaroundMapFragment"
+                class="com.appist.xghos.Wrenchy.main_activity.WorkaroundMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="4dp"

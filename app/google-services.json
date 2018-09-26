@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:484013896308:android:8310d1e4a7ec9e71",
+        "mobilesdk_app_id": "1:484013896308:android:088e8725542b31bc",
         "android_client_info": {
-          "package_name": "com.example.xghos.Wrenchy"
+          "package_name": "com.appist.xghos.Wrenchy"
         }
       },
       "oauth_client": [

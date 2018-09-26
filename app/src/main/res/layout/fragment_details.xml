@@ -80,8 +80,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="250dp"
+            android:layout_marginBottom="25dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
@@ -107,7 +107,7 @@
 
             <fragment
                 android:id="@+id/details_map"
-                class="com.example.xghos.Wrenchy.main_activity.WorkaroundMapFragment"
+                class="com.appist.xghos.Wrenchy.main_activity.WorkaroundMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:tag="fragment_map"
